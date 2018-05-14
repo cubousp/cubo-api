@@ -26,7 +26,7 @@
     "@types/node": "^6.0.110",
     "@types/node-fetch": "^1.6.9",
     "apollo-boost": "^0.1.6",
-    "cucumber": "^4.2.1",
+    "cucumber": "2.3.1",
     "dotenv-cli": "^1.4.0",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.9.2",

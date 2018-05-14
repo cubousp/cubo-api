@@ -1,5 +1,6 @@
 import { PostToFeed } from './post-to-feed'
 import { StoryRepository } from '../repositories/story-repository'
+import mock = jest.mock
 
 const MockStoryRepository = jest.fn<StoryRepository>(() => ({
     save: jest.fn(),
@@ -25,7 +26,7 @@ describe('PostToFeed', () => {
         const input = { message: 'hi' }
         const mockedStory = { id: '1', ...input }
         storyRepository.save.mockImplementation((input) => mockedStory)
-        expect(await postToFeed.execute(input)).toMatchObject(mockedStory)
+        expect(await postToFeed.execute(input)).toMatchObject({ id: '1', ...input})
     })
     
 })

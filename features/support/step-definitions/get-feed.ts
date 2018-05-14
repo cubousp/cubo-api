@@ -6,7 +6,7 @@ import gql from 'graphql-tag'
 const request = client.createRequest()
 const createStory = (message: string) => db.mutation.createStory({ data: { message } })
 
-Given('there are two stories on the feed', async() => {
+Given('there are three stories on the feed', async() => {
     await createStory('Story 1')
     await createStory('Story 2')
     await createStory('Story 3')
@@ -40,5 +40,5 @@ Then('the api returns the latest stories with success', () => {
         id: expect.any(String),
         message: 'Story 1'
     }]
-    data.forEach( (story, index) => expect(story).toMatchObject(expected[index])) // the order matters
+    data.forEach( (story, index) => expect(story).toMatchObject(expected[index])) // note that the order matters
 })
