@@ -1,0 +1,19 @@
+# Inputs
+
+input PostToFeedInput {
+    message: String!
+}
+
+# Types
+type Story {
+    id: ID!
+    message: String!
+}
+
+type Query {
+    feed(limit: Int, last: ID): [Story!]!
+}
+
+type Mutation {
+    postToFeed(input: PostToFeedInput!): Story!
+}

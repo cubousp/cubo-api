@@ -1,4 +1,9 @@
-import { Before } from 'cucumber'
-
-Before(() => {
-})
+// import { Before } from 'cucumber'
+//
+// Before(() => {
+//     cleanUpDatabase()
+// })
+//
+// const cleanUpDatabase = () => {
+//
+// }
