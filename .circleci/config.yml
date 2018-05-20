@@ -32,8 +32,5 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      - run: yarn prisma -v
-      - run: yarn prisma deploy
-
       # run tests!
       - run: yarn test
