@@ -9,28 +9,11 @@ jobs:
       # specify the version you desire here
       - image: circleci/node:10.0.0
 
-      - image: prismagraphql/prisma:1.8
-        environment:
-          PRISMA_CONFIG: |
-            port: ${PRISMA_PORT}
-            managementApiSecret: ${PRISMA_MANAGEMENT_API_SECRET}
-            databases:
-              default:
-                connector: mysql
-                host: mysql
-                port: ${MYSQL_PORT}
-                user: ${MYSQL_USER}
-                password: ${MYSQL_PASSWORD}
-                migrations: true
-
-      - image: circleci/mysql:5.7
-        environment:
-          MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
-
     working_directory: ~/repo
 
     steps:
       - checkout
+      - setup-remote-docker
 
       # Download and cache dependencies
       - restore_cache:
@@ -46,6 +29,7 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
+      - run: docker-compose up -d
       - run: yarn prisma deploy
 
       # run tests!
