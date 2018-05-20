@@ -22,6 +22,9 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
+
+      - run: docker-compose up -d
+
       - run: yarn install
 
       - save_cache:
@@ -29,7 +32,6 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      - run: docker-compose up -d
       - run: yarn prisma -v
       - run: yarn prisma deploy
 
