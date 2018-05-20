@@ -1,18 +1,17 @@
-import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
+import { ApolloClient } from 'apollo-client'
 import { HttpLink } from 'apollo-link-http'
 import fetch from 'node-fetch'
-
 
 class Request {
     public payload: any
     public token?: string
 
-    setPayload(payload: any) {
+    public setPayload(payload: any) {
         this.payload = payload
     }
 
-    sign(token: string) {
+    public sign(token: string) {
         this.token = token
     }
 }
@@ -20,30 +19,30 @@ class Request {
 class HttpClient {
 
     private client = new ApolloClient({
+        cache: new InMemoryCache(),
         link: new HttpLink({
+            fetch: fetch as any,
             uri: `http://localhost:${process.env.PORT}`,
-            fetch: fetch as any
         }),
-        cache: new InMemoryCache()
     })
 
     private response: any
 
-    async send(request: Request) {
+    public async send(request: Request) {
         this.response = this.isMutation(request.payload)
                         ? await this.client.mutate({
-                            mutation: request.payload
+                            mutation: request.payload,
                         })
                         : await this.client.query({
-                            query: request.payload
+                            query: request.payload,
                         })
     }
 
-    createRequest() {
+    public createRequest() {
         return new Request()
     }
 
-    getResponse() {
+    public getResponse() {
         return this.response
     }
 

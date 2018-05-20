@@ -1,4 +1,0 @@
-type Story {
-  id: ID! @unique
-  message: String!
-}

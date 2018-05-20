@@ -2,7 +2,7 @@
   "name": "cubo-api",
   "version": "1.0.0",
   "scripts": {
-    "start": "dotenv -e env/dev.env -- nodemon -L -x ts-node -e ts,graphql src/infrastructure/server/index.ts",
+    "start": "dotenv -e env/dev.env -- nodemon -L -x ts-node -e ts,graphql src/index.ts",
     "test": "npm run jest && npm run cucumber",
     "jest": "dotenv -e env/test.env -- jest",
     "cucumber": "dotenv -e env/test.env -- cucumber-js --require 'features/support/**/*.ts' --require-module ts-node/register features"
@@ -25,21 +25,24 @@
     "@types/jest": "^22.2.3",
     "@types/node": "^6.0.110",
     "@types/node-fetch": "^1.6.9",
+    "airbnb-js-shims": "^1.4.1",
     "apollo-boost": "^0.1.6",
-    "cucumber": "2.3.1",
+    "cucumber": "^4.2.1",
     "dotenv-cli": "^1.4.0",
-    "graphql": "^0.13.2",
-    "graphql-tag": "^2.9.2",
+    "graphql-cli": "^2.16.0-beta.7",
     "jest": "^22.4.3",
     "node-fetch": "^2.1.2",
     "nodemon": "^1.17.4",
     "prisma": "^1.8.0",
+    "prisma-binding": "2.0.0",
     "ts-jest": "^22.4.4",
     "ts-node": "^6.0.0",
-    "typescript": "^2.8.1"
+    "tslint": "^5.10.0",
+    "typescript": "^2.8.3"
   },
   "dependencies": {
-    "graphql-yoga": "^1.13.1",
-    "prisma-binding": "^2.0.0"
+    "graphql-iso-date": "^3.5.0",
+    "graphql-tag": "^2.9.2",
+    "graphql-yoga": "^1.13.1"
   }
 }

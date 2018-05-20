@@ -1,8 +1,7 @@
 import { AfterAll } from 'cucumber'
-import { Server } from '../../../src/infrastructure/server/server'
+import { Server } from '../../../src/server'
 
-AfterAll(async() => {
+AfterAll(async () => {
     console.log(`Shutting down test server...`)
     await Server.stop()
 })
-
