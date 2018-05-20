@@ -15,7 +15,9 @@
     "moduleFileExtensions": [
       "ts",
       "js"
-    ]
+    ],
+    "globalSetup": "<rootDir>/test-utils/jest-setup.ts",
+    "globalTeardown": "<rootDir>/test-utils/jest-teardown.ts"
   },
   "author": "Lucas Mafra",
   "license": "MIT",

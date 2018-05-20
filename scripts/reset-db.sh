@@ -1,2 +1,4 @@
 #!/usr/bin/env bash
-node_modules/prisma/dist/index.js reset -e env/test.env -f
+set -a
+source env/test.env
+yarn prisma reset -f

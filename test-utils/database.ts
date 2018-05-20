@@ -1,7 +1,13 @@
 import { exec } from 'child_process'
 import { client as db } from '../src/database/client'
 
-export const cleanUpDatabase = async () => new Promise((resolve) => {
+export const deployTestDatabase = async () => new Promise((resolve) => {
+    exec('scripts/deploy-test-db.sh', () => {
+        return resolve()
+    })
+})
+
+export const cleanUpTestDatabase = async () => new Promise((resolve) => {
     exec('scripts/reset-db.sh', () => {
         return resolve()
     })
