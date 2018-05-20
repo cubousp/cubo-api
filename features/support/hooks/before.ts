@@ -1,4 +1,6 @@
 import { Before } from 'cucumber'
+import { cleanUpDatabase } from '../../../test-utils/database'
 
-Before(() => {
+Before(async() => {
+    await cleanUpDatabase()
 })

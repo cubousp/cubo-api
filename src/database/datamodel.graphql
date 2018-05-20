@@ -1,0 +1,5 @@
+type Story {
+    id: ID! @unique
+    message: String!
+    createdAt: DateTime!
+}

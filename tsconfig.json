@@ -4,13 +4,16 @@
     "removeComments": true,
     "strict": true,
     "outDir": "dist",
-    "sourceMap": true
+    "sourceMap": true,
+    "lib": ["esnext", "dom"],
+    "noImplicitAny": false
   },
   "include": [
     "src/**/*"
   ],
   "exclude": [
     "node_modules",
-    "spec"
+    "features",
+    "**/*.spec.ts"
   ]
 }

@@ -1,0 +1,28 @@
+# Scalar
+scalar DateTime
+
+# Inputs
+input PostToFeedInput {
+    message: String!
+}
+
+# Types
+type Story {
+    id: ID!
+    message: String!
+    createdAt: DateTime!
+}
+
+type FeedPayload {
+    hasMore: Boolean!,
+    last: ID,
+    stories: [Story!]!
+}
+
+type Query {
+    feed(limit: Int, last: ID): FeedPayload!
+}
+
+type Mutation {
+    postToFeed(input: PostToFeedInput!): Story!
+}
