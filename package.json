@@ -2,7 +2,7 @@
   "name": "cubo-api",
   "version": "1.0.0",
   "scripts": {
-    "start": "dotenv -e env/dev.env -- nodemon -L -x ts-node -e ts,graphql src/index.ts",
+    "dev": "dotenv -e env/dev.env -- nodemon -L -x ts-node -e ts,graphql src/index.ts",
     "test": "npm run jest && npm run cucumber",
     "jest": "dotenv -e env/test.env -- jest",
     "cucumber": "dotenv -e env/test.env -- cucumber-js --require 'features/support/**/*.ts' --require-module ts-node/register features"

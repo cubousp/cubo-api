@@ -8,8 +8,8 @@ const request = client.createRequest()
 const createStory = commonQueries.createStory
 
 Given('there are three stories on the feed', async () => {
-    await createStory('Story 1', { sleepTime: 1000 })
-    await createStory('Story 2', { sleepTime: 1000 })
+    await createStory('Story 1')
+    await createStory('Story 2')
     await createStory('Story 3')
 })
 // And

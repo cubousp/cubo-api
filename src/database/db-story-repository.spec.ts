@@ -26,9 +26,9 @@ describe('DbStoryRepository', () => {
     })
 
     it('should get the latest stories paginated', async () => {
-        const firstStory = await createStory('Story 1', { sleepTime: 1000 })
-        const secondStory = await createStory('Story 2', { sleepTime: 1000 })
-        const thirdStory = await createStory('Story 3', { sleepTime: 1000 })
+        const firstStory = await createStory('Story 1')
+        const secondStory = await createStory('Story 2')
+        const thirdStory = await createStory('Story 3')
         const fourthStory = await createStory('Story 4')
 
         let options: IPaginationOptions = { limit: 2 }

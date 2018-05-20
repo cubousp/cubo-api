@@ -8,11 +8,9 @@ export const cleanUpDatabase = async () => new Promise((resolve) => {
 })
 
 export const commonQueries = {
-    async createStory(message: string, options?: { sleepTime?: number }) {
+    async createStory(message: string) {
         const result = await db.mutation.createStory({ data: { message } })
-        if (options && options.sleepTime) {
-            await sleep(options.sleepTime)
-        }
+        await sleep(1000)
         return result
     },
 }
