@@ -18,7 +18,6 @@ describe('DbStoryRepository', () => {
             message: 'Test',
         }
         const output = await storyRepository.save(input)
-
         const createdStory = await client.query.story({ where: { id: output.id }})
 
         expect(createdStory!.message).toEqual('Test')

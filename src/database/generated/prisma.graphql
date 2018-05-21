@@ -1,5 +1,5 @@
-# source: http://localhost:4466/cubo/test
-# timestamp: Sat May 19 2018 15:40:59 GMT-0300 (-03)
+# source: http://localhost:4466/cubo/dev
+# timestamp: Sun May 20 2018 23:32:10 GMT-0300 (-03)
 
 type AggregateStory {
   count: Int!
