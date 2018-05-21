@@ -1,8 +1,8 @@
 import { Given, Then, When } from 'cucumber'
 import * as expect from 'expect'
 import gql from 'graphql-tag'
-import { getAdminToken } from '../utils/auth'
-import { client } from '../utils/http-client'
+import { getAdminToken } from '../../../test-utils/auth'
+import { client } from '../../../test-utils/http-client'
 
 const request = client.createRequest()
 
