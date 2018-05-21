@@ -14,6 +14,7 @@ jobs:
               echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
               echo 'nvm install v10.0.0' >> $BASH_ENV
               echo 'nvm alias default v10.0.0' >> $BASH_ENV
+      - run: ". ~/.nvm/nvm.sh; nvm use 7"
       - run:
           name: verify node version
           command: node --version
