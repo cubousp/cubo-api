@@ -4,25 +4,32 @@
 #
 version: 2
 jobs:
-
   build:
-    machine: true
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:10.0.0
+      - image: prismagraphql/prisma:1.8
+        environment:
+          PRISMA_CONFIG: |
+            port: ${PRISMA_PORT}
+            managementApiSecret: ${PRISMA_MANAGEMENT_API_SECRET}
+            databases:
+              default:
+                connector: mysql
+                host: mysql
+                port: ${MYSQL_PORT}
+                user: ${MYSQL_USER}
+                password: ${MYSQL_PASSWORD}
+                migrations: true
+      - image: mysql:5.7
+        environment:
+          MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+
     working_directory: ~/repo
 
     steps:
       - checkout
-      - run:
-          name: Install Docker Compose
-          command: |
-            curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
-            chmod +x ~/docker-compose
-            sudo mv ~/docker-compose /usr/local/bin/docker-compose
-      - run:
-          name: Install Yarn
-          command: |
-            curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-            echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-            sudo apt-get update && sudo apt-get install yarn
+      - setup-remote-docker
 
       # Download and cache dependencies
       - restore_cache:
@@ -31,15 +38,15 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-
-      - run: docker-compose up -d
-
       - run: yarn install
 
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run: yarn prisma -v
+      - run: yarn prisma deploy
 
       # run tests!
       - run: yarn test
