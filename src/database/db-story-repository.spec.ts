@@ -1,4 +1,4 @@
-import { cleanUpDatabase } from '../../test-utils/database'
+import { cleanUpTestDatabase } from '../../test-utils/database'
 import { commonQueries } from '../../test-utils/database'
 import { IPaginationOptions } from '../repositories/i-pagination-options'
 import { client } from './client'
@@ -10,7 +10,7 @@ describe('DbStoryRepository', () => {
     const storyRepository = new DbStoryRepository()
 
     beforeEach(async () => {
-        await cleanUpDatabase()
+        await cleanUpTestDatabase()
     })
 
     it('should save a story and return it', async () => {
