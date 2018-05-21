@@ -7,7 +7,7 @@
     "test": "npm run jest && npm run cucumber",
     "jest": "dotenv -e env/test.env -- jest",
     "cucumber": "dotenv -e env/test.env -- cucumber-js --require 'features/support/**/*.ts' --require-module ts-node/register features",
-    "postinstall": "build",
+    "postinstall": "npm run build",
     "build": "tsc"
 
   },
