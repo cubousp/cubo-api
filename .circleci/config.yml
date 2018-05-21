@@ -20,11 +20,19 @@ jobs:
             sudo mv ~/docker-compose /usr/local/bin/docker-compose
 
       - run:
+          name: Install nvm
+          command: |
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+
+      - run:
           name: Install Node
           command: |
-            curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
-            sudo apt-get install -y nodejs
+            nvm install 10.0.0
 
+      - run:
+          name: Check Node version
+          command: |
+            node -v
       - run:
           name: Install Yarn
           command: |
