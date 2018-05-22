@@ -1,14 +1,14 @@
-import { IPaginationOptions } from './i-pagination-options'
+import { ID } from './id'
+import { IPagination, IPaginationOptions } from './pagination'
 
 export interface IStoryRepository {
-
-    getLatestStories(options?: IPaginationOptions): Promise<{
-        stories: Story[],
-        hasMore: boolean,
-        last?: string,
-    }>
-
+    getLatestStories(options?: IPaginationOptions): Promise<IPaginatedStories>
     save(storyInput): Promise<Story>
+    update(id: ID, input: Partial<Story>): Promise<Story>
 }
 
-type Story = any
+export interface IPaginatedStories extends IPagination {
+    stories: Story[]
+}
+
+export type Story = any

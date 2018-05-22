@@ -1,8 +1,11 @@
+import { RepositoryError} from '../../../repositories/error-code'
 import { IStoryRepository } from '../../../repositories/i-story-repository'
+import { TransparentError } from '../error'
 import { feedMutations } from './feed-mutations'
 
 const MockStoryRepository = jest.fn<IStoryRepository>(() => ({
     save: jest.fn(),
+    update: jest.fn(),
 }))
 
 describe('feedMutations',  () => {
@@ -24,6 +27,32 @@ describe('feedMutations',  () => {
             }
             await feedMutations.postToFeed(null, payload, context)
             expect(context.storyRepository.save).toBeCalledWith(payload.input)
+        })
+    })
+
+    describe('updateStory', () => {
+        it('should call the stories repository with correct params', async () => {
+            const payload = {
+                id: 'fake-id',
+                input: {
+                    message: 'Some message',
+                },
+            }
+            await feedMutations.updateStory(null, payload, context)
+            expect(context.storyRepository.update).toBeCalledWith(payload.id, payload.input)
+        })
+
+        it('should throw error when story does not exist', async () => {
+            const payload = {
+                id: 'fake-id',
+                input: {
+                    message: 'Some message',
+                },
+            }
+            context.storyRepository.update.mockImplementation(() => { throw new Error(RepositoryError.ItemNotFound) })
+            await expect(feedMutations.updateStory(null, payload, context))
+                .rejects
+                .toThrow(TransparentError)
         })
     })
 

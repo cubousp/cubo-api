@@ -1,8 +1,8 @@
-import { Context } from '../../../context'
+import { IContext } from '../../../context'
 
 export const feedQueries = {
 
-    async feed(_, { limit, last }, context: Context) {
+    async feed(_, { limit, last }, context: IContext) {
         return context.storyRepository.getLatestStories({ limit, last })
     },
 

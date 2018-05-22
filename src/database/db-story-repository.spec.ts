@@ -1,6 +1,6 @@
 import { cleanUpTestDatabase } from '../../test-utils/database'
 import { commonQueries } from '../../test-utils/database'
-import { IPaginationOptions } from '../repositories/i-pagination-options'
+import { IPaginationOptions } from '../repositories/pagination'
 import { client } from './client'
 import { DbStoryRepository } from './db-story-repository'
 

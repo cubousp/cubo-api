@@ -1,11 +1,11 @@
 import gql from 'graphql-tag'
-import { IPaginationOptions } from '../repositories/i-pagination-options'
-import { IStoryRepository } from '../repositories/i-story-repository'
+import { IPaginationOptions } from '../repositories/pagination'
+import { IPaginatedStories, IStoryRepository, Story } from '../repositories/i-story-repository'
 import { client } from './client'
 
 export class DbStoryRepository implements IStoryRepository {
 
-    public async save(storyInput) {
+    public async save(storyInput): Promise<Story> {
         return client.mutation.createStory({
             data: {
                 message: storyInput.message,
@@ -13,7 +13,7 @@ export class DbStoryRepository implements IStoryRepository {
         })
     }
 
-    public async getLatestStories(options?: IPaginationOptions) {
+    public async getLatestStories(options?: IPaginationOptions): Promise<IPaginatedStories> {
         const queryResult = await client.query.storiesConnection({
             after: options && options.last,
             first: options && options.limit,
@@ -39,6 +39,10 @@ export class DbStoryRepository implements IStoryRepository {
             last: queryResult.pageInfo.endCursor,
             stories: queryResult.edges.map((edge) => edge.node),
         }
+    }
+
+    public async update(id: string, input: Partial<Story>): Promise<Story> {
+        return undefined
     }
 
 }

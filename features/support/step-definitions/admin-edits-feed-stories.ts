@@ -15,10 +15,11 @@ Given('that the feed contains 1 story', async () => {
 
 Given('a request authenticated as admin to edit the story', () => {
     const token = getAdminToken()
+    console.log('story id', story.id)
     const payload = gql`
         mutation UpdateStory {
-            updateStory(id: ${story.id}, input: {
-                message: "My brand new updated story"
+            updateStory(id: "${story.id}", input: {
+                message: "Updated story"
             }) {
                 message
             }
