@@ -9,7 +9,6 @@
     "cucumber": "dotenv -e env/test.env -- cucumber-js --require 'features/support/**/*.ts' --require-module ts-node/register features",
     "postinstall": "npm run build",
     "build": "tsc"
-
   },
   "jest": {
     "testRegex": "src/.*.spec.ts$",
@@ -35,6 +34,7 @@
     "dotenv-cli": "^1.4.0",
     "graphql-cli": "^2.16.0-beta.7",
     "jest": "^22.4.3",
+    "key-del": "^1.3.0",
     "node-fetch": "^2.1.2",
     "nodemon": "^1.17.4",
     "prisma": "^1.8.0",

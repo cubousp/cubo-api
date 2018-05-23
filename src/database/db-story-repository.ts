@@ -1,9 +1,13 @@
 import gql from 'graphql-tag'
-import { IPaginationOptions } from '../repositories/pagination'
+import { RepositoryError } from '../repositories/error-code'
 import { IPaginatedStories, IStoryRepository, Story } from '../repositories/i-story-repository'
+import { ID } from '../repositories/id'
+import { IPaginationOptions } from '../repositories/pagination'
 import { client } from './client'
 
 export class DbStoryRepository implements IStoryRepository {
+
+    private STORY_NOT_FOUND = 'No Node for the model Story with value non-existent-id for id found.'
 
     public async save(storyInput): Promise<Story> {
         return client.mutation.createStory({
@@ -41,8 +45,26 @@ export class DbStoryRepository implements IStoryRepository {
         }
     }
 
-    public async update(id: string, input: Partial<Story>): Promise<Story> {
-        return undefined
+    public async update(id: ID, input: Partial<Story>): Promise<Story> {
+        try {
+            const updateResult = await client.mutation.updateStory({
+                data: input,
+                where: {
+                    id,
+                },
+            }, gql`
+                {
+                    id
+                    message
+                    createdAt
+                }
+            `)
+            return updateResult
+        } catch (err) {
+            if (err.message === this.STORY_NOT_FOUND) {
+                throw new Error(RepositoryError.ItemNotFound)
+            }
+            throw err
+        }
     }
-
 }

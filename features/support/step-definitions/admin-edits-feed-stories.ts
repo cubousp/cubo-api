@@ -3,6 +3,7 @@ import gql from 'graphql-tag'
 import { getAdminToken } from '../../../test-utils/auth'
 import { commonQueries } from '../../../test-utils/database'
 import { client } from '../../../test-utils/http-client'
+import * as expect from 'expect'
 
 const request = client.createRequest()
 let story
@@ -15,7 +16,6 @@ Given('that the feed contains 1 story', async () => {
 
 Given('a request authenticated as admin to edit the story', () => {
     const token = getAdminToken()
-    console.log('story id', story.id)
     const payload = gql`
         mutation UpdateStory {
             updateStory(id: "${story.id}", input: {
@@ -36,7 +36,7 @@ When('the api receives that request', async () => {
 Then('it should update the story with success', () => {
     const { data } = client.getResponse()
     const expectedPayload = {
-        message: 'My brand new updated story',
+        message: 'Updated story',
     }
     expect(data.updateStory).toEqual(expectedPayload)
 })
