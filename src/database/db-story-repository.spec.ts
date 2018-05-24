@@ -1,3 +1,4 @@
+import gql from 'graphql-tag'
 import { cleanUpTestDatabase } from '../../test-utils/database'
 import { commonQueries } from '../../test-utils/database'
 import { RepositoryError } from '../repositories/error-code'
@@ -19,7 +20,8 @@ describe('DbStoryRepository', () => {
             message: 'Test',
         }
         const output = await storyRepository.save(input)
-        const createdStory = await client.query.story({ where: { id: output.id }})
+        const createdStory = await client.query
+                                         .story({ where: { id: output.id }})
 
         expect(createdStory!.message).toEqual('Test')
         expect(output).toEqual(createdStory)
@@ -39,7 +41,9 @@ describe('DbStoryRepository', () => {
             stories: [fourthStory, thirdStory],
         }
 
-        expect(await storyRepository.getLatestStories(options)).toEqual(expected)
+        expect(
+            await storyRepository.getLatestStories(options),
+        ).toEqual(expected)
 
         options = { limit: 2, last: thirdStory.id }
 
@@ -49,7 +53,9 @@ describe('DbStoryRepository', () => {
             stories: [secondStory, firstStory],
         }
 
-        expect(await storyRepository.getLatestStories(options)).toEqual(expected)
+        expect(
+            await storyRepository.getLatestStories(options),
+        ).toEqual(expected)
     })
 
     it('should update a story', async () => {
@@ -67,5 +73,22 @@ describe('DbStoryRepository', () => {
         await expect(storyRepository.update('non-existent-id', {
             message: 'Message',
         })).rejects.toThrow(RepositoryError.ItemNotFound)
+    })
+
+    it('should delete a story', async () => {
+        const story = await createStory('My story')
+        await storyRepository.delete(story.id)
+        expect(await client.query.storiesConnection({
+            where: {
+                id: story.id,
+            },
+        }, gql`
+            {
+                aggregate {
+                    count
+                }
+            }
+
+        `)).toEqual({ aggregate: { count: 0 } })
     })
 })

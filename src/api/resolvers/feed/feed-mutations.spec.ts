@@ -4,6 +4,7 @@ import { TransparentError } from '../error'
 import { feedMutations } from './feed-mutations'
 
 const MockStoryRepository = jest.fn<IStoryRepository>(() => ({
+    delete: jest.fn(),
     save: jest.fn(),
     update: jest.fn(),
 }))
@@ -59,4 +60,25 @@ describe('feedMutations',  () => {
         })
     })
 
+    describe('deleteStory', () => {
+        it('should delete a story', async () => {
+            const payload = {
+                id: 'some-id',
+            }
+            await feedMutations.deleteStory(null, payload, context)
+            expect(context.storyRepository.delete).toBeCalledWith(payload.id)
+        })
+
+        it('should throw error when story does not exist', async () => {
+            const payload = {
+                id: 'fake-id',
+            }
+            context.storyRepository.delete.mockImplementation(
+                () => { throw new Error(RepositoryError.ItemNotFound) },
+            )
+            await expect(feedMutations.deleteStory(null, payload, context))
+                .rejects
+                .toThrow(TransparentError)
+        })
+    })
 })

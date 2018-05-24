@@ -50,5 +50,7 @@ Then('the api returns the latest stories with success', () => {
         message: 'Story 1',
     }]
     expect(data.feed.hasMore).toBe(false)
-    data.feed.stories.forEach( (story, index) => expect(story).toMatchObject(expected[index]))
+    data.feed.stories.forEach(
+        (story, index) => expect(story).toMatchObject(expected[index]),
+    )
 })
