@@ -31,4 +31,5 @@ type Query {
 type Mutation {
     postToFeed(input: PostToFeedInput!): Story!
     updateStory(id: ID!, input: UpdateStoryInput!): Story!
+    deleteStory(id: ID!): String!
 }

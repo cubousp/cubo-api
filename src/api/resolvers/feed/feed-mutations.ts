@@ -22,4 +22,19 @@ export const feedMutations = {
             throw err
         }
     },
+
+    async deleteStory(_, { id }, context: IContext) {
+        try {
+            await context.storyRepository.delete(id)
+            return 'Story deleted with success'
+        } catch (err) {
+            if (err.message === RepositoryError.ItemNotFound) {
+                throw new TransparentError(
+                    'Story not found',
+                    'StoryNotFound',
+                )
+            }
+            throw err
+        }
+    },
 }
