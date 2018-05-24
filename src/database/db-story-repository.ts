@@ -75,10 +75,16 @@ export class DbStoryRepository implements IStoryRepository {
     }
 
     public async delete(id: ID): Promise<void> {
-        await client.mutation.deleteStory({
-            where: {
-                id,
-            },
-        })
+        try {
+            await client.mutation.deleteStory({
+                where: {
+                    id,
+                },
+            })
+        } catch (err) {
+            if (err.message.match(this.STORY_NOT_FOUND)) {
+                throw new Error(RepositoryError.ItemNotFound)
+            }
+        }
     }
 }
