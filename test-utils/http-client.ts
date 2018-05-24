@@ -2,6 +2,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { ApolloClient } from 'apollo-client'
 import { HttpLink } from 'apollo-link-http'
 import fetch from 'node-fetch'
+const deleteKey = require('key-del')
 
 class Request {
     public payload: any
@@ -36,6 +37,7 @@ class HttpClient {
                         : await this.client.query({
                             query: request.payload,
                         })
+        this.response = deleteKey(this.response, '__typename')
     }
 
     public createRequest() {

@@ -1,11 +1,19 @@
 import gql from 'graphql-tag'
-import { IPaginationOptions } from '../repositories/i-pagination-options'
-import { IStoryRepository } from '../repositories/i-story-repository'
+import { RepositoryError } from '../repositories/error-code'
+import {
+    IPaginatedStories, IStoryRepository, Story,
+} from '../repositories/i-story-repository'
+import { ID } from '../repositories/id'
+import { IPaginationOptions } from '../repositories/pagination'
 import { client } from './client'
 
 export class DbStoryRepository implements IStoryRepository {
 
-    public async save(storyInput) {
+    private STORY_NOT_FOUND = new RegExp(
+        /No Node for the model Story with value (.*?) for id found./,
+    )
+
+    public async save(storyInput): Promise<Story> {
         return client.mutation.createStory({
             data: {
                 message: storyInput.message,
@@ -13,7 +21,9 @@ export class DbStoryRepository implements IStoryRepository {
         })
     }
 
-    public async getLatestStories(options?: IPaginationOptions) {
+    public async getLatestStories(
+        options?: IPaginationOptions,
+    ): Promise<IPaginatedStories> {
         const queryResult = await client.query.storiesConnection({
             after: options && options.last,
             first: options && options.limit,
@@ -41,4 +51,26 @@ export class DbStoryRepository implements IStoryRepository {
         }
     }
 
+    public async update(id: ID, input: Partial<Story>): Promise<Story> {
+        try {
+            const updateResult = await client.mutation.updateStory({
+                data: input,
+                where: {
+                    id,
+                },
+            }, gql`
+                {
+                    id
+                    message
+                    createdAt
+                }
+            `)
+            return updateResult
+        } catch (err) {
+            if (err.message.match(this.STORY_NOT_FOUND)) {
+                throw new Error(RepositoryError.ItemNotFound)
+            }
+            throw err
+        }
+    }
 }

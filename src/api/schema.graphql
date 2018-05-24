@@ -6,6 +6,10 @@ input PostToFeedInput {
     message: String!
 }
 
+input UpdateStoryInput {
+    message: String!
+}
+
 # Types
 type Story {
     id: ID!
@@ -19,10 +23,12 @@ type FeedPayload {
     stories: [Story!]!
 }
 
+
 type Query {
     feed(limit: Int, last: ID): FeedPayload!
 }
 
 type Mutation {
     postToFeed(input: PostToFeedInput!): Story!
+    updateStory(id: ID!, input: UpdateStoryInput!): Story!
 }

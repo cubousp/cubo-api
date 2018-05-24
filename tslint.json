@@ -7,10 +7,11 @@
     "rules": {
         "quotemark": [true, "single"],
         "semicolon": [true, "never"],
-        "no-console": false
+        "no-console": false,
+        "max-line-length": [true, 80]
     },
-    "rulesDirectory": [],
     "linterOptions": {
-        "exclude": ["src/database/generated/*.ts"]
+        "exclude": ["src/database/generated/*.ts"],
+        "include": ["**/*.spec.ts"]
     }
 }

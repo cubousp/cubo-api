@@ -16,13 +16,14 @@ describe('feedQueries',  () => {
     })
 
     describe('feed', () => {
-        it('should call the stories repository with correct params', async () => {
+        it(`should call stories repository`, async () => {
             const input = {
                 last: 'fake-id',
                 limit: 10,
             }
             await feedQueries.feed(null, input, context)
-            expect(context.storyRepository.getLatestStories).toBeCalledWith(input)
+            expect(context.storyRepository.getLatestStories)
+                .toBeCalledWith(input)
         })
     })
 

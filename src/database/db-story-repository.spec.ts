@@ -1,6 +1,7 @@
 import { cleanUpTestDatabase } from '../../test-utils/database'
 import { commonQueries } from '../../test-utils/database'
-import { IPaginationOptions } from '../repositories/i-pagination-options'
+import { RepositoryError } from '../repositories/error-code'
+import { IPaginationOptions } from '../repositories/pagination'
 import { client } from './client'
 import { DbStoryRepository } from './db-story-repository'
 
@@ -51,4 +52,20 @@ describe('DbStoryRepository', () => {
         expect(await storyRepository.getLatestStories(options)).toEqual(expected)
     })
 
+    it('should update a story', async () => {
+        const story = await createStory('My story')
+        expect(await storyRepository.update(story.id, {
+            message: 'New message',
+        })).toEqual({
+            createdAt: expect.any(String),
+            id: expect.any(String),
+            message: 'New message',
+        })
+    })
+
+    it('should throw error when story not found', async () => {
+        await expect(storyRepository.update('non-existent-id', {
+            message: 'Message',
+        })).rejects.toThrow(RepositoryError.ItemNotFound)
+    })
 })
