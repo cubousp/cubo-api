@@ -1,13 +1,17 @@
 import gql from 'graphql-tag'
 import { RepositoryError } from '../repositories/error-code'
-import { IPaginatedStories, IStoryRepository, Story } from '../repositories/i-story-repository'
+import {
+    IPaginatedStories, IStoryRepository, Story,
+} from '../repositories/i-story-repository'
 import { ID } from '../repositories/id'
 import { IPaginationOptions } from '../repositories/pagination'
 import { client } from './client'
 
 export class DbStoryRepository implements IStoryRepository {
 
-    private STORY_NOT_FOUND = 'No Node for the model Story with value non-existent-id for id found.'
+    private STORY_NOT_FOUND = new RegExp(
+        /No Node for the model Story with value (.*?) for id found./,
+    )
 
     public async save(storyInput): Promise<Story> {
         return client.mutation.createStory({
@@ -17,7 +21,9 @@ export class DbStoryRepository implements IStoryRepository {
         })
     }
 
-    public async getLatestStories(options?: IPaginationOptions): Promise<IPaginatedStories> {
+    public async getLatestStories(
+        options?: IPaginationOptions,
+    ): Promise<IPaginatedStories> {
         const queryResult = await client.query.storiesConnection({
             after: options && options.last,
             first: options && options.limit,
@@ -61,7 +67,7 @@ export class DbStoryRepository implements IStoryRepository {
             `)
             return updateResult
         } catch (err) {
-            if (err.message === this.STORY_NOT_FOUND) {
+            if (err.message.match(this.STORY_NOT_FOUND)) {
                 throw new Error(RepositoryError.ItemNotFound)
             }
             throw err

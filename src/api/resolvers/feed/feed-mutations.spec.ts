@@ -19,7 +19,7 @@ describe('feedMutations',  () => {
     })
 
     describe('postToFeed', () => {
-        it('should call the stories repository with correct params', async () => {
+        it('should call the stories repository', async () => {
             const payload = {
                 input: {
                     message: 'My first story',
@@ -31,7 +31,7 @@ describe('feedMutations',  () => {
     })
 
     describe('updateStory', () => {
-        it('should call the stories repository with correct params', async () => {
+        it('should call the stories repository', async () => {
             const payload = {
                 id: 'fake-id',
                 input: {
@@ -39,7 +39,8 @@ describe('feedMutations',  () => {
                 },
             }
             await feedMutations.updateStory(null, payload, context)
-            expect(context.storyRepository.update).toBeCalledWith(payload.id, payload.input)
+            expect(context.storyRepository.update)
+                .toBeCalledWith(payload.id, payload.input)
         })
 
         it('should throw error when story does not exist', async () => {
@@ -49,7 +50,9 @@ describe('feedMutations',  () => {
                     message: 'Some message',
                 },
             }
-            context.storyRepository.update.mockImplementation(() => { throw new Error(RepositoryError.ItemNotFound) })
+            context.storyRepository.update.mockImplementation(
+                () => { throw new Error(RepositoryError.ItemNotFound) },
+            )
             await expect(feedMutations.updateStory(null, payload, context))
                 .rejects
                 .toThrow(TransparentError)

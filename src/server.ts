@@ -1,4 +1,5 @@
 import { GraphQLServer } from 'graphql-yoga'
+import { formatError } from './api/format-error'
 import { resolvers } from './api/resolvers/index'
 import { Context } from './context'
 
@@ -7,6 +8,7 @@ export class Server {
     public static async start() {
         if (!this.runningInstance) {
             this.runningInstance = await this.server.start({
+                formatError: (error) => formatError(error),
                 port: process.env.PORT,
             })
         }

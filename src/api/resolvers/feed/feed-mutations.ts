@@ -10,10 +10,14 @@ export const feedMutations = {
 
     async updateStory(_, { id, input }, context: IContext) {
         try {
-            return context.storyRepository.update(id, input)
+            const updatedStory = await context.storyRepository.update(id, input)
+            return updatedStory
         } catch (err) {
             if (err.message === RepositoryError.ItemNotFound) {
-                throw new TransparentError('Story not found')
+                throw new TransparentError(
+                    'Story not found',
+                    'StoryNotFound',
+                )
             }
             throw err
         }

@@ -47,6 +47,6 @@
   "dependencies": {
     "graphql-iso-date": "^3.5.0",
     "graphql-tag": "^2.9.2",
-    "graphql-yoga": "^1.13.1"
+    "graphql-yoga": "1.14.2"
   }
 }
