@@ -1,8 +1,14 @@
 import { GraphQLDateTime } from 'graphql-iso-date'
-import feedResolvers from './feed/index'
+import authResolvers from './auth'
+import feedResolvers from './feed'
 
 export const resolvers = {
     DateTime: GraphQLDateTime,
-    Mutation: feedResolvers.mutation,
-    Query: feedResolvers.query,
+    Mutation: {
+        ...feedResolvers.mutation,
+    },
+    Query: {
+        ...feedResolvers.query,
+        ...authResolvers.query,
+    },
 } as any

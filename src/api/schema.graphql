@@ -23,9 +23,13 @@ type FeedPayload {
     stories: [Story!]!
 }
 
+type AuthPayload {
+    token: String!
+}
 
 type Query {
     feed(limit: Int, last: ID): FeedPayload!
+    signIn(email: String!, password: String!): AuthPayload!
 }
 
 type Mutation {
