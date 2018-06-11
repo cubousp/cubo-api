@@ -1,5 +1,6 @@
 import { GraphQLServer } from 'graphql-yoga'
 import { formatError } from './api/format-error'
+import { authDirectives } from './api/resolvers/auth/auth-directives'
 import { resolvers } from './api/resolvers/index'
 import { Context } from './context'
 
@@ -24,8 +25,17 @@ export class Server {
     private static runningInstance: any  = null
 
     private static server = new GraphQLServer({
-        context: new Context(),
+        context: ({ request }) => new Context(getToken(request)),
+        directiveResolvers: authDirectives,
         resolvers,
         typeDefs: './src/api/schema.graphql',
     })
+}
+
+const getToken = (request: any) => {
+    const pattern = /Bearer (.*)/
+    const match = request.headers.authorization &&
+                  request.headers.authorization.match(pattern)
+    if (match) { return match[1] }
+    return undefined
 }

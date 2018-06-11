@@ -7,5 +7,8 @@ export const formatError = (error: GraphQLError) => {
         code: isTransparent(error.originalError) ?
             error.originalError.code :
             'InternalServerError',
+        message: isTransparent(error.originalError) ?
+            error.originalError.message :
+            'An error occurred',
     }
 }

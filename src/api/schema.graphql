@@ -1,5 +1,15 @@
-# Scalar
+# Scalars
 scalar DateTime
+
+# Enums
+enum Role {
+    user
+    admin
+}
+
+# Directive
+directive @isAuthenticated on FIELD | FIELD_DEFINITION
+directive @hasRole(role: Role!) on FIELD | FIELD_DEFINITION
 
 # Inputs
 input PostToFeedInput {
@@ -23,17 +33,26 @@ type FeedPayload {
     stories: [Story!]!
 }
 
+type CurrentUserPayload {
+    email: String!
+    name: String!
+    picture: String!
+}
+
 type AuthPayload {
     token: String!
+    user: CurrentUserPayload!
 }
 
 type Query {
-    feed(limit: Int, last: ID): FeedPayload!
     signIn(email: String!, password: String!): AuthPayload!
+    signInAsAdmin(email: String!, password: String!): AuthPayload!
+
+    feed(limit: Int, last: ID): FeedPayload! @isAuthenticated
 }
 
 type Mutation {
-    postToFeed(input: PostToFeedInput!): Story!
-    updateStory(id: ID!, input: UpdateStoryInput!): Story!
-    deleteStory(id: ID!): String!
+    postToFeed(input: PostToFeedInput!): Story! @hasRole(role: admin)
+    updateStory(id: ID!, input: UpdateStoryInput!): Story! @hasRole(role: admin)
+    deleteStory(id: ID!): String! @hasRole(role: admin)
 }
