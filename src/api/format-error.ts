@@ -12,3 +12,4 @@ export const formatError = (error: GraphQLError) => {
             'An error occurred',
     }
 }
+

@@ -20,6 +20,13 @@ input UpdateStoryInput {
     message: String!
 }
 
+input SendEmailToStaffInput {
+    name: String!
+    email: String!
+    phone: String!
+    message: String!
+}
+
 # Types
 type Story {
     id: ID!
@@ -55,4 +62,5 @@ type Mutation {
     postToFeed(input: PostToFeedInput!): Story! @hasRole(role: admin)
     updateStory(id: ID!, input: UpdateStoryInput!): Story! @hasRole(role: admin)
     deleteStory(id: ID!): String! @hasRole(role: admin)
+    sendEmailToStaff(input: SendEmailToStaffInput!): String!
 }
