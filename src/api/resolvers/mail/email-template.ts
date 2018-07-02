@@ -9,7 +9,7 @@ export const emailTemplate = (
     from: 'formulario-site@cubo.com',
     html: `
      <p>
-       A seguinte mensagem foi enviada através do formulário do site do CUBO:       
+       A seguinte mensagem foi enviada através do formulário do site do CUBO:
      </p>
      <br/>
      <p><i>${message}</i></p>
