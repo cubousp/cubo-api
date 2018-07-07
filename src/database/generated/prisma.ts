@@ -82,6 +82,8 @@ const typeDefs = `type Activity implements Node {
   speaker(where: SpeakerWhereInput): Speaker
   createdAt: DateTime!
   updatedAt: DateTime!
+  inscriptionBeginsAt: DateTime
+  inscriptionEndsAt: DateTime
 }
 
 """A connection to a list of items."""
@@ -101,6 +103,8 @@ input ActivityCreateInput {
   startsAt: DateTime!
   endsAt: DateTime!
   internalComment: String
+  inscriptionBeginsAt: DateTime
+  inscriptionEndsAt: DateTime
   speaker: SpeakerCreateOneInput
 }
 
@@ -132,6 +136,10 @@ enum ActivityOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  inscriptionBeginsAt_ASC
+  inscriptionBeginsAt_DESC
+  inscriptionEndsAt_ASC
+  inscriptionEndsAt_DESC
 }
 
 type ActivityPreviousValues {
@@ -144,6 +152,8 @@ type ActivityPreviousValues {
   internalComment: String
   createdAt: DateTime!
   updatedAt: DateTime!
+  inscriptionBeginsAt: DateTime
+  inscriptionEndsAt: DateTime
 }
 
 type ActivitySubscriptionPayload {
@@ -192,6 +202,8 @@ input ActivityUpdateInput {
   startsAt: DateTime
   endsAt: DateTime
   internalComment: String
+  inscriptionBeginsAt: DateTime
+  inscriptionEndsAt: DateTime
   speaker: SpeakerUpdateOneInput
 }
 
@@ -492,6 +504,50 @@ input ActivityWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  inscriptionBeginsAt: DateTime
+
+  """All values that are not equal to given value."""
+  inscriptionBeginsAt_not: DateTime
+
+  """All values that are contained in given list."""
+  inscriptionBeginsAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  inscriptionBeginsAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  inscriptionBeginsAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  inscriptionBeginsAt_lte: DateTime
+
+  """All values greater than the given value."""
+  inscriptionBeginsAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  inscriptionBeginsAt_gte: DateTime
+  inscriptionEndsAt: DateTime
+
+  """All values that are not equal to given value."""
+  inscriptionEndsAt_not: DateTime
+
+  """All values that are contained in given list."""
+  inscriptionEndsAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  inscriptionEndsAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  inscriptionEndsAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  inscriptionEndsAt_lte: DateTime
+
+  """All values greater than the given value."""
+  inscriptionEndsAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  inscriptionEndsAt_gte: DateTime
   speaker: SpeakerWhereInput
 }
 
@@ -1210,7 +1266,11 @@ export type ActivityOrderByInput =   'id_ASC' |
   'createdAt_ASC' |
   'createdAt_DESC' |
   'updatedAt_ASC' |
-  'updatedAt_DESC'
+  'updatedAt_DESC' |
+  'inscriptionBeginsAt_ASC' |
+  'inscriptionBeginsAt_DESC' |
+  'inscriptionEndsAt_ASC' |
+  'inscriptionEndsAt_DESC'
 
 export type SpeakerOrderByInput =   'id_ASC' |
   'id_DESC' |
@@ -1410,6 +1470,22 @@ export interface ActivityWhereInput {
   updatedAt_lte?: DateTime
   updatedAt_gt?: DateTime
   updatedAt_gte?: DateTime
+  inscriptionBeginsAt?: DateTime
+  inscriptionBeginsAt_not?: DateTime
+  inscriptionBeginsAt_in?: DateTime[] | DateTime
+  inscriptionBeginsAt_not_in?: DateTime[] | DateTime
+  inscriptionBeginsAt_lt?: DateTime
+  inscriptionBeginsAt_lte?: DateTime
+  inscriptionBeginsAt_gt?: DateTime
+  inscriptionBeginsAt_gte?: DateTime
+  inscriptionEndsAt?: DateTime
+  inscriptionEndsAt_not?: DateTime
+  inscriptionEndsAt_in?: DateTime[] | DateTime
+  inscriptionEndsAt_not_in?: DateTime[] | DateTime
+  inscriptionEndsAt_lt?: DateTime
+  inscriptionEndsAt_lte?: DateTime
+  inscriptionEndsAt_gt?: DateTime
+  inscriptionEndsAt_gte?: DateTime
   speaker?: SpeakerWhereInput
 }
 
@@ -1440,6 +1516,8 @@ export interface ActivityUpdateInput {
   startsAt?: DateTime
   endsAt?: DateTime
   internalComment?: String
+  inscriptionBeginsAt?: DateTime
+  inscriptionEndsAt?: DateTime
   speaker?: SpeakerUpdateOneInput
 }
 
@@ -1459,6 +1537,8 @@ export interface ActivityCreateInput {
   startsAt: DateTime
   endsAt: DateTime
   internalComment?: String
+  inscriptionBeginsAt?: DateTime
+  inscriptionEndsAt?: DateTime
   speaker?: SpeakerCreateOneInput
 }
 
@@ -1601,6 +1681,8 @@ export interface Activity extends Node {
   speaker?: Speaker
   createdAt: DateTime
   updatedAt: DateTime
+  inscriptionBeginsAt?: DateTime
+  inscriptionEndsAt?: DateTime
 }
 
 export interface SpeakerPreviousValues {
@@ -1703,6 +1785,8 @@ export interface ActivityPreviousValues {
   internalComment?: String
   createdAt: DateTime
   updatedAt: DateTime
+  inscriptionBeginsAt?: DateTime
+  inscriptionEndsAt?: DateTime
 }
 
 export interface Story extends Node {

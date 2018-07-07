@@ -47,6 +47,8 @@ input CreateActivityInput {
     endsAt: DateTime!
     internalComment: String
     speaker: CreateSpeakerInput
+    inscriptionBeginsAt: DateTime
+    inscriptionEndsAt: DateTime
 }
 
 input UpdateActivityInput {
@@ -57,6 +59,8 @@ input UpdateActivityInput {
     endsAt: DateTime
     internalComment: String
     speaker: UpdateSpeakerInput
+    inscriptionBeginsAt: DateTime
+    inscriptionEndsAt: DateTime
 }
 
 # Payloads
@@ -100,6 +104,8 @@ type Activity {
     endsAt: DateTime!
     internalComment: String @hasRole(role: admin)
     speaker: Speaker
+    inscriptionBeginsAt: DateTime
+    inscriptionEndsAt: DateTime
 }
 
 type Query {

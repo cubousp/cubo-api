@@ -16,6 +16,8 @@ type Activity {
     speaker: Speaker
     createdAt: DateTime!
     updatedAt: DateTime!
+    inscriptionBeginsAt: DateTime
+    inscriptionEndsAt: DateTime
 }
 
 type Speaker {
