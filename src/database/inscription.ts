@@ -1,11 +1,18 @@
+import gql from 'graphql-tag'
+import { TransparentError } from '../api/resolvers/error'
 import { client } from './client'
+import { RepositoryError } from './error-code'
 
 export class Inscription {
-    public createInscription(
+    public async createInscription(
         activityId: string, participantId: string, info,
     ) {
-        console.log('activityId: ', activityId)
-        console.log('participantId: ', participantId)
+        if (await this.inscriptionExists(activityId, participantId)) {
+            throw new TransparentError(
+                'This participant has already enrolled to this activity',
+                RepositoryError.InscriptionAlreadyExists,
+            )
+        }
         return client.mutation.createInscription(
             {
                 data: {
@@ -15,5 +22,22 @@ export class Inscription {
             },
             info,
         )
+    }
+
+    public async inscriptionExists(
+        activityId: string, participantId: string,
+    ): Promise<boolean> {
+        const { aggregate: { count } } =
+            await client.query.inscriptionsConnection({
+                where: {
+                    activity: { id: activityId },
+                    participant: { id: participantId },
+                },
+            }, gql`
+                {
+                    aggregate { count }
+                }
+            `)
+        return count !== 0
     }
 }
