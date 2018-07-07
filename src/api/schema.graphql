@@ -136,6 +136,7 @@ type Participant {
 }
 
 type Inscripiton{
+    id: ID!
     activity: Activity!
     participant: Participant!
     status: InscriptionStatus!

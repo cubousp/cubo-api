@@ -1,5 +1,5 @@
 # source: http://localhost:4466/cubo/dev
-# timestamp: Sat Jul 07 2018 16:19:01 GMT-0300 (-03)
+# timestamp: Sat Jul 07 2018 17:48:30 GMT-0300 (-03)
 
 type Activity implements Node {
   id: ID!
@@ -560,10 +560,13 @@ type BatchPayload {
 
 scalar DateTime
 
-type Inscription {
+type Inscription implements Node {
+  id: ID!
   activity(where: ActivityWhereInput): Activity!
   participant(where: ParticipantWhereInput): Participant!
   status: InscriptionStatus!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -584,10 +587,12 @@ input InscriptionCreateInput {
 
 input InscriptionCreateManyWithoutActivityInput {
   create: [InscriptionCreateWithoutActivityInput!]
+  connect: [InscriptionWhereUniqueInput!]
 }
 
 input InscriptionCreateManyWithoutParticipantInput {
   create: [InscriptionCreateWithoutParticipantInput!]
+  connect: [InscriptionWhereUniqueInput!]
 }
 
 input InscriptionCreateWithoutActivityInput {
@@ -610,18 +615,21 @@ type InscriptionEdge {
 }
 
 enum InscriptionOrderByInput {
-  status_ASC
-  status_DESC
   id_ASC
   id_DESC
-  updatedAt_ASC
-  updatedAt_DESC
+  status_ASC
+  status_DESC
   createdAt_ASC
   createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type InscriptionPreviousValues {
+  id: ID!
   status: InscriptionStatus!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 enum InscriptionStatus {
@@ -678,10 +686,52 @@ input InscriptionUpdateInput {
 
 input InscriptionUpdateManyWithoutActivityInput {
   create: [InscriptionCreateWithoutActivityInput!]
+  connect: [InscriptionWhereUniqueInput!]
+  disconnect: [InscriptionWhereUniqueInput!]
+  delete: [InscriptionWhereUniqueInput!]
+  update: [InscriptionUpdateWithWhereUniqueWithoutActivityInput!]
+  upsert: [InscriptionUpsertWithWhereUniqueWithoutActivityInput!]
 }
 
 input InscriptionUpdateManyWithoutParticipantInput {
   create: [InscriptionCreateWithoutParticipantInput!]
+  connect: [InscriptionWhereUniqueInput!]
+  disconnect: [InscriptionWhereUniqueInput!]
+  delete: [InscriptionWhereUniqueInput!]
+  update: [InscriptionUpdateWithWhereUniqueWithoutParticipantInput!]
+  upsert: [InscriptionUpsertWithWhereUniqueWithoutParticipantInput!]
+}
+
+input InscriptionUpdateWithoutActivityDataInput {
+  status: InscriptionStatus
+  participant: ParticipantUpdateOneWithoutEnrolledInput
+}
+
+input InscriptionUpdateWithoutParticipantDataInput {
+  status: InscriptionStatus
+  activity: ActivityUpdateOneWithoutEnrolledInput
+}
+
+input InscriptionUpdateWithWhereUniqueWithoutActivityInput {
+  where: InscriptionWhereUniqueInput!
+  data: InscriptionUpdateWithoutActivityDataInput!
+}
+
+input InscriptionUpdateWithWhereUniqueWithoutParticipantInput {
+  where: InscriptionWhereUniqueInput!
+  data: InscriptionUpdateWithoutParticipantDataInput!
+}
+
+input InscriptionUpsertWithWhereUniqueWithoutActivityInput {
+  where: InscriptionWhereUniqueInput!
+  update: InscriptionUpdateWithoutActivityDataInput!
+  create: InscriptionCreateWithoutActivityInput!
+}
+
+input InscriptionUpsertWithWhereUniqueWithoutParticipantInput {
+  where: InscriptionWhereUniqueInput!
+  update: InscriptionUpdateWithoutParticipantDataInput!
+  create: InscriptionCreateWithoutParticipantInput!
 }
 
 input InscriptionWhereInput {
@@ -693,6 +743,46 @@ input InscriptionWhereInput {
 
   """Logical NOT on all given filters combined by AND."""
   NOT: [InscriptionWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
   status: InscriptionStatus
 
   """All values that are not equal to given value."""
@@ -703,8 +793,56 @@ input InscriptionWhereInput {
 
   """All values that are not contained in given list."""
   status_not_in: [InscriptionStatus!]
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
   activity: ActivityWhereInput
   participant: ParticipantWhereInput
+}
+
+input InscriptionWhereUniqueInput {
+  id: ID
 }
 
 """
@@ -723,14 +861,17 @@ type Mutation {
   updateActivity(data: ActivityUpdateInput!, where: ActivityWhereUniqueInput!): Activity
   updateSpeaker(data: SpeakerUpdateInput!, where: SpeakerWhereUniqueInput!): Speaker
   updateParticipant(data: ParticipantUpdateInput!, where: ParticipantWhereUniqueInput!): Participant
+  updateInscription(data: InscriptionUpdateInput!, where: InscriptionWhereUniqueInput!): Inscription
   deleteStory(where: StoryWhereUniqueInput!): Story
   deleteActivity(where: ActivityWhereUniqueInput!): Activity
   deleteSpeaker(where: SpeakerWhereUniqueInput!): Speaker
   deleteParticipant(where: ParticipantWhereUniqueInput!): Participant
+  deleteInscription(where: InscriptionWhereUniqueInput!): Inscription
   upsertStory(where: StoryWhereUniqueInput!, create: StoryCreateInput!, update: StoryUpdateInput!): Story!
   upsertActivity(where: ActivityWhereUniqueInput!, create: ActivityCreateInput!, update: ActivityUpdateInput!): Activity!
   upsertSpeaker(where: SpeakerWhereUniqueInput!, create: SpeakerCreateInput!, update: SpeakerUpdateInput!): Speaker!
   upsertParticipant(where: ParticipantWhereUniqueInput!, create: ParticipantCreateInput!, update: ParticipantUpdateInput!): Participant!
+  upsertInscription(where: InscriptionWhereUniqueInput!, create: InscriptionCreateInput!, update: InscriptionUpdateInput!): Inscription!
   updateManyStories(data: StoryUpdateInput!, where: StoryWhereInput): BatchPayload!
   updateManyActivities(data: ActivityUpdateInput!, where: ActivityWhereInput): BatchPayload!
   updateManySpeakers(data: SpeakerUpdateInput!, where: SpeakerWhereInput): BatchPayload!
@@ -994,6 +1135,7 @@ type Query {
   activity(where: ActivityWhereUniqueInput!): Activity
   speaker(where: SpeakerWhereUniqueInput!): Speaker
   participant(where: ParticipantWhereUniqueInput!): Participant
+  inscription(where: InscriptionWhereUniqueInput!): Inscription
   storiesConnection(where: StoryWhereInput, orderBy: StoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StoryConnection!
   activitiesConnection(where: ActivityWhereInput, orderBy: ActivityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ActivityConnection!
   speakersConnection(where: SpeakerWhereInput, orderBy: SpeakerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SpeakerConnection!

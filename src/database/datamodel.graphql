@@ -37,9 +37,12 @@ type Participant {
 }
 
 type Inscription {
+    id: ID! @unique
     activity: Activity!
     participant: Participant!
     status: InscriptionStatus! @default(value: CONFIRMED)
+    createdAt: DateTime!
+    updatedAt: DateTime!
 }
 
 enum InscriptionStatus {

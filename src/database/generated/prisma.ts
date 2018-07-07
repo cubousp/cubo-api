@@ -13,6 +13,7 @@ export interface Query {
     activity: <T = Activity | null>(args: { where: ActivityWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     speaker: <T = Speaker | null>(args: { where: SpeakerWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     participant: <T = Participant | null>(args: { where: ParticipantWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    inscription: <T = Inscription | null>(args: { where: InscriptionWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     storiesConnection: <T = StoryConnection>(args: { where?: StoryWhereInput, orderBy?: StoryOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     activitiesConnection: <T = ActivityConnection>(args: { where?: ActivityWhereInput, orderBy?: ActivityOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     speakersConnection: <T = SpeakerConnection>(args: { where?: SpeakerWhereInput, orderBy?: SpeakerOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
@@ -31,14 +32,17 @@ export interface Mutation {
     updateActivity: <T = Activity | null>(args: { data: ActivityUpdateInput, where: ActivityWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateSpeaker: <T = Speaker | null>(args: { data: SpeakerUpdateInput, where: SpeakerWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateParticipant: <T = Participant | null>(args: { data: ParticipantUpdateInput, where: ParticipantWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    updateInscription: <T = Inscription | null>(args: { data: InscriptionUpdateInput, where: InscriptionWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     deleteStory: <T = Story | null>(args: { where: StoryWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     deleteActivity: <T = Activity | null>(args: { where: ActivityWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     deleteSpeaker: <T = Speaker | null>(args: { where: SpeakerWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     deleteParticipant: <T = Participant | null>(args: { where: ParticipantWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    deleteInscription: <T = Inscription | null>(args: { where: InscriptionWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     upsertStory: <T = Story>(args: { where: StoryWhereUniqueInput, create: StoryCreateInput, update: StoryUpdateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     upsertActivity: <T = Activity>(args: { where: ActivityWhereUniqueInput, create: ActivityCreateInput, update: ActivityUpdateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     upsertSpeaker: <T = Speaker>(args: { where: SpeakerWhereUniqueInput, create: SpeakerCreateInput, update: SpeakerUpdateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     upsertParticipant: <T = Participant>(args: { where: ParticipantWhereUniqueInput, create: ParticipantCreateInput, update: ParticipantUpdateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    upsertInscription: <T = Inscription>(args: { where: InscriptionWhereUniqueInput, create: InscriptionCreateInput, update: InscriptionUpdateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateManyStories: <T = BatchPayload>(args: { data: StoryUpdateInput, where?: StoryWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateManyActivities: <T = BatchPayload>(args: { data: ActivityUpdateInput, where?: ActivityWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateManySpeakers: <T = BatchPayload>(args: { data: SpeakerUpdateInput, where?: SpeakerWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
@@ -648,10 +652,13 @@ type BatchPayload {
 
 scalar DateTime
 
-type Inscription {
+type Inscription implements Node {
+  id: ID!
   activity(where: ActivityWhereInput): Activity!
   participant(where: ParticipantWhereInput): Participant!
   status: InscriptionStatus!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -672,10 +679,12 @@ input InscriptionCreateInput {
 
 input InscriptionCreateManyWithoutActivityInput {
   create: [InscriptionCreateWithoutActivityInput!]
+  connect: [InscriptionWhereUniqueInput!]
 }
 
 input InscriptionCreateManyWithoutParticipantInput {
   create: [InscriptionCreateWithoutParticipantInput!]
+  connect: [InscriptionWhereUniqueInput!]
 }
 
 input InscriptionCreateWithoutActivityInput {
@@ -698,18 +707,21 @@ type InscriptionEdge {
 }
 
 enum InscriptionOrderByInput {
-  status_ASC
-  status_DESC
   id_ASC
   id_DESC
-  updatedAt_ASC
-  updatedAt_DESC
+  status_ASC
+  status_DESC
   createdAt_ASC
   createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type InscriptionPreviousValues {
+  id: ID!
   status: InscriptionStatus!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 enum InscriptionStatus {
@@ -766,10 +778,52 @@ input InscriptionUpdateInput {
 
 input InscriptionUpdateManyWithoutActivityInput {
   create: [InscriptionCreateWithoutActivityInput!]
+  connect: [InscriptionWhereUniqueInput!]
+  disconnect: [InscriptionWhereUniqueInput!]
+  delete: [InscriptionWhereUniqueInput!]
+  update: [InscriptionUpdateWithWhereUniqueWithoutActivityInput!]
+  upsert: [InscriptionUpsertWithWhereUniqueWithoutActivityInput!]
 }
 
 input InscriptionUpdateManyWithoutParticipantInput {
   create: [InscriptionCreateWithoutParticipantInput!]
+  connect: [InscriptionWhereUniqueInput!]
+  disconnect: [InscriptionWhereUniqueInput!]
+  delete: [InscriptionWhereUniqueInput!]
+  update: [InscriptionUpdateWithWhereUniqueWithoutParticipantInput!]
+  upsert: [InscriptionUpsertWithWhereUniqueWithoutParticipantInput!]
+}
+
+input InscriptionUpdateWithoutActivityDataInput {
+  status: InscriptionStatus
+  participant: ParticipantUpdateOneWithoutEnrolledInput
+}
+
+input InscriptionUpdateWithoutParticipantDataInput {
+  status: InscriptionStatus
+  activity: ActivityUpdateOneWithoutEnrolledInput
+}
+
+input InscriptionUpdateWithWhereUniqueWithoutActivityInput {
+  where: InscriptionWhereUniqueInput!
+  data: InscriptionUpdateWithoutActivityDataInput!
+}
+
+input InscriptionUpdateWithWhereUniqueWithoutParticipantInput {
+  where: InscriptionWhereUniqueInput!
+  data: InscriptionUpdateWithoutParticipantDataInput!
+}
+
+input InscriptionUpsertWithWhereUniqueWithoutActivityInput {
+  where: InscriptionWhereUniqueInput!
+  update: InscriptionUpdateWithoutActivityDataInput!
+  create: InscriptionCreateWithoutActivityInput!
+}
+
+input InscriptionUpsertWithWhereUniqueWithoutParticipantInput {
+  where: InscriptionWhereUniqueInput!
+  update: InscriptionUpdateWithoutParticipantDataInput!
+  create: InscriptionCreateWithoutParticipantInput!
 }
 
 input InscriptionWhereInput {
@@ -781,6 +835,46 @@ input InscriptionWhereInput {
 
   """Logical NOT on all given filters combined by AND."""
   NOT: [InscriptionWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
   status: InscriptionStatus
 
   """All values that are not equal to given value."""
@@ -791,8 +885,56 @@ input InscriptionWhereInput {
 
   """All values that are not contained in given list."""
   status_not_in: [InscriptionStatus!]
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
   activity: ActivityWhereInput
   participant: ParticipantWhereInput
+}
+
+input InscriptionWhereUniqueInput {
+  id: ID
 }
 
 """
@@ -811,14 +953,17 @@ type Mutation {
   updateActivity(data: ActivityUpdateInput!, where: ActivityWhereUniqueInput!): Activity
   updateSpeaker(data: SpeakerUpdateInput!, where: SpeakerWhereUniqueInput!): Speaker
   updateParticipant(data: ParticipantUpdateInput!, where: ParticipantWhereUniqueInput!): Participant
+  updateInscription(data: InscriptionUpdateInput!, where: InscriptionWhereUniqueInput!): Inscription
   deleteStory(where: StoryWhereUniqueInput!): Story
   deleteActivity(where: ActivityWhereUniqueInput!): Activity
   deleteSpeaker(where: SpeakerWhereUniqueInput!): Speaker
   deleteParticipant(where: ParticipantWhereUniqueInput!): Participant
+  deleteInscription(where: InscriptionWhereUniqueInput!): Inscription
   upsertStory(where: StoryWhereUniqueInput!, create: StoryCreateInput!, update: StoryUpdateInput!): Story!
   upsertActivity(where: ActivityWhereUniqueInput!, create: ActivityCreateInput!, update: ActivityUpdateInput!): Activity!
   upsertSpeaker(where: SpeakerWhereUniqueInput!, create: SpeakerCreateInput!, update: SpeakerUpdateInput!): Speaker!
   upsertParticipant(where: ParticipantWhereUniqueInput!, create: ParticipantCreateInput!, update: ParticipantUpdateInput!): Participant!
+  upsertInscription(where: InscriptionWhereUniqueInput!, create: InscriptionCreateInput!, update: InscriptionUpdateInput!): Inscription!
   updateManyStories(data: StoryUpdateInput!, where: StoryWhereInput): BatchPayload!
   updateManyActivities(data: ActivityUpdateInput!, where: ActivityWhereInput): BatchPayload!
   updateManySpeakers(data: SpeakerUpdateInput!, where: SpeakerWhereInput): BatchPayload!
@@ -1082,6 +1227,7 @@ type Query {
   activity(where: ActivityWhereUniqueInput!): Activity
   speaker(where: SpeakerWhereUniqueInput!): Speaker
   participant(where: ParticipantWhereUniqueInput!): Participant
+  inscription(where: InscriptionWhereUniqueInput!): Inscription
   storiesConnection(where: StoryWhereInput, orderBy: StoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StoryConnection!
   activitiesConnection(where: ActivityWhereInput, orderBy: ActivityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ActivityConnection!
   speakersConnection(where: SpeakerWhereInput, orderBy: SpeakerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SpeakerConnection!
@@ -1715,14 +1861,14 @@ export type ActivityOrderByInput =   'id_ASC' |
   'inscriptionEndsAt_ASC' |
   'inscriptionEndsAt_DESC'
 
-export type InscriptionOrderByInput =   'status_ASC' |
-  'status_DESC' |
-  'id_ASC' |
+export type InscriptionOrderByInput =   'id_ASC' |
   'id_DESC' |
-  'updatedAt_ASC' |
-  'updatedAt_DESC' |
+  'status_ASC' |
+  'status_DESC' |
   'createdAt_ASC' |
-  'createdAt_DESC'
+  'createdAt_DESC' |
+  'updatedAt_ASC' |
+  'updatedAt_DESC'
 
 export type SpeakerOrderByInput =   'id_ASC' |
   'id_DESC' |
@@ -1759,10 +1905,9 @@ export type MutationType =   'CREATED' |
   'UPDATED' |
   'DELETED'
 
-export interface SpeakerCreateInput {
-  name: String
-  picture?: String
-  description?: String
+export interface InscriptionCreateWithoutActivityInput {
+  status?: InscriptionStatus
+  participant: ParticipantCreateOneWithoutEnrolledInput
 }
 
 export interface StoryWhereInput {
@@ -1815,8 +1960,9 @@ export interface StoryWhereInput {
   updatedAt_gte?: DateTime
 }
 
-export interface ParticipantCreateWithoutEnrolledInput {
-  name: String
+export interface InscriptionCreateWithoutParticipantInput {
+  status?: InscriptionStatus
+  activity: ActivityCreateOneWithoutEnrolledInput
 }
 
 export interface SpeakerWhereInput {
@@ -1897,9 +2043,9 @@ export interface SpeakerWhereInput {
   updatedAt_gte?: DateTime
 }
 
-export interface ParticipantCreateInput {
-  name: String
-  enrolled?: InscriptionCreateManyWithoutParticipantInput
+export interface ActivityCreateOneWithoutEnrolledInput {
+  create?: ActivityCreateWithoutEnrolledInput
+  connect?: ActivityWhereUniqueInput
 }
 
 export interface ActivityWhereInput {
@@ -2030,67 +2176,6 @@ export interface ActivityWhereInput {
   enrolled_none?: InscriptionWhereInput
 }
 
-export interface SpeakerUpdateInput {
-  name?: String
-  picture?: String
-  description?: String
-}
-
-export interface InscriptionCreateWithoutParticipantInput {
-  status?: InscriptionStatus
-  activity: ActivityCreateOneWithoutEnrolledInput
-}
-
-export interface InscriptionUpdateManyWithoutActivityInput {
-  create?: InscriptionCreateWithoutActivityInput[] | InscriptionCreateWithoutActivityInput
-}
-
-export interface InscriptionCreateManyWithoutParticipantInput {
-  create?: InscriptionCreateWithoutParticipantInput[] | InscriptionCreateWithoutParticipantInput
-}
-
-export interface SpeakerUpsertNestedInput {
-  update: SpeakerUpdateDataInput
-  create: SpeakerCreateInput
-}
-
-export interface ParticipantSubscriptionWhereInput {
-  AND?: ParticipantSubscriptionWhereInput[] | ParticipantSubscriptionWhereInput
-  OR?: ParticipantSubscriptionWhereInput[] | ParticipantSubscriptionWhereInput
-  NOT?: ParticipantSubscriptionWhereInput[] | ParticipantSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: ParticipantWhereInput
-}
-
-export interface SpeakerUpdateDataInput {
-  name?: String
-  picture?: String
-  description?: String
-}
-
-export interface ActivitySubscriptionWhereInput {
-  AND?: ActivitySubscriptionWhereInput[] | ActivitySubscriptionWhereInput
-  OR?: ActivitySubscriptionWhereInput[] | ActivitySubscriptionWhereInput
-  NOT?: ActivitySubscriptionWhereInput[] | ActivitySubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: ActivityWhereInput
-}
-
-export interface SpeakerUpdateOneInput {
-  create?: SpeakerCreateInput
-  connect?: SpeakerWhereUniqueInput
-  disconnect?: Boolean
-  delete?: Boolean
-  update?: SpeakerUpdateDataInput
-  upsert?: SpeakerUpsertNestedInput
-}
-
 export interface ParticipantUpsertWithoutEnrolledInput {
   update: ParticipantUpdateWithoutEnrolledDataInput
   create: ParticipantCreateWithoutEnrolledInput
@@ -2109,30 +2194,8 @@ export interface ActivityUpdateInput {
   enrolled?: InscriptionUpdateManyWithoutActivityInput
 }
 
-export interface ActivityWhereUniqueInput {
-  id?: ID_Input
-}
-
-export interface StoryUpdateInput {
-  message?: String
-}
-
-export interface ParticipantWhereUniqueInput {
-  id?: ID_Input
-}
-
-export interface InscriptionCreateInput {
-  status?: InscriptionStatus
-  activity: ActivityCreateOneWithoutEnrolledInput
-  participant: ParticipantCreateOneWithoutEnrolledInput
-}
-
-export interface ParticipantUpdateOneWithoutEnrolledInput {
-  create?: ParticipantCreateWithoutEnrolledInput
-  connect?: ParticipantWhereUniqueInput
-  delete?: Boolean
-  update?: ParticipantUpdateWithoutEnrolledDataInput
-  upsert?: ParticipantUpsertWithoutEnrolledInput
+export interface ParticipantUpdateWithoutEnrolledDataInput {
+  name?: String
 }
 
 export interface ActivityCreateWithoutEnrolledInput {
@@ -2147,26 +2210,82 @@ export interface ActivityCreateWithoutEnrolledInput {
   speaker?: SpeakerCreateOneInput
 }
 
-export interface ActivityUpdateWithoutEnrolledDataInput {
-  title?: String
-  shortDescription?: String
-  longDescription?: String
-  startsAt?: DateTime
-  endsAt?: DateTime
-  internalComment?: String
-  inscriptionBeginsAt?: DateTime
-  inscriptionEndsAt?: DateTime
-  speaker?: SpeakerUpdateOneInput
+export interface ParticipantUpdateOneWithoutEnrolledInput {
+  create?: ParticipantCreateWithoutEnrolledInput
+  connect?: ParticipantWhereUniqueInput
+  delete?: Boolean
+  update?: ParticipantUpdateWithoutEnrolledDataInput
+  upsert?: ParticipantUpsertWithoutEnrolledInput
 }
 
-export interface StoryCreateInput {
-  message: String
+export interface ParticipantSubscriptionWhereInput {
+  AND?: ParticipantSubscriptionWhereInput[] | ParticipantSubscriptionWhereInput
+  OR?: ParticipantSubscriptionWhereInput[] | ParticipantSubscriptionWhereInput
+  NOT?: ParticipantSubscriptionWhereInput[] | ParticipantSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: ParticipantWhereInput
+}
+
+export interface InscriptionUpdateWithoutActivityDataInput {
+  status?: InscriptionStatus
+  participant?: ParticipantUpdateOneWithoutEnrolledInput
+}
+
+export interface ActivitySubscriptionWhereInput {
+  AND?: ActivitySubscriptionWhereInput[] | ActivitySubscriptionWhereInput
+  OR?: ActivitySubscriptionWhereInput[] | ActivitySubscriptionWhereInput
+  NOT?: ActivitySubscriptionWhereInput[] | ActivitySubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: ActivityWhereInput
+}
+
+export interface InscriptionUpdateWithWhereUniqueWithoutActivityInput {
+  where: InscriptionWhereUniqueInput
+  data: InscriptionUpdateWithoutActivityDataInput
 }
 
 export interface InscriptionUpdateInput {
   status?: InscriptionStatus
   activity?: ActivityUpdateOneWithoutEnrolledInput
   participant?: ParticipantUpdateOneWithoutEnrolledInput
+}
+
+export interface InscriptionUpdateManyWithoutActivityInput {
+  create?: InscriptionCreateWithoutActivityInput[] | InscriptionCreateWithoutActivityInput
+  connect?: InscriptionWhereUniqueInput[] | InscriptionWhereUniqueInput
+  disconnect?: InscriptionWhereUniqueInput[] | InscriptionWhereUniqueInput
+  delete?: InscriptionWhereUniqueInput[] | InscriptionWhereUniqueInput
+  update?: InscriptionUpdateWithWhereUniqueWithoutActivityInput[] | InscriptionUpdateWithWhereUniqueWithoutActivityInput
+  upsert?: InscriptionUpsertWithWhereUniqueWithoutActivityInput[] | InscriptionUpsertWithWhereUniqueWithoutActivityInput
+}
+
+export interface ActivityWhereUniqueInput {
+  id?: ID_Input
+}
+
+export interface SpeakerUpsertNestedInput {
+  update: SpeakerUpdateDataInput
+  create: SpeakerCreateInput
+}
+
+export interface ParticipantWhereUniqueInput {
+  id?: ID_Input
+}
+
+export interface StoryCreateInput {
+  message: String
+}
+
+export interface InscriptionUpsertWithWhereUniqueWithoutParticipantInput {
+  where: InscriptionWhereUniqueInput
+  update: InscriptionUpdateWithoutParticipantDataInput
+  create: InscriptionCreateWithoutParticipantInput
 }
 
 export interface ActivityCreateInput {
@@ -2182,9 +2301,16 @@ export interface ActivityCreateInput {
   enrolled?: InscriptionCreateManyWithoutActivityInput
 }
 
-export interface ParticipantUpdateInput {
-  name?: String
-  enrolled?: InscriptionUpdateManyWithoutParticipantInput
+export interface ActivityUpdateWithoutEnrolledDataInput {
+  title?: String
+  shortDescription?: String
+  longDescription?: String
+  startsAt?: DateTime
+  endsAt?: DateTime
+  internalComment?: String
+  inscriptionBeginsAt?: DateTime
+  inscriptionEndsAt?: DateTime
+  speaker?: SpeakerUpdateOneInput
 }
 
 export interface SpeakerCreateOneInput {
@@ -2192,40 +2318,167 @@ export interface SpeakerCreateOneInput {
   connect?: SpeakerWhereUniqueInput
 }
 
-export interface SpeakerSubscriptionWhereInput {
-  AND?: SpeakerSubscriptionWhereInput[] | SpeakerSubscriptionWhereInput
-  OR?: SpeakerSubscriptionWhereInput[] | SpeakerSubscriptionWhereInput
-  NOT?: SpeakerSubscriptionWhereInput[] | SpeakerSubscriptionWhereInput
+export interface InscriptionUpdateWithoutParticipantDataInput {
+  status?: InscriptionStatus
+  activity?: ActivityUpdateOneWithoutEnrolledInput
+}
+
+export interface SpeakerCreateInput {
+  name: String
+  picture?: String
+  description?: String
+}
+
+export interface InscriptionUpdateManyWithoutParticipantInput {
+  create?: InscriptionCreateWithoutParticipantInput[] | InscriptionCreateWithoutParticipantInput
+  connect?: InscriptionWhereUniqueInput[] | InscriptionWhereUniqueInput
+  disconnect?: InscriptionWhereUniqueInput[] | InscriptionWhereUniqueInput
+  delete?: InscriptionWhereUniqueInput[] | InscriptionWhereUniqueInput
+  update?: InscriptionUpdateWithWhereUniqueWithoutParticipantInput[] | InscriptionUpdateWithWhereUniqueWithoutParticipantInput
+  upsert?: InscriptionUpsertWithWhereUniqueWithoutParticipantInput[] | InscriptionUpsertWithWhereUniqueWithoutParticipantInput
+}
+
+export interface InscriptionCreateManyWithoutActivityInput {
+  create?: InscriptionCreateWithoutActivityInput[] | InscriptionCreateWithoutActivityInput
+  connect?: InscriptionWhereUniqueInput[] | InscriptionWhereUniqueInput
+}
+
+export interface SpeakerUpdateInput {
+  name?: String
+  picture?: String
+  description?: String
+}
+
+export interface SpeakerUpdateDataInput {
+  name?: String
+  picture?: String
+  description?: String
+}
+
+export interface InscriptionSubscriptionWhereInput {
+  AND?: InscriptionSubscriptionWhereInput[] | InscriptionSubscriptionWhereInput
+  OR?: InscriptionSubscriptionWhereInput[] | InscriptionSubscriptionWhereInput
+  NOT?: InscriptionSubscriptionWhereInput[] | InscriptionSubscriptionWhereInput
   mutation_in?: MutationType[] | MutationType
   updatedFields_contains?: String
   updatedFields_contains_every?: String[] | String
   updatedFields_contains_some?: String[] | String
-  node?: SpeakerWhereInput
+  node?: InscriptionWhereInput
 }
 
-export interface ActivityCreateOneWithoutEnrolledInput {
-  create?: ActivityCreateWithoutEnrolledInput
-  connect?: ActivityWhereUniqueInput
+export interface ParticipantCreateOneWithoutEnrolledInput {
+  create?: ParticipantCreateWithoutEnrolledInput
+  connect?: ParticipantWhereUniqueInput
+}
+
+export interface StorySubscriptionWhereInput {
+  AND?: StorySubscriptionWhereInput[] | StorySubscriptionWhereInput
+  OR?: StorySubscriptionWhereInput[] | StorySubscriptionWhereInput
+  NOT?: StorySubscriptionWhereInput[] | StorySubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: StoryWhereInput
+}
+
+export interface ParticipantCreateWithoutEnrolledInput {
+  name: String
+}
+
+export interface SpeakerWhereUniqueInput {
+  id?: ID_Input
+}
+
+export interface ParticipantCreateInput {
+  name: String
+  enrolled?: InscriptionCreateManyWithoutParticipantInput
+}
+
+export interface ActivityUpsertWithoutEnrolledInput {
+  update: ActivityUpdateWithoutEnrolledDataInput
+  create: ActivityCreateWithoutEnrolledInput
+}
+
+export interface InscriptionCreateManyWithoutParticipantInput {
+  create?: InscriptionCreateWithoutParticipantInput[] | InscriptionCreateWithoutParticipantInput
+  connect?: InscriptionWhereUniqueInput[] | InscriptionWhereUniqueInput
+}
+
+export interface InscriptionUpdateWithWhereUniqueWithoutParticipantInput {
+  where: InscriptionWhereUniqueInput
+  data: InscriptionUpdateWithoutParticipantDataInput
+}
+
+export interface InscriptionWhereInput {
+  AND?: InscriptionWhereInput[] | InscriptionWhereInput
+  OR?: InscriptionWhereInput[] | InscriptionWhereInput
+  NOT?: InscriptionWhereInput[] | InscriptionWhereInput
+  id?: ID_Input
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
+  status?: InscriptionStatus
+  status_not?: InscriptionStatus
+  status_in?: InscriptionStatus[] | InscriptionStatus
+  status_not_in?: InscriptionStatus[] | InscriptionStatus
+  createdAt?: DateTime
+  createdAt_not?: DateTime
+  createdAt_in?: DateTime[] | DateTime
+  createdAt_not_in?: DateTime[] | DateTime
+  createdAt_lt?: DateTime
+  createdAt_lte?: DateTime
+  createdAt_gt?: DateTime
+  createdAt_gte?: DateTime
+  updatedAt?: DateTime
+  updatedAt_not?: DateTime
+  updatedAt_in?: DateTime[] | DateTime
+  updatedAt_not_in?: DateTime[] | DateTime
+  updatedAt_lt?: DateTime
+  updatedAt_lte?: DateTime
+  updatedAt_gt?: DateTime
+  updatedAt_gte?: DateTime
+  activity?: ActivityWhereInput
+  participant?: ParticipantWhereInput
+}
+
+export interface InscriptionUpsertWithWhereUniqueWithoutActivityInput {
+  where: InscriptionWhereUniqueInput
+  update: InscriptionUpdateWithoutActivityDataInput
+  create: InscriptionCreateWithoutActivityInput
 }
 
 export interface StoryWhereUniqueInput {
   id?: ID_Input
 }
 
-export interface InscriptionCreateManyWithoutActivityInput {
-  create?: InscriptionCreateWithoutActivityInput[] | InscriptionCreateWithoutActivityInput
+export interface StoryUpdateInput {
+  message?: String
 }
 
-export interface ParticipantUpdateWithoutEnrolledDataInput {
-  name?: String
+export interface InscriptionCreateInput {
+  status?: InscriptionStatus
+  activity: ActivityCreateOneWithoutEnrolledInput
+  participant: ParticipantCreateOneWithoutEnrolledInput
 }
 
-export interface ActivityUpdateOneWithoutEnrolledInput {
-  create?: ActivityCreateWithoutEnrolledInput
-  connect?: ActivityWhereUniqueInput
+export interface SpeakerUpdateOneInput {
+  create?: SpeakerCreateInput
+  connect?: SpeakerWhereUniqueInput
+  disconnect?: Boolean
   delete?: Boolean
-  update?: ActivityUpdateWithoutEnrolledDataInput
-  upsert?: ActivityUpsertWithoutEnrolledInput
+  update?: SpeakerUpdateDataInput
+  upsert?: SpeakerUpsertNestedInput
 }
 
 export interface ParticipantWhereInput {
@@ -2265,61 +2518,32 @@ export interface ParticipantWhereInput {
   enrolled_none?: InscriptionWhereInput
 }
 
-export interface InscriptionWhereInput {
-  AND?: InscriptionWhereInput[] | InscriptionWhereInput
-  OR?: InscriptionWhereInput[] | InscriptionWhereInput
-  NOT?: InscriptionWhereInput[] | InscriptionWhereInput
-  status?: InscriptionStatus
-  status_not?: InscriptionStatus
-  status_in?: InscriptionStatus[] | InscriptionStatus
-  status_not_in?: InscriptionStatus[] | InscriptionStatus
-  activity?: ActivityWhereInput
-  participant?: ParticipantWhereInput
-}
-
-export interface ParticipantCreateOneWithoutEnrolledInput {
-  create?: ParticipantCreateWithoutEnrolledInput
-  connect?: ParticipantWhereUniqueInput
-}
-
-export interface InscriptionCreateWithoutActivityInput {
-  status?: InscriptionStatus
-  participant: ParticipantCreateOneWithoutEnrolledInput
-}
-
-export interface InscriptionUpdateManyWithoutParticipantInput {
-  create?: InscriptionCreateWithoutParticipantInput[] | InscriptionCreateWithoutParticipantInput
-}
-
-export interface ActivityUpsertWithoutEnrolledInput {
-  update: ActivityUpdateWithoutEnrolledDataInput
-  create: ActivityCreateWithoutEnrolledInput
-}
-
-export interface SpeakerWhereUniqueInput {
+export interface InscriptionWhereUniqueInput {
   id?: ID_Input
 }
 
-export interface StorySubscriptionWhereInput {
-  AND?: StorySubscriptionWhereInput[] | StorySubscriptionWhereInput
-  OR?: StorySubscriptionWhereInput[] | StorySubscriptionWhereInput
-  NOT?: StorySubscriptionWhereInput[] | StorySubscriptionWhereInput
+export interface SpeakerSubscriptionWhereInput {
+  AND?: SpeakerSubscriptionWhereInput[] | SpeakerSubscriptionWhereInput
+  OR?: SpeakerSubscriptionWhereInput[] | SpeakerSubscriptionWhereInput
+  NOT?: SpeakerSubscriptionWhereInput[] | SpeakerSubscriptionWhereInput
   mutation_in?: MutationType[] | MutationType
   updatedFields_contains?: String
   updatedFields_contains_every?: String[] | String
   updatedFields_contains_some?: String[] | String
-  node?: StoryWhereInput
+  node?: SpeakerWhereInput
 }
 
-export interface InscriptionSubscriptionWhereInput {
-  AND?: InscriptionSubscriptionWhereInput[] | InscriptionSubscriptionWhereInput
-  OR?: InscriptionSubscriptionWhereInput[] | InscriptionSubscriptionWhereInput
-  NOT?: InscriptionSubscriptionWhereInput[] | InscriptionSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: InscriptionWhereInput
+export interface ParticipantUpdateInput {
+  name?: String
+  enrolled?: InscriptionUpdateManyWithoutParticipantInput
+}
+
+export interface ActivityUpdateOneWithoutEnrolledInput {
+  create?: ActivityCreateWithoutEnrolledInput
+  connect?: ActivityWhereUniqueInput
+  delete?: Boolean
+  update?: ActivityUpdateWithoutEnrolledDataInput
+  upsert?: ActivityUpsertWithoutEnrolledInput
 }
 
 /*
@@ -2330,29 +2554,11 @@ export interface Node {
   id: ID_Output
 }
 
-/*
- * Information about pagination in a connection.
-
- */
-export interface PageInfo {
-  hasNextPage: Boolean
-  hasPreviousPage: Boolean
-  startCursor?: String
-  endCursor?: String
-}
-
 export interface InscriptionPreviousValues {
+  id: ID_Output
   status: InscriptionStatus
-}
-
-/*
- * A connection to a list of items.
-
- */
-export interface StoryConnection {
-  pageInfo: PageInfo
-  edges: StoryEdge[]
-  aggregate: AggregateStory
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 export interface Activity extends Node {
@@ -2371,8 +2577,37 @@ export interface Activity extends Node {
   enrolled?: Inscription[]
 }
 
+export interface BatchPayload {
+  count: Long
+}
+
 export interface AggregateInscription {
   count: Int
+}
+
+export interface Speaker extends Node {
+  id: ID_Output
+  name: String
+  picture?: String
+  description?: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+export interface Story extends Node {
+  id: ID_Output
+  message: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+/*
+ * An edge in a connection.
+
+ */
+export interface InscriptionEdge {
+  node: Inscription
+  cursor: String
 }
 
 /*
@@ -2385,33 +2620,8 @@ export interface InscriptionConnection {
   aggregate: AggregateInscription
 }
 
-/*
- * An edge in a connection.
-
- */
-export interface InscriptionEdge {
-  node: Inscription
-  cursor: String
-}
-
-export interface Story extends Node {
-  id: ID_Output
-  message: String
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
 export interface AggregateParticipant {
   count: Int
-}
-
-/*
- * An edge in a connection.
-
- */
-export interface ParticipantEdge {
-  node: Participant
-  cursor: String
 }
 
 /*
@@ -2422,6 +2632,11 @@ export interface ParticipantConnection {
   pageInfo: PageInfo
   edges: ParticipantEdge[]
   aggregate: AggregateParticipant
+}
+
+export interface ParticipantPreviousValues {
+  id: ID_Output
+  name: String
 }
 
 /*
@@ -2451,17 +2666,6 @@ export interface StorySubscriptionPayload {
   previousValues?: StoryPreviousValues
 }
 
-export interface BatchPayload {
-  count: Long
-}
-
-export interface StoryPreviousValues {
-  id: ID_Output
-  message: String
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
 /*
  * A connection to a list of items.
 
@@ -2472,10 +2676,11 @@ export interface ActivityConnection {
   aggregate: AggregateActivity
 }
 
-export interface Participant extends Node {
+export interface StoryPreviousValues {
   id: ID_Output
-  name: String
-  enrolled?: Inscription[]
+  message: String
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 /*
@@ -2487,6 +2692,23 @@ export interface StoryEdge {
   cursor: String
 }
 
+export interface Participant extends Node {
+  id: ID_Output
+  name: String
+  enrolled?: Inscription[]
+}
+
+/*
+ * Information about pagination in a connection.
+
+ */
+export interface PageInfo {
+  hasNextPage: Boolean
+  hasPreviousPage: Boolean
+  startCursor?: String
+  endCursor?: String
+}
+
 export interface ActivitySubscriptionPayload {
   mutation: MutationType
   node?: Activity
@@ -2494,9 +2716,13 @@ export interface ActivitySubscriptionPayload {
   previousValues?: ActivityPreviousValues
 }
 
-export interface ParticipantPreviousValues {
-  id: ID_Output
-  name: String
+/*
+ * An edge in a connection.
+
+ */
+export interface ParticipantEdge {
+  node: Participant
+  cursor: String
 }
 
 /*
@@ -2525,10 +2751,13 @@ export interface SpeakerSubscriptionPayload {
   previousValues?: SpeakerPreviousValues
 }
 
-export interface Inscription {
+export interface Inscription extends Node {
+  id: ID_Output
   activity: Activity
   participant: Participant
   status: InscriptionStatus
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 export interface ActivityPreviousValues {
@@ -2558,17 +2787,14 @@ export interface AggregateSpeaker {
   count: Int
 }
 
-export interface Speaker extends Node {
-  id: ID_Output
-  name: String
-  picture?: String
-  description?: String
-  createdAt: DateTime
-  updatedAt: DateTime
-}
+/*
+ * A connection to a list of items.
 
-export interface AggregateStory {
-  count: Int
+ */
+export interface StoryConnection {
+  pageInfo: PageInfo
+  edges: StoryEdge[]
+  aggregate: AggregateStory
 }
 
 export interface InscriptionSubscriptionPayload {
@@ -2578,18 +2804,17 @@ export interface InscriptionSubscriptionPayload {
   previousValues?: InscriptionPreviousValues
 }
 
-/*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
-*/
-export type Int = number
-
-export type DateTime = Date | string
+export interface AggregateStory {
+  count: Int
+}
 
 /*
 The `Long` scalar type represents non-fractional signed whole numeric values.
 Long can represent values between -(2^63) and 2^63 - 1.
 */
 export type Long = string
+
+export type DateTime = Date | string
 
 /*
 The `Boolean` scalar type represents `true` or `false`.
@@ -2601,6 +2826,11 @@ The `ID` scalar type represents a unique identifier, often used to refetch an ob
 */
 export type ID_Input = string | number
 export type ID_Output = string
+
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
+*/
+export type Int = number
 
 /*
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
