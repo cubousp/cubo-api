@@ -63,11 +63,21 @@ input UpdateActivityInput {
     inscriptionEndsAt: DateTime
 }
 
+input CreateParticipantInput {
+    name: String!
+}
+
 # Payloads
 type FeedPayload {
     hasMore: Boolean!,
     last: ID,
     stories: [Story!]!
+}
+
+type ParticipantsPayload {
+    hasMore: Boolean!
+    last: ID,
+    participants: [Participant!]!
 }
 
 type CurrentUserPayload {
@@ -108,6 +118,11 @@ type Activity {
     inscriptionEndsAt: DateTime
 }
 
+type Participant {
+    id: ID!
+    name: String!
+}
+
 type Query {
     signIn(email: String!, password: String!): AuthPayload!
     signInAsAdmin(email: String!, password: String!): AuthPayload!
@@ -115,6 +130,8 @@ type Query {
     feed(limit: Int, last: ID): FeedPayload! @isAuthenticated
 
     eventSchedule: [Activity!]!
+
+    participants(limit: Int, last: ID): ParticipantsPayload!
 }
 
 type Mutation {
@@ -127,4 +144,6 @@ type Mutation {
     createActivity(input: CreateActivityInput!): Activity! @hasRole(role: admin)
     updateActivity(id: ID!, input: UpdateActivityInput!): Activity! @hasRole(role: admin)
     deleteActivity(id: ID!): String! @hasRole(role: admin)
+
+    createParticipant(input: CreateParticipantInput!): Participant! @hasRole(role: admin)
 }

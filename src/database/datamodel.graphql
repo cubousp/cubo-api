@@ -28,3 +28,8 @@ type Speaker {
     createdAt: DateTime!
     updatedAt: DateTime!
 }
+
+type Participant {
+    id: ID! @unique
+    name: String!
+}

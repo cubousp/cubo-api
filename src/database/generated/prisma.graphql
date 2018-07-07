@@ -1,5 +1,5 @@
-# source: http://localhost:4466/cubo/dev
-# timestamp: Sat Jul 07 2018 15:01:08 GMT-0300 (-03)
+# source: https://eu1.prisma.sh/lucas-mafra-3552e0/cubo-api/stage
+# timestamp: Sat Jul 07 2018 15:26:18 GMT-0300 (-03)
 
 type Activity implements Node {
   id: ID!
@@ -489,6 +489,10 @@ type AggregateActivity {
   count: Int!
 }
 
+type AggregateParticipant {
+  count: Int!
+}
+
 type AggregateSpeaker {
   count: Int!
 }
@@ -513,21 +517,27 @@ scalar Long
 type Mutation {
   createStory(data: StoryCreateInput!): Story!
   createActivity(data: ActivityCreateInput!): Activity!
+  createParticipant(data: ParticipantCreateInput!): Participant!
   createSpeaker(data: SpeakerCreateInput!): Speaker!
   updateStory(data: StoryUpdateInput!, where: StoryWhereUniqueInput!): Story
   updateActivity(data: ActivityUpdateInput!, where: ActivityWhereUniqueInput!): Activity
+  updateParticipant(data: ParticipantUpdateInput!, where: ParticipantWhereUniqueInput!): Participant
   updateSpeaker(data: SpeakerUpdateInput!, where: SpeakerWhereUniqueInput!): Speaker
   deleteStory(where: StoryWhereUniqueInput!): Story
   deleteActivity(where: ActivityWhereUniqueInput!): Activity
+  deleteParticipant(where: ParticipantWhereUniqueInput!): Participant
   deleteSpeaker(where: SpeakerWhereUniqueInput!): Speaker
   upsertStory(where: StoryWhereUniqueInput!, create: StoryCreateInput!, update: StoryUpdateInput!): Story!
   upsertActivity(where: ActivityWhereUniqueInput!, create: ActivityCreateInput!, update: ActivityUpdateInput!): Activity!
+  upsertParticipant(where: ParticipantWhereUniqueInput!, create: ParticipantCreateInput!, update: ParticipantUpdateInput!): Participant!
   upsertSpeaker(where: SpeakerWhereUniqueInput!, create: SpeakerCreateInput!, update: SpeakerUpdateInput!): Speaker!
   updateManyStories(data: StoryUpdateInput!, where: StoryWhereInput): BatchPayload!
   updateManyActivities(data: ActivityUpdateInput!, where: ActivityWhereInput): BatchPayload!
+  updateManyParticipants(data: ParticipantUpdateInput!, where: ParticipantWhereInput): BatchPayload!
   updateManySpeakers(data: SpeakerUpdateInput!, where: SpeakerWhereInput): BatchPayload!
   deleteManyStories(where: StoryWhereInput): BatchPayload!
   deleteManyActivities(where: ActivityWhereInput): BatchPayload!
+  deleteManyParticipants(where: ParticipantWhereInput): BatchPayload!
   deleteManySpeakers(where: SpeakerWhereInput): BatchPayload!
 }
 
@@ -558,15 +568,200 @@ type PageInfo {
   endCursor: String
 }
 
+type Participant implements Node {
+  id: ID!
+  name: String!
+}
+
+"""A connection to a list of items."""
+type ParticipantConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ParticipantEdge]!
+  aggregate: AggregateParticipant!
+}
+
+input ParticipantCreateInput {
+  name: String!
+}
+
+"""An edge in a connection."""
+type ParticipantEdge {
+  """The item at the end of the edge."""
+  node: Participant!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum ParticipantOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type ParticipantPreviousValues {
+  id: ID!
+  name: String!
+}
+
+type ParticipantSubscriptionPayload {
+  mutation: MutationType!
+  node: Participant
+  updatedFields: [String!]
+  previousValues: ParticipantPreviousValues
+}
+
+input ParticipantSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ParticipantSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ParticipantSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ParticipantSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: ParticipantWhereInput
+}
+
+input ParticipantUpdateInput {
+  name: String
+}
+
+input ParticipantWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ParticipantWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ParticipantWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ParticipantWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+}
+
+input ParticipantWhereUniqueInput {
+  id: ID
+}
+
 type Query {
   stories(where: StoryWhereInput, orderBy: StoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Story]!
   activities(where: ActivityWhereInput, orderBy: ActivityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Activity]!
+  participants(where: ParticipantWhereInput, orderBy: ParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Participant]!
   speakers(where: SpeakerWhereInput, orderBy: SpeakerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Speaker]!
   story(where: StoryWhereUniqueInput!): Story
   activity(where: ActivityWhereUniqueInput!): Activity
+  participant(where: ParticipantWhereUniqueInput!): Participant
   speaker(where: SpeakerWhereUniqueInput!): Speaker
   storiesConnection(where: StoryWhereInput, orderBy: StoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StoryConnection!
   activitiesConnection(where: ActivityWhereInput, orderBy: ActivityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ActivityConnection!
+  participantsConnection(where: ParticipantWhereInput, orderBy: ParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ParticipantConnection!
   speakersConnection(where: SpeakerWhereInput, orderBy: SpeakerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SpeakerConnection!
 
   """Fetches an object given its ID"""
@@ -917,6 +1112,9 @@ input SpeakerWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  _MagicalBackRelation_ActivityToSpeaker_every: ActivityWhereInput
+  _MagicalBackRelation_ActivityToSpeaker_some: ActivityWhereInput
+  _MagicalBackRelation_ActivityToSpeaker_none: ActivityWhereInput
 }
 
 input SpeakerWhereUniqueInput {
@@ -1156,5 +1354,6 @@ input StoryWhereUniqueInput {
 type Subscription {
   story(where: StorySubscriptionWhereInput): StorySubscriptionPayload
   activity(where: ActivitySubscriptionWhereInput): ActivitySubscriptionPayload
+  participant(where: ParticipantSubscriptionWhereInput): ParticipantSubscriptionPayload
   speaker(where: SpeakerSubscriptionWhereInput): SpeakerSubscriptionPayload
 }

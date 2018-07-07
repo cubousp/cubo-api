@@ -6,12 +6,15 @@ import { makePrismaBindingClass, BasePrismaOptions } from 'prisma-binding'
 export interface Query {
     stories: <T = Story[]>(args: { where?: StoryWhereInput, orderBy?: StoryOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     activities: <T = Activity[]>(args: { where?: ActivityWhereInput, orderBy?: ActivityOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    participants: <T = Participant[]>(args: { where?: ParticipantWhereInput, orderBy?: ParticipantOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     speakers: <T = Speaker[]>(args: { where?: SpeakerWhereInput, orderBy?: SpeakerOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     story: <T = Story | null>(args: { where: StoryWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     activity: <T = Activity | null>(args: { where: ActivityWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    participant: <T = Participant | null>(args: { where: ParticipantWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     speaker: <T = Speaker | null>(args: { where: SpeakerWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     storiesConnection: <T = StoryConnection>(args: { where?: StoryWhereInput, orderBy?: StoryOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     activitiesConnection: <T = ActivityConnection>(args: { where?: ActivityWhereInput, orderBy?: ActivityOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    participantsConnection: <T = ParticipantConnection>(args: { where?: ParticipantWhereInput, orderBy?: ParticipantOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     speakersConnection: <T = SpeakerConnection>(args: { where?: SpeakerWhereInput, orderBy?: SpeakerOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     node: <T = Node | null>(args: { id: ID_Output }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> 
   }
@@ -19,33 +22,41 @@ export interface Query {
 export interface Mutation {
     createStory: <T = Story>(args: { data: StoryCreateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     createActivity: <T = Activity>(args: { data: ActivityCreateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    createParticipant: <T = Participant>(args: { data: ParticipantCreateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     createSpeaker: <T = Speaker>(args: { data: SpeakerCreateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateStory: <T = Story | null>(args: { data: StoryUpdateInput, where: StoryWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateActivity: <T = Activity | null>(args: { data: ActivityUpdateInput, where: ActivityWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    updateParticipant: <T = Participant | null>(args: { data: ParticipantUpdateInput, where: ParticipantWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateSpeaker: <T = Speaker | null>(args: { data: SpeakerUpdateInput, where: SpeakerWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     deleteStory: <T = Story | null>(args: { where: StoryWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     deleteActivity: <T = Activity | null>(args: { where: ActivityWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    deleteParticipant: <T = Participant | null>(args: { where: ParticipantWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     deleteSpeaker: <T = Speaker | null>(args: { where: SpeakerWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     upsertStory: <T = Story>(args: { where: StoryWhereUniqueInput, create: StoryCreateInput, update: StoryUpdateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     upsertActivity: <T = Activity>(args: { where: ActivityWhereUniqueInput, create: ActivityCreateInput, update: ActivityUpdateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    upsertParticipant: <T = Participant>(args: { where: ParticipantWhereUniqueInput, create: ParticipantCreateInput, update: ParticipantUpdateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     upsertSpeaker: <T = Speaker>(args: { where: SpeakerWhereUniqueInput, create: SpeakerCreateInput, update: SpeakerUpdateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateManyStories: <T = BatchPayload>(args: { data: StoryUpdateInput, where?: StoryWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateManyActivities: <T = BatchPayload>(args: { data: ActivityUpdateInput, where?: ActivityWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    updateManyParticipants: <T = BatchPayload>(args: { data: ParticipantUpdateInput, where?: ParticipantWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateManySpeakers: <T = BatchPayload>(args: { data: SpeakerUpdateInput, where?: SpeakerWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     deleteManyStories: <T = BatchPayload>(args: { where?: StoryWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     deleteManyActivities: <T = BatchPayload>(args: { where?: ActivityWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    deleteManyParticipants: <T = BatchPayload>(args: { where?: ParticipantWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     deleteManySpeakers: <T = BatchPayload>(args: { where?: SpeakerWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> 
   }
 
 export interface Subscription {
     story: <T = StorySubscriptionPayload | null>(args: { where?: StorySubscriptionWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<AsyncIterator<T>> ,
     activity: <T = ActivitySubscriptionPayload | null>(args: { where?: ActivitySubscriptionWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<AsyncIterator<T>> ,
+    participant: <T = ParticipantSubscriptionPayload | null>(args: { where?: ParticipantSubscriptionWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<AsyncIterator<T>> ,
     speaker: <T = SpeakerSubscriptionPayload | null>(args: { where?: SpeakerSubscriptionWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<AsyncIterator<T>> 
   }
 
 export interface Exists {
   Story: (where?: StoryWhereInput) => Promise<boolean>
   Activity: (where?: ActivityWhereInput) => Promise<boolean>
+  Participant: (where?: ParticipantWhereInput) => Promise<boolean>
   Speaker: (where?: SpeakerWhereInput) => Promise<boolean>
 }
 
@@ -559,6 +570,10 @@ type AggregateActivity {
   count: Int!
 }
 
+type AggregateParticipant {
+  count: Int!
+}
+
 type AggregateSpeaker {
   count: Int!
 }
@@ -583,21 +598,27 @@ scalar Long
 type Mutation {
   createStory(data: StoryCreateInput!): Story!
   createActivity(data: ActivityCreateInput!): Activity!
+  createParticipant(data: ParticipantCreateInput!): Participant!
   createSpeaker(data: SpeakerCreateInput!): Speaker!
   updateStory(data: StoryUpdateInput!, where: StoryWhereUniqueInput!): Story
   updateActivity(data: ActivityUpdateInput!, where: ActivityWhereUniqueInput!): Activity
+  updateParticipant(data: ParticipantUpdateInput!, where: ParticipantWhereUniqueInput!): Participant
   updateSpeaker(data: SpeakerUpdateInput!, where: SpeakerWhereUniqueInput!): Speaker
   deleteStory(where: StoryWhereUniqueInput!): Story
   deleteActivity(where: ActivityWhereUniqueInput!): Activity
+  deleteParticipant(where: ParticipantWhereUniqueInput!): Participant
   deleteSpeaker(where: SpeakerWhereUniqueInput!): Speaker
   upsertStory(where: StoryWhereUniqueInput!, create: StoryCreateInput!, update: StoryUpdateInput!): Story!
   upsertActivity(where: ActivityWhereUniqueInput!, create: ActivityCreateInput!, update: ActivityUpdateInput!): Activity!
+  upsertParticipant(where: ParticipantWhereUniqueInput!, create: ParticipantCreateInput!, update: ParticipantUpdateInput!): Participant!
   upsertSpeaker(where: SpeakerWhereUniqueInput!, create: SpeakerCreateInput!, update: SpeakerUpdateInput!): Speaker!
   updateManyStories(data: StoryUpdateInput!, where: StoryWhereInput): BatchPayload!
   updateManyActivities(data: ActivityUpdateInput!, where: ActivityWhereInput): BatchPayload!
+  updateManyParticipants(data: ParticipantUpdateInput!, where: ParticipantWhereInput): BatchPayload!
   updateManySpeakers(data: SpeakerUpdateInput!, where: SpeakerWhereInput): BatchPayload!
   deleteManyStories(where: StoryWhereInput): BatchPayload!
   deleteManyActivities(where: ActivityWhereInput): BatchPayload!
+  deleteManyParticipants(where: ParticipantWhereInput): BatchPayload!
   deleteManySpeakers(where: SpeakerWhereInput): BatchPayload!
 }
 
@@ -628,15 +649,200 @@ type PageInfo {
   endCursor: String
 }
 
+type Participant implements Node {
+  id: ID!
+  name: String!
+}
+
+"""A connection to a list of items."""
+type ParticipantConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ParticipantEdge]!
+  aggregate: AggregateParticipant!
+}
+
+input ParticipantCreateInput {
+  name: String!
+}
+
+"""An edge in a connection."""
+type ParticipantEdge {
+  """The item at the end of the edge."""
+  node: Participant!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum ParticipantOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type ParticipantPreviousValues {
+  id: ID!
+  name: String!
+}
+
+type ParticipantSubscriptionPayload {
+  mutation: MutationType!
+  node: Participant
+  updatedFields: [String!]
+  previousValues: ParticipantPreviousValues
+}
+
+input ParticipantSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ParticipantSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ParticipantSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ParticipantSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: ParticipantWhereInput
+}
+
+input ParticipantUpdateInput {
+  name: String
+}
+
+input ParticipantWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ParticipantWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ParticipantWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ParticipantWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+}
+
+input ParticipantWhereUniqueInput {
+  id: ID
+}
+
 type Query {
   stories(where: StoryWhereInput, orderBy: StoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Story]!
   activities(where: ActivityWhereInput, orderBy: ActivityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Activity]!
+  participants(where: ParticipantWhereInput, orderBy: ParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Participant]!
   speakers(where: SpeakerWhereInput, orderBy: SpeakerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Speaker]!
   story(where: StoryWhereUniqueInput!): Story
   activity(where: ActivityWhereUniqueInput!): Activity
+  participant(where: ParticipantWhereUniqueInput!): Participant
   speaker(where: SpeakerWhereUniqueInput!): Speaker
   storiesConnection(where: StoryWhereInput, orderBy: StoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StoryConnection!
   activitiesConnection(where: ActivityWhereInput, orderBy: ActivityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ActivityConnection!
+  participantsConnection(where: ParticipantWhereInput, orderBy: ParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ParticipantConnection!
   speakersConnection(where: SpeakerWhereInput, orderBy: SpeakerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SpeakerConnection!
 
   """Fetches an object given its ID"""
@@ -987,6 +1193,9 @@ input SpeakerWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  _MagicalBackRelation_ActivityToSpeaker_every: ActivityWhereInput
+  _MagicalBackRelation_ActivityToSpeaker_some: ActivityWhereInput
+  _MagicalBackRelation_ActivityToSpeaker_none: ActivityWhereInput
 }
 
 input SpeakerWhereUniqueInput {
@@ -1226,6 +1435,7 @@ input StoryWhereUniqueInput {
 type Subscription {
   story(where: StorySubscriptionWhereInput): StorySubscriptionPayload
   activity(where: ActivitySubscriptionWhereInput): ActivitySubscriptionPayload
+  participant(where: ParticipantSubscriptionWhereInput): ParticipantSubscriptionPayload
   speaker(where: SpeakerSubscriptionWhereInput): SpeakerSubscriptionPayload
 }
 `
@@ -1239,15 +1449,6 @@ export const Prisma = makePrismaBindingClass<BindingConstructor<Prisma>>({typeDe
 export type MutationType =   'CREATED' |
   'UPDATED' |
   'DELETED'
-
-export type StoryOrderByInput =   'id_ASC' |
-  'id_DESC' |
-  'message_ASC' |
-  'message_DESC' |
-  'createdAt_ASC' |
-  'createdAt_DESC' |
-  'updatedAt_ASC' |
-  'updatedAt_DESC'
 
 export type ActivityOrderByInput =   'id_ASC' |
   'id_DESC' |
@@ -1272,6 +1473,24 @@ export type ActivityOrderByInput =   'id_ASC' |
   'inscriptionEndsAt_ASC' |
   'inscriptionEndsAt_DESC'
 
+export type StoryOrderByInput =   'id_ASC' |
+  'id_DESC' |
+  'message_ASC' |
+  'message_DESC' |
+  'createdAt_ASC' |
+  'createdAt_DESC' |
+  'updatedAt_ASC' |
+  'updatedAt_DESC'
+
+export type ParticipantOrderByInput =   'id_ASC' |
+  'id_DESC' |
+  'name_ASC' |
+  'name_DESC' |
+  'updatedAt_ASC' |
+  'updatedAt_DESC' |
+  'createdAt_ASC' |
+  'createdAt_DESC'
+
 export type SpeakerOrderByInput =   'id_ASC' |
   'id_DESC' |
   'name_ASC' |
@@ -1289,7 +1508,7 @@ export interface StoryCreateInput {
   message: String
 }
 
-export interface ActivityWhereUniqueInput {
+export interface ParticipantWhereUniqueInput {
   id?: ID_Input
 }
 
@@ -1347,6 +1566,92 @@ export interface SpeakerWhereUniqueInput {
   id?: ID_Input
 }
 
+export interface SpeakerWhereInput {
+  AND?: SpeakerWhereInput[] | SpeakerWhereInput
+  OR?: SpeakerWhereInput[] | SpeakerWhereInput
+  NOT?: SpeakerWhereInput[] | SpeakerWhereInput
+  id?: ID_Input
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
+  name?: String
+  name_not?: String
+  name_in?: String[] | String
+  name_not_in?: String[] | String
+  name_lt?: String
+  name_lte?: String
+  name_gt?: String
+  name_gte?: String
+  name_contains?: String
+  name_not_contains?: String
+  name_starts_with?: String
+  name_not_starts_with?: String
+  name_ends_with?: String
+  name_not_ends_with?: String
+  picture?: String
+  picture_not?: String
+  picture_in?: String[] | String
+  picture_not_in?: String[] | String
+  picture_lt?: String
+  picture_lte?: String
+  picture_gt?: String
+  picture_gte?: String
+  picture_contains?: String
+  picture_not_contains?: String
+  picture_starts_with?: String
+  picture_not_starts_with?: String
+  picture_ends_with?: String
+  picture_not_ends_with?: String
+  description?: String
+  description_not?: String
+  description_in?: String[] | String
+  description_not_in?: String[] | String
+  description_lt?: String
+  description_lte?: String
+  description_gt?: String
+  description_gte?: String
+  description_contains?: String
+  description_not_contains?: String
+  description_starts_with?: String
+  description_not_starts_with?: String
+  description_ends_with?: String
+  description_not_ends_with?: String
+  createdAt?: DateTime
+  createdAt_not?: DateTime
+  createdAt_in?: DateTime[] | DateTime
+  createdAt_not_in?: DateTime[] | DateTime
+  createdAt_lt?: DateTime
+  createdAt_lte?: DateTime
+  createdAt_gt?: DateTime
+  createdAt_gte?: DateTime
+  updatedAt?: DateTime
+  updatedAt_not?: DateTime
+  updatedAt_in?: DateTime[] | DateTime
+  updatedAt_not_in?: DateTime[] | DateTime
+  updatedAt_lt?: DateTime
+  updatedAt_lte?: DateTime
+  updatedAt_gt?: DateTime
+  updatedAt_gte?: DateTime
+  _MagicalBackRelation_ActivityToSpeaker_every?: ActivityWhereInput
+  _MagicalBackRelation_ActivityToSpeaker_some?: ActivityWhereInput
+  _MagicalBackRelation_ActivityToSpeaker_none?: ActivityWhereInput
+}
+
+export interface SpeakerUpsertNestedInput {
+  update: SpeakerUpdateDataInput
+  create: SpeakerCreateInput
+}
+
 export interface StorySubscriptionWhereInput {
   AND?: StorySubscriptionWhereInput[] | StorySubscriptionWhereInput
   OR?: StorySubscriptionWhereInput[] | StorySubscriptionWhereInput
@@ -1362,6 +1667,73 @@ export interface SpeakerUpdateDataInput {
   name?: String
   picture?: String
   description?: String
+}
+
+export interface ParticipantWhereInput {
+  AND?: ParticipantWhereInput[] | ParticipantWhereInput
+  OR?: ParticipantWhereInput[] | ParticipantWhereInput
+  NOT?: ParticipantWhereInput[] | ParticipantWhereInput
+  id?: ID_Input
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
+  name?: String
+  name_not?: String
+  name_in?: String[] | String
+  name_not_in?: String[] | String
+  name_lt?: String
+  name_lte?: String
+  name_gt?: String
+  name_gte?: String
+  name_contains?: String
+  name_not_contains?: String
+  name_starts_with?: String
+  name_not_starts_with?: String
+  name_ends_with?: String
+  name_not_ends_with?: String
+}
+
+export interface SpeakerUpdateOneInput {
+  create?: SpeakerCreateInput
+  connect?: SpeakerWhereUniqueInput
+  disconnect?: Boolean
+  delete?: Boolean
+  update?: SpeakerUpdateDataInput
+  upsert?: SpeakerUpsertNestedInput
+}
+
+export interface ParticipantUpdateInput {
+  name?: String
+}
+
+export interface ActivityUpdateInput {
+  title?: String
+  shortDescription?: String
+  longDescription?: String
+  startsAt?: DateTime
+  endsAt?: DateTime
+  internalComment?: String
+  inscriptionBeginsAt?: DateTime
+  inscriptionEndsAt?: DateTime
+  speaker?: SpeakerUpdateOneInput
+}
+
+export interface StoryWhereUniqueInput {
+  id?: ID_Input
+}
+
+export interface StoryUpdateInput {
+  message?: String
 }
 
 export interface ActivityWhereInput {
@@ -1489,47 +1861,6 @@ export interface ActivityWhereInput {
   speaker?: SpeakerWhereInput
 }
 
-export interface SpeakerUpdateOneInput {
-  create?: SpeakerCreateInput
-  connect?: SpeakerWhereUniqueInput
-  disconnect?: Boolean
-  delete?: Boolean
-  update?: SpeakerUpdateDataInput
-  upsert?: SpeakerUpsertNestedInput
-}
-
-export interface ActivitySubscriptionWhereInput {
-  AND?: ActivitySubscriptionWhereInput[] | ActivitySubscriptionWhereInput
-  OR?: ActivitySubscriptionWhereInput[] | ActivitySubscriptionWhereInput
-  NOT?: ActivitySubscriptionWhereInput[] | ActivitySubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: ActivityWhereInput
-}
-
-export interface ActivityUpdateInput {
-  title?: String
-  shortDescription?: String
-  longDescription?: String
-  startsAt?: DateTime
-  endsAt?: DateTime
-  internalComment?: String
-  inscriptionBeginsAt?: DateTime
-  inscriptionEndsAt?: DateTime
-  speaker?: SpeakerUpdateOneInput
-}
-
-export interface SpeakerUpsertNestedInput {
-  update: SpeakerUpdateDataInput
-  create: SpeakerCreateInput
-}
-
-export interface StoryWhereUniqueInput {
-  id?: ID_Input
-}
-
 export interface ActivityCreateInput {
   title: String
   shortDescription?: String
@@ -1553,8 +1884,23 @@ export interface SpeakerCreateInput {
   description?: String
 }
 
-export interface StoryUpdateInput {
-  message?: String
+export interface ParticipantCreateInput {
+  name: String
+}
+
+export interface ActivitySubscriptionWhereInput {
+  AND?: ActivitySubscriptionWhereInput[] | ActivitySubscriptionWhereInput
+  OR?: ActivitySubscriptionWhereInput[] | ActivitySubscriptionWhereInput
+  NOT?: ActivitySubscriptionWhereInput[] | ActivitySubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: ActivityWhereInput
+}
+
+export interface ActivityWhereUniqueInput {
+  id?: ID_Input
 }
 
 export interface SpeakerSubscriptionWhereInput {
@@ -1568,88 +1914,21 @@ export interface SpeakerSubscriptionWhereInput {
   node?: SpeakerWhereInput
 }
 
+export interface ParticipantSubscriptionWhereInput {
+  AND?: ParticipantSubscriptionWhereInput[] | ParticipantSubscriptionWhereInput
+  OR?: ParticipantSubscriptionWhereInput[] | ParticipantSubscriptionWhereInput
+  NOT?: ParticipantSubscriptionWhereInput[] | ParticipantSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: ParticipantWhereInput
+}
+
 export interface SpeakerUpdateInput {
   name?: String
   picture?: String
   description?: String
-}
-
-export interface SpeakerWhereInput {
-  AND?: SpeakerWhereInput[] | SpeakerWhereInput
-  OR?: SpeakerWhereInput[] | SpeakerWhereInput
-  NOT?: SpeakerWhereInput[] | SpeakerWhereInput
-  id?: ID_Input
-  id_not?: ID_Input
-  id_in?: ID_Input[] | ID_Input
-  id_not_in?: ID_Input[] | ID_Input
-  id_lt?: ID_Input
-  id_lte?: ID_Input
-  id_gt?: ID_Input
-  id_gte?: ID_Input
-  id_contains?: ID_Input
-  id_not_contains?: ID_Input
-  id_starts_with?: ID_Input
-  id_not_starts_with?: ID_Input
-  id_ends_with?: ID_Input
-  id_not_ends_with?: ID_Input
-  name?: String
-  name_not?: String
-  name_in?: String[] | String
-  name_not_in?: String[] | String
-  name_lt?: String
-  name_lte?: String
-  name_gt?: String
-  name_gte?: String
-  name_contains?: String
-  name_not_contains?: String
-  name_starts_with?: String
-  name_not_starts_with?: String
-  name_ends_with?: String
-  name_not_ends_with?: String
-  picture?: String
-  picture_not?: String
-  picture_in?: String[] | String
-  picture_not_in?: String[] | String
-  picture_lt?: String
-  picture_lte?: String
-  picture_gt?: String
-  picture_gte?: String
-  picture_contains?: String
-  picture_not_contains?: String
-  picture_starts_with?: String
-  picture_not_starts_with?: String
-  picture_ends_with?: String
-  picture_not_ends_with?: String
-  description?: String
-  description_not?: String
-  description_in?: String[] | String
-  description_not_in?: String[] | String
-  description_lt?: String
-  description_lte?: String
-  description_gt?: String
-  description_gte?: String
-  description_contains?: String
-  description_not_contains?: String
-  description_starts_with?: String
-  description_not_starts_with?: String
-  description_ends_with?: String
-  description_not_ends_with?: String
-  createdAt?: DateTime
-  createdAt_not?: DateTime
-  createdAt_in?: DateTime[] | DateTime
-  createdAt_not_in?: DateTime[] | DateTime
-  createdAt_lt?: DateTime
-  createdAt_lte?: DateTime
-  createdAt_gt?: DateTime
-  createdAt_gte?: DateTime
-  updatedAt?: DateTime
-  updatedAt_not?: DateTime
-  updatedAt_in?: DateTime[] | DateTime
-  updatedAt_not_in?: DateTime[] | DateTime
-  updatedAt_lt?: DateTime
-  updatedAt_lte?: DateTime
-  updatedAt_gt?: DateTime
-  updatedAt_gte?: DateTime
 }
 
 /*
@@ -1660,6 +1939,41 @@ export interface Node {
   id: ID_Output
 }
 
+export interface AggregateParticipant {
+  count: Int
+}
+
+export interface Speaker extends Node {
+  id: ID_Output
+  name: String
+  picture?: String
+  description?: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+export interface SpeakerPreviousValues {
+  id: ID_Output
+  name: String
+  picture?: String
+  description?: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+export interface BatchPayload {
+  count: Long
+}
+
+/*
+ * An edge in a connection.
+
+ */
+export interface SpeakerEdge {
+  node: Speaker
+  cursor: String
+}
+
 /*
  * A connection to a list of items.
 
@@ -1668,6 +1982,45 @@ export interface SpeakerConnection {
   pageInfo: PageInfo
   edges: SpeakerEdge[]
   aggregate: AggregateSpeaker
+}
+
+export interface ParticipantSubscriptionPayload {
+  mutation: MutationType
+  node?: Participant
+  updatedFields?: String[]
+  previousValues?: ParticipantPreviousValues
+}
+
+export interface AggregateSpeaker {
+  count: Int
+}
+
+/*
+ * An edge in a connection.
+
+ */
+export interface ParticipantEdge {
+  node: Participant
+  cursor: String
+}
+
+/*
+ * A connection to a list of items.
+
+ */
+export interface ParticipantConnection {
+  pageInfo: PageInfo
+  edges: ParticipantEdge[]
+  aggregate: AggregateParticipant
+}
+
+/*
+ * An edge in a connection.
+
+ */
+export interface ActivityEdge {
+  node: Activity
+  cursor: String
 }
 
 export interface Activity extends Node {
@@ -1685,87 +2038,22 @@ export interface Activity extends Node {
   inscriptionEndsAt?: DateTime
 }
 
-export interface SpeakerPreviousValues {
-  id: ID_Output
-  name: String
-  picture?: String
-  description?: String
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-export interface BatchPayload {
-  count: Long
-}
-
-export interface AggregateSpeaker {
+export interface AggregateStory {
   count: Int
 }
 
-/*
- * An edge in a connection.
-
- */
-export interface SpeakerEdge {
-  node: Speaker
-  cursor: String
-}
-
-export interface ActivitySubscriptionPayload {
-  mutation: MutationType
-  node?: Activity
-  updatedFields?: String[]
-  previousValues?: ActivityPreviousValues
-}
-
-export interface AggregateActivity {
-  count: Int
-}
-
-/*
- * An edge in a connection.
-
- */
-export interface ActivityEdge {
-  node: Activity
-  cursor: String
-}
-
-/*
- * A connection to a list of items.
-
- */
-export interface ActivityConnection {
-  pageInfo: PageInfo
-  edges: ActivityEdge[]
-  aggregate: AggregateActivity
-}
-
-/*
- * An edge in a connection.
-
- */
-export interface StoryEdge {
-  node: Story
-  cursor: String
-}
-
-/*
- * Information about pagination in a connection.
-
- */
-export interface PageInfo {
-  hasNextPage: Boolean
-  hasPreviousPage: Boolean
-  startCursor?: String
-  endCursor?: String
-}
-
-export interface StoryPreviousValues {
+export interface Story extends Node {
   id: ID_Output
   message: String
   createdAt: DateTime
   updatedAt: DateTime
+}
+
+export interface SpeakerSubscriptionPayload {
+  mutation: MutationType
+  node?: Speaker
+  updatedFields?: String[]
+  previousValues?: SpeakerPreviousValues
 }
 
 export interface StorySubscriptionPayload {
@@ -1773,6 +2061,20 @@ export interface StorySubscriptionPayload {
   node?: Story
   updatedFields?: String[]
   previousValues?: StoryPreviousValues
+}
+
+/*
+ * A connection to a list of items.
+
+ */
+export interface StoryConnection {
+  pageInfo: PageInfo
+  edges: StoryEdge[]
+  aggregate: AggregateStory
+}
+
+export interface AggregateActivity {
+  count: Int
 }
 
 export interface ActivityPreviousValues {
@@ -1789,7 +2091,19 @@ export interface ActivityPreviousValues {
   inscriptionEndsAt?: DateTime
 }
 
-export interface Story extends Node {
+export interface ActivitySubscriptionPayload {
+  mutation: MutationType
+  node?: Activity
+  updatedFields?: String[]
+  previousValues?: ActivityPreviousValues
+}
+
+export interface ParticipantPreviousValues {
+  id: ID_Output
+  name: String
+}
+
+export interface StoryPreviousValues {
   id: ID_Output
   message: String
   createdAt: DateTime
@@ -1800,30 +2114,35 @@ export interface Story extends Node {
  * A connection to a list of items.
 
  */
-export interface StoryConnection {
+export interface ActivityConnection {
   pageInfo: PageInfo
-  edges: StoryEdge[]
-  aggregate: AggregateStory
+  edges: ActivityEdge[]
+  aggregate: AggregateActivity
 }
 
-export interface SpeakerSubscriptionPayload {
-  mutation: MutationType
-  node?: Speaker
-  updatedFields?: String[]
-  previousValues?: SpeakerPreviousValues
-}
-
-export interface AggregateStory {
-  count: Int
-}
-
-export interface Speaker extends Node {
+export interface Participant extends Node {
   id: ID_Output
   name: String
-  picture?: String
-  description?: String
-  createdAt: DateTime
-  updatedAt: DateTime
+}
+
+/*
+ * Information about pagination in a connection.
+
+ */
+export interface PageInfo {
+  hasNextPage: Boolean
+  hasPreviousPage: Boolean
+  startCursor?: String
+  endCursor?: String
+}
+
+/*
+ * An edge in a connection.
+
+ */
+export interface StoryEdge {
+  node: Story
+  cursor: String
 }
 
 /*
