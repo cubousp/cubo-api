@@ -1,5 +1,5 @@
-# source: https://eu1.prisma.sh/lucas-mafra-3552e0/cubo-api/stage
-# timestamp: Sat Jul 07 2018 15:26:18 GMT-0300 (-03)
+# source: http://localhost:4466/cubo/dev
+# timestamp: Sat Jul 07 2018 16:19:01 GMT-0300 (-03)
 
 type Activity implements Node {
   id: ID!
@@ -14,6 +14,7 @@ type Activity implements Node {
   updatedAt: DateTime!
   inscriptionBeginsAt: DateTime
   inscriptionEndsAt: DateTime
+  enrolled(where: InscriptionWhereInput, orderBy: InscriptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Inscription!]
 }
 
 """A connection to a list of items."""
@@ -27,6 +28,24 @@ type ActivityConnection {
 }
 
 input ActivityCreateInput {
+  title: String!
+  shortDescription: String
+  longDescription: String
+  startsAt: DateTime!
+  endsAt: DateTime!
+  internalComment: String
+  inscriptionBeginsAt: DateTime
+  inscriptionEndsAt: DateTime
+  speaker: SpeakerCreateOneInput
+  enrolled: InscriptionCreateManyWithoutActivityInput
+}
+
+input ActivityCreateOneWithoutEnrolledInput {
+  create: ActivityCreateWithoutEnrolledInput
+  connect: ActivityWhereUniqueInput
+}
+
+input ActivityCreateWithoutEnrolledInput {
   title: String!
   shortDescription: String
   longDescription: String
@@ -135,6 +154,32 @@ input ActivityUpdateInput {
   inscriptionBeginsAt: DateTime
   inscriptionEndsAt: DateTime
   speaker: SpeakerUpdateOneInput
+  enrolled: InscriptionUpdateManyWithoutActivityInput
+}
+
+input ActivityUpdateOneWithoutEnrolledInput {
+  create: ActivityCreateWithoutEnrolledInput
+  connect: ActivityWhereUniqueInput
+  delete: Boolean
+  update: ActivityUpdateWithoutEnrolledDataInput
+  upsert: ActivityUpsertWithoutEnrolledInput
+}
+
+input ActivityUpdateWithoutEnrolledDataInput {
+  title: String
+  shortDescription: String
+  longDescription: String
+  startsAt: DateTime
+  endsAt: DateTime
+  internalComment: String
+  inscriptionBeginsAt: DateTime
+  inscriptionEndsAt: DateTime
+  speaker: SpeakerUpdateOneInput
+}
+
+input ActivityUpsertWithoutEnrolledInput {
+  update: ActivityUpdateWithoutEnrolledDataInput!
+  create: ActivityCreateWithoutEnrolledInput!
 }
 
 input ActivityWhereInput {
@@ -479,6 +524,9 @@ input ActivityWhereInput {
   """All values greater than or equal the given value."""
   inscriptionEndsAt_gte: DateTime
   speaker: SpeakerWhereInput
+  enrolled_every: InscriptionWhereInput
+  enrolled_some: InscriptionWhereInput
+  enrolled_none: InscriptionWhereInput
 }
 
 input ActivityWhereUniqueInput {
@@ -486,6 +534,10 @@ input ActivityWhereUniqueInput {
 }
 
 type AggregateActivity {
+  count: Int!
+}
+
+type AggregateInscription {
   count: Int!
 }
 
@@ -508,6 +560,153 @@ type BatchPayload {
 
 scalar DateTime
 
+type Inscription {
+  activity(where: ActivityWhereInput): Activity!
+  participant(where: ParticipantWhereInput): Participant!
+  status: InscriptionStatus!
+}
+
+"""A connection to a list of items."""
+type InscriptionConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [InscriptionEdge]!
+  aggregate: AggregateInscription!
+}
+
+input InscriptionCreateInput {
+  status: InscriptionStatus
+  activity: ActivityCreateOneWithoutEnrolledInput!
+  participant: ParticipantCreateOneWithoutEnrolledInput!
+}
+
+input InscriptionCreateManyWithoutActivityInput {
+  create: [InscriptionCreateWithoutActivityInput!]
+}
+
+input InscriptionCreateManyWithoutParticipantInput {
+  create: [InscriptionCreateWithoutParticipantInput!]
+}
+
+input InscriptionCreateWithoutActivityInput {
+  status: InscriptionStatus
+  participant: ParticipantCreateOneWithoutEnrolledInput!
+}
+
+input InscriptionCreateWithoutParticipantInput {
+  status: InscriptionStatus
+  activity: ActivityCreateOneWithoutEnrolledInput!
+}
+
+"""An edge in a connection."""
+type InscriptionEdge {
+  """The item at the end of the edge."""
+  node: Inscription!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum InscriptionOrderByInput {
+  status_ASC
+  status_DESC
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type InscriptionPreviousValues {
+  status: InscriptionStatus!
+}
+
+enum InscriptionStatus {
+  PENDING
+  CONFIRMED
+  ATTENDED
+  MISSED
+}
+
+type InscriptionSubscriptionPayload {
+  mutation: MutationType!
+  node: Inscription
+  updatedFields: [String!]
+  previousValues: InscriptionPreviousValues
+}
+
+input InscriptionSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [InscriptionSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [InscriptionSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [InscriptionSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: InscriptionWhereInput
+}
+
+input InscriptionUpdateInput {
+  status: InscriptionStatus
+  activity: ActivityUpdateOneWithoutEnrolledInput
+  participant: ParticipantUpdateOneWithoutEnrolledInput
+}
+
+input InscriptionUpdateManyWithoutActivityInput {
+  create: [InscriptionCreateWithoutActivityInput!]
+}
+
+input InscriptionUpdateManyWithoutParticipantInput {
+  create: [InscriptionCreateWithoutParticipantInput!]
+}
+
+input InscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [InscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [InscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [InscriptionWhereInput!]
+  status: InscriptionStatus
+
+  """All values that are not equal to given value."""
+  status_not: InscriptionStatus
+
+  """All values that are contained in given list."""
+  status_in: [InscriptionStatus!]
+
+  """All values that are not contained in given list."""
+  status_not_in: [InscriptionStatus!]
+  activity: ActivityWhereInput
+  participant: ParticipantWhereInput
+}
+
 """
 The `Long` scalar type represents non-fractional signed whole numeric values.
 Long can represent values between -(2^63) and 2^63 - 1.
@@ -517,28 +716,31 @@ scalar Long
 type Mutation {
   createStory(data: StoryCreateInput!): Story!
   createActivity(data: ActivityCreateInput!): Activity!
-  createParticipant(data: ParticipantCreateInput!): Participant!
   createSpeaker(data: SpeakerCreateInput!): Speaker!
+  createParticipant(data: ParticipantCreateInput!): Participant!
+  createInscription(data: InscriptionCreateInput!): Inscription!
   updateStory(data: StoryUpdateInput!, where: StoryWhereUniqueInput!): Story
   updateActivity(data: ActivityUpdateInput!, where: ActivityWhereUniqueInput!): Activity
-  updateParticipant(data: ParticipantUpdateInput!, where: ParticipantWhereUniqueInput!): Participant
   updateSpeaker(data: SpeakerUpdateInput!, where: SpeakerWhereUniqueInput!): Speaker
+  updateParticipant(data: ParticipantUpdateInput!, where: ParticipantWhereUniqueInput!): Participant
   deleteStory(where: StoryWhereUniqueInput!): Story
   deleteActivity(where: ActivityWhereUniqueInput!): Activity
-  deleteParticipant(where: ParticipantWhereUniqueInput!): Participant
   deleteSpeaker(where: SpeakerWhereUniqueInput!): Speaker
+  deleteParticipant(where: ParticipantWhereUniqueInput!): Participant
   upsertStory(where: StoryWhereUniqueInput!, create: StoryCreateInput!, update: StoryUpdateInput!): Story!
   upsertActivity(where: ActivityWhereUniqueInput!, create: ActivityCreateInput!, update: ActivityUpdateInput!): Activity!
-  upsertParticipant(where: ParticipantWhereUniqueInput!, create: ParticipantCreateInput!, update: ParticipantUpdateInput!): Participant!
   upsertSpeaker(where: SpeakerWhereUniqueInput!, create: SpeakerCreateInput!, update: SpeakerUpdateInput!): Speaker!
+  upsertParticipant(where: ParticipantWhereUniqueInput!, create: ParticipantCreateInput!, update: ParticipantUpdateInput!): Participant!
   updateManyStories(data: StoryUpdateInput!, where: StoryWhereInput): BatchPayload!
   updateManyActivities(data: ActivityUpdateInput!, where: ActivityWhereInput): BatchPayload!
-  updateManyParticipants(data: ParticipantUpdateInput!, where: ParticipantWhereInput): BatchPayload!
   updateManySpeakers(data: SpeakerUpdateInput!, where: SpeakerWhereInput): BatchPayload!
+  updateManyParticipants(data: ParticipantUpdateInput!, where: ParticipantWhereInput): BatchPayload!
+  updateManyInscriptions(data: InscriptionUpdateInput!, where: InscriptionWhereInput): BatchPayload!
   deleteManyStories(where: StoryWhereInput): BatchPayload!
   deleteManyActivities(where: ActivityWhereInput): BatchPayload!
-  deleteManyParticipants(where: ParticipantWhereInput): BatchPayload!
   deleteManySpeakers(where: SpeakerWhereInput): BatchPayload!
+  deleteManyParticipants(where: ParticipantWhereInput): BatchPayload!
+  deleteManyInscriptions(where: InscriptionWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -571,6 +773,7 @@ type PageInfo {
 type Participant implements Node {
   id: ID!
   name: String!
+  enrolled(where: InscriptionWhereInput, orderBy: InscriptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Inscription!]
 }
 
 """A connection to a list of items."""
@@ -584,6 +787,16 @@ type ParticipantConnection {
 }
 
 input ParticipantCreateInput {
+  name: String!
+  enrolled: InscriptionCreateManyWithoutParticipantInput
+}
+
+input ParticipantCreateOneWithoutEnrolledInput {
+  create: ParticipantCreateWithoutEnrolledInput
+  connect: ParticipantWhereUniqueInput
+}
+
+input ParticipantCreateWithoutEnrolledInput {
   name: String!
 }
 
@@ -653,6 +866,24 @@ input ParticipantSubscriptionWhereInput {
 
 input ParticipantUpdateInput {
   name: String
+  enrolled: InscriptionUpdateManyWithoutParticipantInput
+}
+
+input ParticipantUpdateOneWithoutEnrolledInput {
+  create: ParticipantCreateWithoutEnrolledInput
+  connect: ParticipantWhereUniqueInput
+  delete: Boolean
+  update: ParticipantUpdateWithoutEnrolledDataInput
+  upsert: ParticipantUpsertWithoutEnrolledInput
+}
+
+input ParticipantUpdateWithoutEnrolledDataInput {
+  name: String
+}
+
+input ParticipantUpsertWithoutEnrolledInput {
+  update: ParticipantUpdateWithoutEnrolledDataInput!
+  create: ParticipantCreateWithoutEnrolledInput!
 }
 
 input ParticipantWhereInput {
@@ -744,6 +975,9 @@ input ParticipantWhereInput {
 
   """All values not ending with the given string."""
   name_not_ends_with: String
+  enrolled_every: InscriptionWhereInput
+  enrolled_some: InscriptionWhereInput
+  enrolled_none: InscriptionWhereInput
 }
 
 input ParticipantWhereUniqueInput {
@@ -753,16 +987,18 @@ input ParticipantWhereUniqueInput {
 type Query {
   stories(where: StoryWhereInput, orderBy: StoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Story]!
   activities(where: ActivityWhereInput, orderBy: ActivityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Activity]!
-  participants(where: ParticipantWhereInput, orderBy: ParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Participant]!
   speakers(where: SpeakerWhereInput, orderBy: SpeakerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Speaker]!
+  participants(where: ParticipantWhereInput, orderBy: ParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Participant]!
+  inscriptions(where: InscriptionWhereInput, orderBy: InscriptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Inscription]!
   story(where: StoryWhereUniqueInput!): Story
   activity(where: ActivityWhereUniqueInput!): Activity
-  participant(where: ParticipantWhereUniqueInput!): Participant
   speaker(where: SpeakerWhereUniqueInput!): Speaker
+  participant(where: ParticipantWhereUniqueInput!): Participant
   storiesConnection(where: StoryWhereInput, orderBy: StoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StoryConnection!
   activitiesConnection(where: ActivityWhereInput, orderBy: ActivityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ActivityConnection!
-  participantsConnection(where: ParticipantWhereInput, orderBy: ParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ParticipantConnection!
   speakersConnection(where: SpeakerWhereInput, orderBy: SpeakerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SpeakerConnection!
+  participantsConnection(where: ParticipantWhereInput, orderBy: ParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ParticipantConnection!
+  inscriptionsConnection(where: InscriptionWhereInput, orderBy: InscriptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): InscriptionConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -1112,9 +1348,6 @@ input SpeakerWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
-  _MagicalBackRelation_ActivityToSpeaker_every: ActivityWhereInput
-  _MagicalBackRelation_ActivityToSpeaker_some: ActivityWhereInput
-  _MagicalBackRelation_ActivityToSpeaker_none: ActivityWhereInput
 }
 
 input SpeakerWhereUniqueInput {
@@ -1354,6 +1587,7 @@ input StoryWhereUniqueInput {
 type Subscription {
   story(where: StorySubscriptionWhereInput): StorySubscriptionPayload
   activity(where: ActivitySubscriptionWhereInput): ActivitySubscriptionPayload
-  participant(where: ParticipantSubscriptionWhereInput): ParticipantSubscriptionPayload
   speaker(where: SpeakerSubscriptionWhereInput): SpeakerSubscriptionPayload
+  participant(where: ParticipantSubscriptionWhereInput): ParticipantSubscriptionPayload
+  inscription(where: InscriptionSubscriptionWhereInput): InscriptionSubscriptionPayload
 }

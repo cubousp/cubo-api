@@ -18,6 +18,7 @@ type Activity {
     updatedAt: DateTime!
     inscriptionBeginsAt: DateTime
     inscriptionEndsAt: DateTime
+    enrolled: [Inscription!]!
 }
 
 type Speaker {
@@ -32,4 +33,18 @@ type Speaker {
 type Participant {
     id: ID! @unique
     name: String!
+    enrolled: [Inscription!]!
+}
+
+type Inscription {
+    activity: Activity!
+    participant: Participant!
+    status: InscriptionStatus! @default(value: CONFIRMED)
+}
+
+enum InscriptionStatus {
+    PENDING
+    CONFIRMED
+    ATTENDED
+    MISSED
 }
