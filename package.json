@@ -8,7 +8,8 @@
     "jest": "dotenv -e env/test.env -- jest",
     "cucumber": "dotenv -e env/test.env -- cucumber-js --require 'features/support/**/*.ts' --require-module ts-node/register features",
     "postinstall": "npm run build",
-    "build": "tsc"
+    "build": "tsc",
+    "db:deploy": "prisma deploy -e env/dev.env"
   },
   "jest": {
     "testRegex": "src/.*.spec.ts$",

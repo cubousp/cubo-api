@@ -1,12 +1,12 @@
 import { cleanUpTestDatabase } from '../../test-utils/database'
 import { commonQueries } from '../../test-utils/database'
-import { RepositoryError } from '../repositories/error-code'
-import { IPaginationOptions } from '../repositories/pagination'
-import { DbStoryRepository } from './db-story-repository'
+import { RepositoryError } from './error-code'
+import { IPaginationOptions } from './pagination'
+import { Story } from './db-story-repository'
 const { createStory, getStory } = commonQueries
 
 describe('DbStoryRepository', () => {
-    const storyRepository = new DbStoryRepository()
+    const storyRepository = new Story()
 
     beforeEach(async () => {
         await cleanUpTestDatabase()

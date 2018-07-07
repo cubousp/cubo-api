@@ -1,4 +1,4 @@
-import { RepositoryError} from '../../../repositories/error-code'
+import { RepositoryError} from '../../../database/error-code'
 import { IStoryRepository } from '../../../repositories/i-story-repository'
 import { TransparentError } from '../error'
 import { feedMutations } from './feed-mutations'

@@ -1,19 +1,15 @@
 import gql from 'graphql-tag'
-import { RepositoryError } from '../repositories/error-code'
-import {
-    IPaginatedStories, IStoryRepository, Story,
-} from '../repositories/i-story-repository'
-import { ID } from '../repositories/id'
-import { IPaginationOptions } from '../repositories/pagination'
 import { client } from './client'
+import { RepositoryError } from './error-code'
+import { IPaginationOptions } from './pagination'
 
-export class DbStoryRepository implements IStoryRepository {
+export class Story {
 
     private STORY_NOT_FOUND = new RegExp(
         /No Node for the model Story with value (.*?) for id found./,
     )
 
-    public async save(storyInput): Promise<Story> {
+    public async save(storyInput) {
         return client.mutation.createStory({
             data: {
                 message: storyInput.message,
@@ -23,7 +19,7 @@ export class DbStoryRepository implements IStoryRepository {
 
     public async getLatestStories(
         options?: IPaginationOptions,
-    ): Promise<IPaginatedStories> {
+    ) {
         const queryResult = await client.query.storiesConnection({
             after: options && options.last,
             first: options && options.limit,
@@ -51,7 +47,7 @@ export class DbStoryRepository implements IStoryRepository {
         }
     }
 
-    public async update(id: ID, input: Partial<Story>): Promise<Story> {
+    public async update(id, input) {
         try {
             const updateResult = await client.mutation.updateStory({
                 data: input,
@@ -74,7 +70,7 @@ export class DbStoryRepository implements IStoryRepository {
         }
     }
 
-    public async delete(id: ID): Promise<void> {
+    public async delete(id): Promise<void> {
         try {
             await client.mutation.deleteStory({
                 where: {

@@ -2,4 +2,27 @@ type Story {
     id: ID! @unique
     message: String!
     createdAt: DateTime!
+    updatedAt: DateTime!
+}
+
+type Activity {
+    id: ID! @unique
+    title: String!
+    shortDescription: String
+    longDescription: String
+    startsAt: DateTime!
+    endsAt: DateTime!
+    internalComment: String
+    speaker: Speaker
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}
+
+type Speaker {
+    id: ID! @unique
+    name: String!
+    picture: String
+    description: String
+    createdAt: DateTime!
+    updatedAt: DateTime!
 }

@@ -1,16 +1,16 @@
-import { IContext } from '../../../context'
-import { RepositoryError } from '../../../repositories/error-code'
+import { Context } from '../../../context'
+import { RepositoryError } from '../../../database/error-code'
 import { TransparentError } from '../error'
 
 export const feedMutations = {
 
-    async postToFeed(_, { input }, context: IContext) {
-        return context.storyRepository.save(input)
+    async postToFeed(_, { input }, context: Context) {
+        return context.story.save(input)
     },
 
-    async updateStory(_, { id, input }, context: IContext) {
+    async updateStory(_, { id, input }, context: Context) {
         try {
-            const updatedStory = await context.storyRepository.update(id, input)
+            const updatedStory = await context.story.update(id, input)
             return updatedStory
         } catch (err) {
             if (err.message === RepositoryError.ItemNotFound) {
@@ -23,9 +23,9 @@ export const feedMutations = {
         }
     },
 
-    async deleteStory(_, { id }, context: IContext) {
+    async deleteStory(_, { id }, context: Context) {
         try {
-            await context.storyRepository.delete(id)
+            await context.story.delete(id)
             return 'Story deleted with success'
         } catch (err) {
             if (err.message === RepositoryError.ItemNotFound) {

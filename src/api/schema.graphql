@@ -27,13 +27,39 @@ input SendEmailToStaffInput {
     message: String!
 }
 
-# Types
-type Story {
-    id: ID!
-    message: String!
-    createdAt: DateTime!
+input CreateSpeakerInput {
+    name: String!
+    picture: String
+    description: String
 }
 
+input UpdateSpeakerInput {
+    name: String
+    picture: String
+    description: String
+}
+
+input CreateActivityInput {
+    title: String!
+    shortDescription: String
+    longDescription: String
+    startsAt: DateTime!
+    endsAt: DateTime!
+    internalComment: String
+    speaker: CreateSpeakerInput
+}
+
+input UpdateActivityInput {
+    title: String
+    shortDescription: String
+    longDescription: String
+    startsAt: DateTime
+    endsAt: DateTime
+    internalComment: String
+    speaker: UpdateSpeakerInput
+}
+
+# Payloads
 type FeedPayload {
     hasMore: Boolean!,
     last: ID,
@@ -51,16 +77,48 @@ type AuthPayload {
     user: CurrentUserPayload!
 }
 
+# Types
+type Story {
+    id: ID!
+    message: String!
+    createdAt: DateTime!
+}
+
+type Speaker {
+    id: ID!
+    name: String!
+    picture: String
+    description: String
+}
+
+type Activity {
+    id: ID!
+    title: String!
+    shortDescription: String
+    longDescription: String
+    startsAt: DateTime!
+    endsAt: DateTime!
+    internalComment: String @hasRole(role: admin)
+    speaker: Speaker
+}
+
 type Query {
     signIn(email: String!, password: String!): AuthPayload!
     signInAsAdmin(email: String!, password: String!): AuthPayload!
 
     feed(limit: Int, last: ID): FeedPayload! @isAuthenticated
+
+    eventSchedule: [Activity!]!
 }
 
 type Mutation {
     postToFeed(input: PostToFeedInput!): Story! @hasRole(role: admin)
     updateStory(id: ID!, input: UpdateStoryInput!): Story! @hasRole(role: admin)
     deleteStory(id: ID!): String! @hasRole(role: admin)
+
     sendEmailToStaff(input: SendEmailToStaffInput!): String!
+
+    createActivity(input: CreateActivityInput!): Activity! @hasRole(role: admin)
+    updateActivity(id: ID!, input: UpdateActivityInput!): Activity! @hasRole(role: admin)
+    deleteActivity(id: ID!): String! @hasRole(role: admin)
 }

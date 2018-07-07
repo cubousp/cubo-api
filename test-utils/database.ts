@@ -1,6 +1,6 @@
 import { exec } from 'child_process'
 import { client as db } from '../src/database/client'
-import { ID } from '../src/repositories/id'
+import { ID } from '../src/database/id'
 
 export const deployTestDatabase = async () => new Promise((resolve) => {
     exec('scripts/deploy-test-db.sh', () => {
