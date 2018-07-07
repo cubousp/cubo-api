@@ -129,7 +129,7 @@ type Activity {
     speaker: Speaker
     inscriptionBeginsAt: DateTime
     inscriptionEndsAt: DateTime
-    enrolled: [Inscription!]!
+    enrolled: [Inscription!]! @hasRole(role: admin)
 }
 
 type Participant {
@@ -152,8 +152,10 @@ type Query {
 
     feed(limit: Int, last: ID): FeedPayload! @isAuthenticated
 
+    activity(id: ID!): Activity!
     eventSchedule: [Activity!]!
 
+    participant(id: ID!): Participant!
     participants(limit: Int, last: ID): ParticipantsPayload!
 }
 

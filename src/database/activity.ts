@@ -32,4 +32,8 @@ export class Activity {
             },
         })
     }
+
+    public get(id, info) {
+        return client.query.activity({ where: { id }}, info)
+    }
 }

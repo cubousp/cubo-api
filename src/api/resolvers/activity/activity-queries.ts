@@ -6,4 +6,7 @@ export const activityQueries = {
         return context.activity.getAll()
     },
 
+    async activity({}, { id }, context: Context, info) {
+        return context.activity.get(id, info)
+    },
 }
