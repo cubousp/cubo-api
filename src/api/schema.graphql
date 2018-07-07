@@ -7,6 +7,13 @@ enum Role {
     admin
 }
 
+enum InscriptionStatus{
+    PENDING
+    CONFIRMED
+    ATTENDED
+    MISSED
+}
+
 # Directive
 directive @isAuthenticated on FIELD | FIELD_DEFINITION
 directive @hasRole(role: Role!) on FIELD | FIELD_DEFINITION
@@ -67,6 +74,11 @@ input CreateParticipantInput {
     name: String!
 }
 
+input CreateInscriptionInput{
+    activityId: ID!
+    participantId: ID!
+}
+
 # Payloads
 type FeedPayload {
     hasMore: Boolean!,
@@ -123,6 +135,13 @@ type Participant {
     name: String!
 }
 
+type Inscripiton{
+    activity: Activity!
+    participant: Participant!
+    status: InscriptionStatus!
+    createdAt: DateTime!
+}
+
 type Query {
     signIn(email: String!, password: String!): AuthPayload!
     signInAsAdmin(email: String!, password: String!): AuthPayload!
@@ -146,4 +165,6 @@ type Mutation {
     deleteActivity(id: ID!): String! @hasRole(role: admin)
 
     createParticipant(input: CreateParticipantInput!): Participant! @hasRole(role: admin)
+
+    enrollParticipant(input: CreateInscriptionInput!): Inscripiton! @hasRole(role: admin)
 }
