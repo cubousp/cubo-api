@@ -128,11 +128,13 @@ type Activity {
     speaker: Speaker
     inscriptionBeginsAt: DateTime
     inscriptionEndsAt: DateTime
+    enrolled: [Inscription!]!
 }
 
 type Participant {
     id: ID!
     name: String!
+    enrolled: [Inscription!]!
 }
 
 type Inscripiton{
