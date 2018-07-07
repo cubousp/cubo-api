@@ -40,4 +40,10 @@ export class Inscription {
             `)
         return count !== 0
     }
+
+    public async delete(inscriptionId) {
+        return client.mutation.deleteInscription({
+            where: { id: inscriptionId },
+        })
+    }
 }

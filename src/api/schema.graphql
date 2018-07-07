@@ -74,9 +74,10 @@ input CreateParticipantInput {
     name: String!
 }
 
-input CreateInscriptionInput{
+input EnrollParticipantInput {
     activityId: ID!
     participantId: ID!
+
 }
 
 # Payloads
@@ -137,7 +138,7 @@ type Participant {
     enrolled: [Inscription!]!
 }
 
-type Inscripiton{
+type Inscription {
     id: ID!
     activity: Activity!
     participant: Participant!
@@ -169,5 +170,6 @@ type Mutation {
 
     createParticipant(input: CreateParticipantInput!): Participant! @hasRole(role: admin)
 
-    enrollParticipant(input: CreateInscriptionInput!): Inscripiton! @hasRole(role: admin)
+    enrollParticipant(input: EnrollParticipantInput!): Inscription! @hasRole(role: admin)
+    disenrollParticipant(inscriptionId: ID!): String! @hasRole(role: admin)
 }

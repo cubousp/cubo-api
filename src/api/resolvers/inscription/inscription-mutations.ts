@@ -8,4 +8,9 @@ export const inscriptionMutations = {
             activityId, participantId, info,
         )
     },
+
+    async disenrollParticipant({}, { inscriptionId }, context: Context) {
+        await context.inscription.delete(inscriptionId)
+        return 'Success'
+    },
 }
