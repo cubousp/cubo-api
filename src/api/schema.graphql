@@ -155,8 +155,8 @@ type Query {
     activity(id: ID!): Activity!
     eventSchedule: [Activity!]!
 
-    participant(id: ID!): Participant!
-    participants(limit: Int, last: ID): ParticipantsPayload!
+    participant(id: ID!): Participant! @hasRole(role: admin)
+    participants(limit: Int, last: ID): ParticipantsPayload! @hasRole(role: admin)
 }
 
 type Mutation {
