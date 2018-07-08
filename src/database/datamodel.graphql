@@ -19,6 +19,7 @@ type Activity {
     inscriptionBeginsAt: DateTime
     inscriptionEndsAt: DateTime
     enrolled: [Inscription!]!
+    vacancies: Int
 }
 
 type Speaker {
