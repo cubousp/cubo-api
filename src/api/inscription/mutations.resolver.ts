@@ -4,7 +4,7 @@ export const Mutation = {
     enrollParticipant(
         _, { activityId, participantId }, context: Context, info
     ) {
-        return context.inscription.createInscription(
+        return context.inscription.create(
             activityId, participantId, info,
         )
     },
