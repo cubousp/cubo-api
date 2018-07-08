@@ -50,7 +50,7 @@ type Activity {
     inscriptionBeginsAt: DateTime
     inscriptionEndsAt: DateTime
     enrolled: [Inscription!]! @hasRole(role: admin)
-    vacancies: Vacancies!
+    vacancies: Vacancies! @hasRole(role: admin)
 }
 
 type Vacancies {
