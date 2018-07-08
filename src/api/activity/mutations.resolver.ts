@@ -1,7 +1,6 @@
-import { Context } from '../../../context'
+import { Context } from '../../context'
 
-export const activityMutations = {
-
+export const Mutation =  {
     async createActivity({}, { input }, context: Context, info) {
         return context.activity.save(input, info)
     },

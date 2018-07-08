@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { TransparentError } from '../api/resolvers/error'
+import { TransparentError } from '../api/utils/error'
 import { client } from './client'
 import { RepositoryError } from './error-code'
 

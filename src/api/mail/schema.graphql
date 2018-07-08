@@ -1,0 +1,11 @@
+input SendEmailToStaffInput {
+    name: String!
+    email: String!
+    phone: String!
+    message: String!
+}
+
+# Mail
+type Mutation {
+    sendEmailToStaff(input: SendEmailToStaffInput!): String!
+}

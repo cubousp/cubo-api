@@ -1,0 +1,25 @@
+type Inscription {
+    id: ID!
+    activity: Activity!
+    participant: Participant!
+    status: InscriptionStatus!
+    createdAt: DateTime!
+}
+
+enum InscriptionStatus {
+    PENDING
+    CONFIRMED
+    ATTENDED
+    MISSED
+}
+
+input EnrollParticipantInput {
+    activityId: ID!
+    participantId: ID!
+
+}
+
+type Mutation {
+    enrollParticipant(activityId: ID!, participantId: ID!): Inscription! @hasRole(role: admin)
+    disenrollParticipant(inscriptionId: ID!): String! @hasRole(role: admin)
+}

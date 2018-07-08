@@ -1,0 +1,32 @@
+# Inputs
+input UpdateStoryInput {
+    message: String!
+}
+
+input PostToFeedInput {
+    message: String!
+}
+
+# Payloads
+type FeedPayload {
+    hasMore: Boolean!,
+    last: ID,
+    stories: [Story!]!
+}
+
+# Types
+type Story {
+    id: ID!
+    message: String!
+    createdAt: DateTime!
+}
+
+type Query {
+    feed(limit: Int, last: ID): FeedPayload! @isAuthenticated
+}
+
+type Mutation {
+    postToFeed(input: PostToFeedInput!): Story! @hasRole(role: admin)
+    updateStory(id: ID!, input: UpdateStoryInput!): Story! @hasRole(role: admin)
+    deleteStory(id: ID!): String! @hasRole(role: admin)
+}

@@ -1,5 +1,5 @@
 import { get, post } from 'got'
-import { TransparentError } from '../api/resolvers/error'
+import { TransparentError } from '../api/utils/error'
 
 export interface IAuthUserInfo {
     email: string,

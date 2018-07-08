@@ -1,0 +1,27 @@
+# Directives
+directive @isAuthenticated on FIELD | FIELD_DEFINITION
+directive @hasRole(role: Role!) on FIELD | FIELD_DEFINITION
+
+# Enums
+enum Role {
+    user
+    admin
+}
+
+# Payloads
+type AuthPayload {
+    token: String!
+    user: CurrentUserPayload!
+}
+
+type CurrentUserPayload {
+    email: String!
+    name: String!
+    picture: String!
+}
+
+# Types
+type Query {
+    signIn(email: String!, password: String!): AuthPayload!
+    signInAsAdmin(email: String!, password: String!): AuthPayload!
+}

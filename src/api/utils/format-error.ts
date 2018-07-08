@@ -1,5 +1,5 @@
 import { GraphQLError } from 'graphql'
-import { isTransparent } from './resolvers/error'
+import { isTransparent } from './error'
 
 export const formatError = (error: GraphQLError) => {
     console.log('error', error)

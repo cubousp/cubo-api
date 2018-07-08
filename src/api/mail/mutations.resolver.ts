@@ -1,7 +1,7 @@
-import { Context } from '../../../context'
+import { Context } from '../../context'
 import { emailTemplate } from './email-template'
 
-export const mailMutations = {
+export const Mutation = {
 
     async sendEmailToStaff(_, { input }, context: Context) {
         const { name, email, phone, message } = input

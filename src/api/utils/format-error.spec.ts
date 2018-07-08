@@ -1,6 +1,6 @@
-import { buildGraphQLError } from '../../test-utils/error'
+import { buildGraphQLError } from '../../../test-utils/error'
 import { formatError } from './format-error'
-import { TransparentError } from './resolvers/error'
+import { TransparentError } from './error'
 
 describe('formatError', () => {
 

@@ -1,8 +1,8 @@
-import { Context } from '../../../context'
-import { RepositoryError } from '../../../database/error-code'
-import { TransparentError } from '../error'
+import { Context } from '../../context'
+import { RepositoryError } from '../../database/error-code'
+import { TransparentError } from '../utils/error'
 
-export const feedMutations = {
+export const Mutation = {
 
     async postToFeed(_, { input }, context: Context) {
         return context.story.save(input)

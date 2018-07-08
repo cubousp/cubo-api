@@ -1,0 +1,27 @@
+# Inputs
+input CreateParticipantInput {
+    name: String!
+}
+
+# Payload
+type ParticipantsPayload {
+    hasMore: Boolean!
+    last: ID,
+    participants: [Participant!]!
+}
+
+# Types
+type Participant {
+    id: ID!
+    name: String!
+    enrolled: [Inscription!]!
+}
+
+type Query {
+    participant(id: ID!): Participant! @hasRole(role: admin)
+    participants(limit: Int, last: ID): ParticipantsPayload! @hasRole(role: admin)
+}
+
+type Mutation {
+    createParticipant(input: CreateParticipantInput!): Participant! @hasRole(role: admin)
+}

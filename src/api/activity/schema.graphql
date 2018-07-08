@@ -1,0 +1,69 @@
+# Inputs
+input CreateActivityInput {
+    title: String!
+    shortDescription: String
+    longDescription: String
+    startsAt: DateTime!
+    endsAt: DateTime!
+    internalComment: String
+    speaker: CreateSpeakerInput
+    inscriptionBeginsAt: DateTime
+    inscriptionEndsAt: DateTime
+}
+
+input UpdateActivityInput {
+    title: String
+    shortDescription: String
+    longDescription: String
+    startsAt: DateTime
+    endsAt: DateTime
+    internalComment: String
+    speaker: UpdateSpeakerInput
+    inscriptionBeginsAt: DateTime
+    inscriptionEndsAt: DateTime
+}
+
+input CreateSpeakerInput {
+    name: String!
+    picture: String
+    description: String
+}
+
+input UpdateSpeakerInput {
+    name: String
+    picture: String
+    description: String
+}
+
+# Types
+type Activity {
+    id: ID!
+    title: String!
+    shortDescription: String
+    longDescription: String
+    startsAt: DateTime!
+    endsAt: DateTime!
+    internalComment: String @hasRole(role: admin)
+    speaker: Speaker
+    inscriptionBeginsAt: DateTime
+    inscriptionEndsAt: DateTime
+    enrolled: [Inscription!]! @hasRole(role: admin)
+}
+
+type Speaker {
+    id: ID!
+    name: String!
+    picture: String
+    description: String
+}
+
+type Query {
+    activity(id: ID!): Activity!
+    eventSchedule: [Activity!]!
+}
+
+type Mutation {
+    createActivity(input: CreateActivityInput!): Activity! @hasRole(role: admin)
+    updateActivity(id: ID!, input: UpdateActivityInput!): Activity! @hasRole(role: admin)
+    deleteActivity(id: ID!): String! @hasRole(role: admin)
+}

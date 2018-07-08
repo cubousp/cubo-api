@@ -1,6 +1,6 @@
-import { Context } from '../../../context'
+import { Context } from '../../context'
 
-export const participantsQueries = {
+export const Query = {
     async participants({}, { limit, last }, context: Context) {
         return context.participant.participants(limit, last)
     },

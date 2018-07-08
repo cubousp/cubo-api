@@ -1,7 +1,7 @@
-import { AuthRole } from '../../../auth/auth-service'
-import { Context } from '../../../context'
+import { AuthRole } from '../../auth/auth-service'
+import { Context } from '../../context'
 
-export const authDirectives = {
+export const directives = {
     async isAuthenticated(next, source, {role}: any, context: Context) {
         await context.authService.getUserInfo(context.token)
         return next()

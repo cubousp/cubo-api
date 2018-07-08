@@ -1,7 +1,6 @@
-import { Context } from '../../../context'
+import { Context } from '../../context'
 
-export const authQueries = {
-
+export const Query = {
     async signIn(_, { email, password }, context: Context) {
         return context.authService.signIn(email, password)
     },

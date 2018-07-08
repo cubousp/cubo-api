@@ -1,7 +1,6 @@
-import { Context } from '../../../context'
+import { Context } from '../../context'
 
-export const activityQueries = {
-
+export const Query = {
     async eventSchedule({}, {}, context: Context) {
         return context.activity.getAll()
     },

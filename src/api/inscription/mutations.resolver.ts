@@ -1,8 +1,8 @@
-import { Context } from '../../../context'
+import { Context } from '../../context'
 
-export const inscriptionMutations = {
+export const Mutation = {
     enrollParticipant(
-        {}, { input: { activityId, participantId } }, context: Context, info,
+        _, { activityId, participantId }, context: Context, info
     ) {
         return context.inscription.createInscription(
             activityId, participantId, info,
