@@ -9,7 +9,7 @@ input CreateActivityInput {
     speaker: CreateSpeakerInput
     inscriptionBeginsAt: DateTime
     inscriptionEndsAt: DateTime
-    vacancies: Int
+    totalVacancies: Int
 }
 
 input UpdateActivityInput {
@@ -22,7 +22,7 @@ input UpdateActivityInput {
     speaker: UpdateSpeakerInput
     inscriptionBeginsAt: DateTime
     inscriptionEndsAt: DateTime
-    vacancies: Int
+    totalVacancies: Int
 }
 
 input CreateSpeakerInput {
@@ -50,7 +50,12 @@ type Activity {
     inscriptionBeginsAt: DateTime
     inscriptionEndsAt: DateTime
     enrolled: [Inscription!]! @hasRole(role: admin)
-    vacancies: Int
+    vacancies: Vacancies!
+}
+
+type Vacancies {
+    total: Int!
+    available: Int!
 }
 
 type Speaker {

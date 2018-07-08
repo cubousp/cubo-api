@@ -107,7 +107,7 @@ const typeDefs = `type Activity implements Node {
   inscriptionBeginsAt: DateTime
   inscriptionEndsAt: DateTime
   enrolled(where: InscriptionWhereInput, orderBy: InscriptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Inscription!]
-  vacancies: Int
+  totalVacancies: Int!
 }
 
 """A connection to a list of items."""
@@ -129,7 +129,7 @@ input ActivityCreateInput {
   internalComment: String
   inscriptionBeginsAt: DateTime
   inscriptionEndsAt: DateTime
-  vacancies: Int
+  totalVacancies: Int
   speaker: SpeakerCreateOneInput
   enrolled: InscriptionCreateManyWithoutActivityInput
 }
@@ -148,7 +148,7 @@ input ActivityCreateWithoutEnrolledInput {
   internalComment: String
   inscriptionBeginsAt: DateTime
   inscriptionEndsAt: DateTime
-  vacancies: Int
+  totalVacancies: Int
   speaker: SpeakerCreateOneInput
 }
 
@@ -184,8 +184,8 @@ enum ActivityOrderByInput {
   inscriptionBeginsAt_DESC
   inscriptionEndsAt_ASC
   inscriptionEndsAt_DESC
-  vacancies_ASC
-  vacancies_DESC
+  totalVacancies_ASC
+  totalVacancies_DESC
 }
 
 type ActivityPreviousValues {
@@ -200,7 +200,7 @@ type ActivityPreviousValues {
   updatedAt: DateTime!
   inscriptionBeginsAt: DateTime
   inscriptionEndsAt: DateTime
-  vacancies: Int
+  totalVacancies: Int!
 }
 
 type ActivitySubscriptionPayload {
@@ -251,7 +251,7 @@ input ActivityUpdateInput {
   internalComment: String
   inscriptionBeginsAt: DateTime
   inscriptionEndsAt: DateTime
-  vacancies: Int
+  totalVacancies: Int
   speaker: SpeakerUpdateOneInput
   enrolled: InscriptionUpdateManyWithoutActivityInput
 }
@@ -273,7 +273,7 @@ input ActivityUpdateWithoutEnrolledDataInput {
   internalComment: String
   inscriptionBeginsAt: DateTime
   inscriptionEndsAt: DateTime
-  vacancies: Int
+  totalVacancies: Int
   speaker: SpeakerUpdateOneInput
 }
 
@@ -623,28 +623,28 @@ input ActivityWhereInput {
 
   """All values greater than or equal the given value."""
   inscriptionEndsAt_gte: DateTime
-  vacancies: Int
+  totalVacancies: Int
 
   """All values that are not equal to given value."""
-  vacancies_not: Int
+  totalVacancies_not: Int
 
   """All values that are contained in given list."""
-  vacancies_in: [Int!]
+  totalVacancies_in: [Int!]
 
   """All values that are not contained in given list."""
-  vacancies_not_in: [Int!]
+  totalVacancies_not_in: [Int!]
 
   """All values less than the given value."""
-  vacancies_lt: Int
+  totalVacancies_lt: Int
 
   """All values less than or equal the given value."""
-  vacancies_lte: Int
+  totalVacancies_lte: Int
 
   """All values greater than the given value."""
-  vacancies_gt: Int
+  totalVacancies_gt: Int
 
   """All values greater than or equal the given value."""
-  vacancies_gte: Int
+  totalVacancies_gte: Int
   speaker: SpeakerWhereInput
   enrolled_every: InscriptionWhereInput
   enrolled_some: InscriptionWhereInput
@@ -1890,8 +1890,8 @@ export type ActivityOrderByInput =   'id_ASC' |
   'inscriptionBeginsAt_DESC' |
   'inscriptionEndsAt_ASC' |
   'inscriptionEndsAt_DESC' |
-  'vacancies_ASC' |
-  'vacancies_DESC'
+  'totalVacancies_ASC' |
+  'totalVacancies_DESC'
 
 export type InscriptionOrderByInput =   'id_ASC' |
   'id_DESC' |
@@ -2202,14 +2202,14 @@ export interface ActivityWhereInput {
   inscriptionEndsAt_lte?: DateTime
   inscriptionEndsAt_gt?: DateTime
   inscriptionEndsAt_gte?: DateTime
-  vacancies?: Int
-  vacancies_not?: Int
-  vacancies_in?: Int[] | Int
-  vacancies_not_in?: Int[] | Int
-  vacancies_lt?: Int
-  vacancies_lte?: Int
-  vacancies_gt?: Int
-  vacancies_gte?: Int
+  totalVacancies?: Int
+  totalVacancies_not?: Int
+  totalVacancies_in?: Int[] | Int
+  totalVacancies_not_in?: Int[] | Int
+  totalVacancies_lt?: Int
+  totalVacancies_lte?: Int
+  totalVacancies_gt?: Int
+  totalVacancies_gte?: Int
   speaker?: SpeakerWhereInput
   enrolled_every?: InscriptionWhereInput
   enrolled_some?: InscriptionWhereInput
@@ -2230,7 +2230,7 @@ export interface ActivityUpdateInput {
   internalComment?: String
   inscriptionBeginsAt?: DateTime
   inscriptionEndsAt?: DateTime
-  vacancies?: Int
+  totalVacancies?: Int
   speaker?: SpeakerUpdateOneInput
   enrolled?: InscriptionUpdateManyWithoutActivityInput
 }
@@ -2248,7 +2248,7 @@ export interface ActivityCreateWithoutEnrolledInput {
   internalComment?: String
   inscriptionBeginsAt?: DateTime
   inscriptionEndsAt?: DateTime
-  vacancies?: Int
+  totalVacancies?: Int
   speaker?: SpeakerCreateOneInput
 }
 
@@ -2339,7 +2339,7 @@ export interface ActivityCreateInput {
   internalComment?: String
   inscriptionBeginsAt?: DateTime
   inscriptionEndsAt?: DateTime
-  vacancies?: Int
+  totalVacancies?: Int
   speaker?: SpeakerCreateOneInput
   enrolled?: InscriptionCreateManyWithoutActivityInput
 }
@@ -2353,7 +2353,7 @@ export interface ActivityUpdateWithoutEnrolledDataInput {
   internalComment?: String
   inscriptionBeginsAt?: DateTime
   inscriptionEndsAt?: DateTime
-  vacancies?: Int
+  totalVacancies?: Int
   speaker?: SpeakerUpdateOneInput
 }
 
@@ -2619,7 +2619,7 @@ export interface Activity extends Node {
   inscriptionBeginsAt?: DateTime
   inscriptionEndsAt?: DateTime
   enrolled?: Inscription[]
-  vacancies?: Int
+  totalVacancies: Int
 }
 
 export interface BatchPayload {
@@ -2817,7 +2817,7 @@ export interface ActivityPreviousValues {
   updatedAt: DateTime
   inscriptionBeginsAt?: DateTime
   inscriptionEndsAt?: DateTime
-  vacancies?: Int
+  totalVacancies: Int
 }
 
 /*

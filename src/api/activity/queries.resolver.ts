@@ -1,8 +1,8 @@
 import { Context } from '../../context'
 
 export const Query = {
-    async eventSchedule({}, {}, context: Context) {
-        return context.activity.getAll()
+    async eventSchedule({}, {}, context: Context, info) {
+        return context.activity.getAll(info)
     },
 
     async activity({}, { id }, context: Context, info) {

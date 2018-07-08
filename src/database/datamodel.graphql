@@ -19,7 +19,7 @@ type Activity {
     inscriptionBeginsAt: DateTime
     inscriptionEndsAt: DateTime
     enrolled: [Inscription!]!
-    vacancies: Int
+    totalVacancies: Int! @default(value: 0)
 }
 
 type Speaker {

@@ -1,8 +1,9 @@
+import gql from 'graphql-tag'
 import { client } from './client'
 
 export class Activity {
-    public getAll() {
-        return client.query.activities({})
+    public getAll(info) {
+        return client.query.activities({}, info)
     }
 
     public save(activityInput, info) {
@@ -33,7 +34,16 @@ export class Activity {
         })
     }
 
-    public get(id, info) {
-        return client.query.activity({ where: { id }}, info)
+    public async get(id, info) {
+        return await client.query.activity({ where: { id }}, info)
+    }
+
+    public async getAvailableVacanciesFor(activity) {
+        const { id, totalVacancies = 0 } = activity
+        const { aggregate: { count: enrolledCount } } =
+        await client.query.inscriptionsConnection({
+            where: { activity: { id } },
+        }, gql`{ aggregate { count } }`)
+        return totalVacancies - enrolledCount
     }
 }
