@@ -29,11 +29,11 @@ export class Participant {
         }
     }
 
-    public async save(input, info) {
+    public async save(input, info?) {
         return client.mutation.createParticipant({ data: input }, info)
     }
 
-    public async get(id, info) {
+    public async get(id, info?) {
         return client.query.participant({ where: { id }}, info)
     }
 }

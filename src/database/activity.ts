@@ -2,11 +2,11 @@ import gql from 'graphql-tag'
 import { client } from './client'
 
 export class Activity {
-    public getAll(info) {
+    public getAll(info?) {
         return client.query.activities({}, info)
     }
 
-    public save(activityInput, info) {
+    public save(activityInput, info?) {
         return client.mutation.createActivity({
             data: {
                 ...activityInput,
@@ -17,7 +17,7 @@ export class Activity {
         }, info)
     }
 
-    public update(id, activity, info) {
+    public update(id, activity, info?) {
         return client.mutation.updateActivity({
             data: activity,
             where: {
@@ -34,7 +34,7 @@ export class Activity {
         })
     }
 
-    public async get(id, info) {
+    public async get(id, info?) {
         return await client.query.activity({ where: { id }}, info)
     }
 

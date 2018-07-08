@@ -4,7 +4,7 @@ import { client } from './client'
 import { RepositoryError } from './error-code'
 
 export class Inscription {
-    public async create(activityId: string, participantId: string, info) {
+    public async create(activityId: string, participantId: string, info?) {
         if (await this.inscriptionExists(activityId, participantId)) {
             throw new TransparentError(
                 'Participant already enrolled to activity',
