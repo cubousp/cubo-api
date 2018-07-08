@@ -1036,6 +1036,7 @@ type PageInfo {
 type Participant implements Node {
   id: ID!
   name: String!
+  email: String!
   enrolled(where: InscriptionWhereInput, orderBy: InscriptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Inscription!]
 }
 
@@ -1051,6 +1052,7 @@ type ParticipantConnection {
 
 input ParticipantCreateInput {
   name: String!
+  email: String!
   enrolled: InscriptionCreateManyWithoutParticipantInput
 }
 
@@ -1061,6 +1063,7 @@ input ParticipantCreateOneWithoutEnrolledInput {
 
 input ParticipantCreateWithoutEnrolledInput {
   name: String!
+  email: String!
 }
 
 """An edge in a connection."""
@@ -1077,6 +1080,8 @@ enum ParticipantOrderByInput {
   id_DESC
   name_ASC
   name_DESC
+  email_ASC
+  email_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -1086,6 +1091,7 @@ enum ParticipantOrderByInput {
 type ParticipantPreviousValues {
   id: ID!
   name: String!
+  email: String!
 }
 
 type ParticipantSubscriptionPayload {
@@ -1129,6 +1135,7 @@ input ParticipantSubscriptionWhereInput {
 
 input ParticipantUpdateInput {
   name: String
+  email: String
   enrolled: InscriptionUpdateManyWithoutParticipantInput
 }
 
@@ -1142,6 +1149,7 @@ input ParticipantUpdateOneWithoutEnrolledInput {
 
 input ParticipantUpdateWithoutEnrolledDataInput {
   name: String
+  email: String
 }
 
 input ParticipantUpsertWithoutEnrolledInput {
@@ -1238,6 +1246,46 @@ input ParticipantWhereInput {
 
   """All values not ending with the given string."""
   name_not_ends_with: String
+  email: String
+
+  """All values that are not equal to given value."""
+  email_not: String
+
+  """All values that are contained in given list."""
+  email_in: [String!]
+
+  """All values that are not contained in given list."""
+  email_not_in: [String!]
+
+  """All values less than the given value."""
+  email_lt: String
+
+  """All values less than or equal the given value."""
+  email_lte: String
+
+  """All values greater than the given value."""
+  email_gt: String
+
+  """All values greater than or equal the given value."""
+  email_gte: String
+
+  """All values containing the given string."""
+  email_contains: String
+
+  """All values not containing the given string."""
+  email_not_contains: String
+
+  """All values starting with the given string."""
+  email_starts_with: String
+
+  """All values not starting with the given string."""
+  email_not_starts_with: String
+
+  """All values ending with the given string."""
+  email_ends_with: String
+
+  """All values not ending with the given string."""
+  email_not_ends_with: String
   enrolled_every: InscriptionWhereInput
   enrolled_some: InscriptionWhereInput
   enrolled_none: InscriptionWhereInput
@@ -1245,6 +1293,7 @@ input ParticipantWhereInput {
 
 input ParticipantWhereUniqueInput {
   id: ID
+  email: String
 }
 
 type Query {
@@ -1928,6 +1977,8 @@ export type ParticipantOrderByInput =   'id_ASC' |
   'id_DESC' |
   'name_ASC' |
   'name_DESC' |
+  'email_ASC' |
+  'email_DESC' |
   'updatedAt_ASC' |
   'updatedAt_DESC' |
   'createdAt_ASC' |
@@ -2237,6 +2288,7 @@ export interface ActivityUpdateInput {
 
 export interface ParticipantUpdateWithoutEnrolledDataInput {
   name?: String
+  email?: String
 }
 
 export interface ActivityCreateWithoutEnrolledInput {
@@ -2318,6 +2370,7 @@ export interface SpeakerUpsertNestedInput {
 
 export interface ParticipantWhereUniqueInput {
   id?: ID_Input
+  email?: String
 }
 
 export interface StoryCreateInput {
@@ -2428,6 +2481,7 @@ export interface StorySubscriptionWhereInput {
 
 export interface ParticipantCreateWithoutEnrolledInput {
   name: String
+  email: String
 }
 
 export interface SpeakerWhereUniqueInput {
@@ -2436,6 +2490,7 @@ export interface SpeakerWhereUniqueInput {
 
 export interface ParticipantCreateInput {
   name: String
+  email: String
   enrolled?: InscriptionCreateManyWithoutParticipantInput
 }
 
@@ -2557,6 +2612,20 @@ export interface ParticipantWhereInput {
   name_not_starts_with?: String
   name_ends_with?: String
   name_not_ends_with?: String
+  email?: String
+  email_not?: String
+  email_in?: String[] | String
+  email_not_in?: String[] | String
+  email_lt?: String
+  email_lte?: String
+  email_gt?: String
+  email_gte?: String
+  email_contains?: String
+  email_not_contains?: String
+  email_starts_with?: String
+  email_not_starts_with?: String
+  email_ends_with?: String
+  email_not_ends_with?: String
   enrolled_every?: InscriptionWhereInput
   enrolled_some?: InscriptionWhereInput
   enrolled_none?: InscriptionWhereInput
@@ -2579,6 +2648,7 @@ export interface SpeakerSubscriptionWhereInput {
 
 export interface ParticipantUpdateInput {
   name?: String
+  email?: String
   enrolled?: InscriptionUpdateManyWithoutParticipantInput
 }
 
@@ -2682,6 +2752,7 @@ export interface ParticipantConnection {
 export interface ParticipantPreviousValues {
   id: ID_Output
   name: String
+  email: String
 }
 
 /*
@@ -2740,6 +2811,7 @@ export interface StoryEdge {
 export interface Participant extends Node {
   id: ID_Output
   name: String
+  email: String
   enrolled?: Inscription[]
 }
 

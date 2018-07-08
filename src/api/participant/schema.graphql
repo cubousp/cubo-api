@@ -1,6 +1,7 @@
 # Inputs
 input CreateParticipantInput {
     name: String!
+    email: String!
 }
 
 # Payload
@@ -14,6 +15,7 @@ type ParticipantsPayload {
 type Participant {
     id: ID!
     name: String!
+    email: String!
     enrolled: [Inscription!]!
 }
 
