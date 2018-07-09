@@ -9,8 +9,9 @@
     "cucumber": "dotenv -e env/test.env -- cucumber-js --require 'features/support/**/*.ts' --require-module ts-node/register features",
     "postinstall": "npm run build",
     "build": "tsc",
-    "db:deploy": "prisma deploy -e env/dev.env",
-    "db:reset": "yarn run prisma reset -e env/dev.env -f && dotenv -e env/dev.env -- ts-node scripts/db-seed.ts"
+    "db:deploy": "prisma deploy -f -e env/dev.env",
+    "db:reset": "yarn run prisma reset -e env/dev.env -f",
+    "db:seed": "dotenv -e env/dev.env -- ts-node scripts/db-seed.ts"
   },
   "jest": {
     "testRegex": "src/.*.spec.ts$",

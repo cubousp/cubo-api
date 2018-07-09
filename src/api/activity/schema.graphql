@@ -1,10 +1,11 @@
 # Inputs
 input CreateActivityInput {
     title: String!
-    shortDescription: String
-    longDescription: String
     startsAt: DateTime!
     endsAt: DateTime!
+    kind: ActivityKind!
+    shortDescription: String
+    longDescription: String
     internalComment: String
     speaker: CreateSpeakerInput
     inscriptionBeginsAt: DateTime
@@ -23,6 +24,7 @@ input UpdateActivityInput {
     inscriptionBeginsAt: DateTime
     inscriptionEndsAt: DateTime
     totalVacancies: Int
+    kind: ActivityKind
 }
 
 input CreateSpeakerInput {
@@ -51,6 +53,16 @@ type Activity {
     inscriptionEndsAt: DateTime
     enrolled: [Inscription!]! @hasRole(role: admin)
     vacancies: Vacancies! @hasRole(role: admin)
+    kind: ActivityKind!
+}
+
+enum ActivityKind {
+    LECTURE
+    WORKSHOP
+    HANDSON
+    SURGERY
+    STAND
+    EXPO
 }
 
 type Vacancies {

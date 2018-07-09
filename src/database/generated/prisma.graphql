@@ -1,21 +1,22 @@
 # source: http://localhost:4466/cubo/dev
-# timestamp: Sun Jul 08 2018 16:27:10 GMT-0300 (-03)
+# timestamp: Mon Jul 09 2018 14:34:27 GMT-0300 (-03)
 
 type Activity implements Node {
   id: ID!
   title: String!
-  shortDescription: String
-  longDescription: String
   startsAt: DateTime!
   endsAt: DateTime!
+  kind: ActivityKind!
+  enrolled(where: InscriptionWhereInput, orderBy: InscriptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Inscription!]
+  totalVacancies: Int!
+  shortDescription: String
+  longDescription: String
   internalComment: String
   speaker(where: SpeakerWhereInput): Speaker
   createdAt: DateTime!
   updatedAt: DateTime!
   inscriptionBeginsAt: DateTime
   inscriptionEndsAt: DateTime
-  enrolled(where: InscriptionWhereInput, orderBy: InscriptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Inscription!]
-  totalVacancies: Int!
 }
 
 """A connection to a list of items."""
@@ -30,16 +31,17 @@ type ActivityConnection {
 
 input ActivityCreateInput {
   title: String!
-  shortDescription: String
-  longDescription: String
   startsAt: DateTime!
   endsAt: DateTime!
+  kind: ActivityKind!
+  totalVacancies: Int
+  shortDescription: String
+  longDescription: String
   internalComment: String
   inscriptionBeginsAt: DateTime
   inscriptionEndsAt: DateTime
-  totalVacancies: Int
-  speaker: SpeakerCreateOneInput
   enrolled: InscriptionCreateManyWithoutActivityInput
+  speaker: SpeakerCreateOneInput
 }
 
 input ActivityCreateOneWithoutEnrolledInput {
@@ -49,14 +51,15 @@ input ActivityCreateOneWithoutEnrolledInput {
 
 input ActivityCreateWithoutEnrolledInput {
   title: String!
-  shortDescription: String
-  longDescription: String
   startsAt: DateTime!
   endsAt: DateTime!
+  kind: ActivityKind!
+  totalVacancies: Int
+  shortDescription: String
+  longDescription: String
   internalComment: String
   inscriptionBeginsAt: DateTime
   inscriptionEndsAt: DateTime
-  totalVacancies: Int
   speaker: SpeakerCreateOneInput
 }
 
@@ -69,19 +72,32 @@ type ActivityEdge {
   cursor: String!
 }
 
+enum ActivityKind {
+  LECTURE
+  WORKSHOP
+  HANDSON
+  SURGERY
+  STAND
+  EXPO
+}
+
 enum ActivityOrderByInput {
   id_ASC
   id_DESC
   title_ASC
   title_DESC
-  shortDescription_ASC
-  shortDescription_DESC
-  longDescription_ASC
-  longDescription_DESC
   startsAt_ASC
   startsAt_DESC
   endsAt_ASC
   endsAt_DESC
+  kind_ASC
+  kind_DESC
+  totalVacancies_ASC
+  totalVacancies_DESC
+  shortDescription_ASC
+  shortDescription_DESC
+  longDescription_ASC
+  longDescription_DESC
   internalComment_ASC
   internalComment_DESC
   createdAt_ASC
@@ -92,23 +108,22 @@ enum ActivityOrderByInput {
   inscriptionBeginsAt_DESC
   inscriptionEndsAt_ASC
   inscriptionEndsAt_DESC
-  totalVacancies_ASC
-  totalVacancies_DESC
 }
 
 type ActivityPreviousValues {
   id: ID!
   title: String!
-  shortDescription: String
-  longDescription: String
   startsAt: DateTime!
   endsAt: DateTime!
+  kind: ActivityKind!
+  totalVacancies: Int!
+  shortDescription: String
+  longDescription: String
   internalComment: String
   createdAt: DateTime!
   updatedAt: DateTime!
   inscriptionBeginsAt: DateTime
   inscriptionEndsAt: DateTime
-  totalVacancies: Int!
 }
 
 type ActivitySubscriptionPayload {
@@ -152,16 +167,17 @@ input ActivitySubscriptionWhereInput {
 
 input ActivityUpdateInput {
   title: String
-  shortDescription: String
-  longDescription: String
   startsAt: DateTime
   endsAt: DateTime
+  kind: ActivityKind
+  totalVacancies: Int
+  shortDescription: String
+  longDescription: String
   internalComment: String
   inscriptionBeginsAt: DateTime
   inscriptionEndsAt: DateTime
-  totalVacancies: Int
-  speaker: SpeakerUpdateOneInput
   enrolled: InscriptionUpdateManyWithoutActivityInput
+  speaker: SpeakerUpdateOneInput
 }
 
 input ActivityUpdateOneWithoutEnrolledInput {
@@ -174,14 +190,15 @@ input ActivityUpdateOneWithoutEnrolledInput {
 
 input ActivityUpdateWithoutEnrolledDataInput {
   title: String
-  shortDescription: String
-  longDescription: String
   startsAt: DateTime
   endsAt: DateTime
+  kind: ActivityKind
+  totalVacancies: Int
+  shortDescription: String
+  longDescription: String
   internalComment: String
   inscriptionBeginsAt: DateTime
   inscriptionEndsAt: DateTime
-  totalVacancies: Int
   speaker: SpeakerUpdateOneInput
 }
 
@@ -279,6 +296,82 @@ input ActivityWhereInput {
 
   """All values not ending with the given string."""
   title_not_ends_with: String
+  startsAt: DateTime
+
+  """All values that are not equal to given value."""
+  startsAt_not: DateTime
+
+  """All values that are contained in given list."""
+  startsAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  startsAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  startsAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  startsAt_lte: DateTime
+
+  """All values greater than the given value."""
+  startsAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  startsAt_gte: DateTime
+  endsAt: DateTime
+
+  """All values that are not equal to given value."""
+  endsAt_not: DateTime
+
+  """All values that are contained in given list."""
+  endsAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  endsAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  endsAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  endsAt_lte: DateTime
+
+  """All values greater than the given value."""
+  endsAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  endsAt_gte: DateTime
+  kind: ActivityKind
+
+  """All values that are not equal to given value."""
+  kind_not: ActivityKind
+
+  """All values that are contained in given list."""
+  kind_in: [ActivityKind!]
+
+  """All values that are not contained in given list."""
+  kind_not_in: [ActivityKind!]
+  totalVacancies: Int
+
+  """All values that are not equal to given value."""
+  totalVacancies_not: Int
+
+  """All values that are contained in given list."""
+  totalVacancies_in: [Int!]
+
+  """All values that are not contained in given list."""
+  totalVacancies_not_in: [Int!]
+
+  """All values less than the given value."""
+  totalVacancies_lt: Int
+
+  """All values less than or equal the given value."""
+  totalVacancies_lte: Int
+
+  """All values greater than the given value."""
+  totalVacancies_gt: Int
+
+  """All values greater than or equal the given value."""
+  totalVacancies_gte: Int
   shortDescription: String
 
   """All values that are not equal to given value."""
@@ -359,50 +452,6 @@ input ActivityWhereInput {
 
   """All values not ending with the given string."""
   longDescription_not_ends_with: String
-  startsAt: DateTime
-
-  """All values that are not equal to given value."""
-  startsAt_not: DateTime
-
-  """All values that are contained in given list."""
-  startsAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  startsAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  startsAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  startsAt_lte: DateTime
-
-  """All values greater than the given value."""
-  startsAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  startsAt_gte: DateTime
-  endsAt: DateTime
-
-  """All values that are not equal to given value."""
-  endsAt_not: DateTime
-
-  """All values that are contained in given list."""
-  endsAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  endsAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  endsAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  endsAt_lte: DateTime
-
-  """All values greater than the given value."""
-  endsAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  endsAt_gte: DateTime
   internalComment: String
 
   """All values that are not equal to given value."""
@@ -531,32 +580,10 @@ input ActivityWhereInput {
 
   """All values greater than or equal the given value."""
   inscriptionEndsAt_gte: DateTime
-  totalVacancies: Int
-
-  """All values that are not equal to given value."""
-  totalVacancies_not: Int
-
-  """All values that are contained in given list."""
-  totalVacancies_in: [Int!]
-
-  """All values that are not contained in given list."""
-  totalVacancies_not_in: [Int!]
-
-  """All values less than the given value."""
-  totalVacancies_lt: Int
-
-  """All values less than or equal the given value."""
-  totalVacancies_lte: Int
-
-  """All values greater than the given value."""
-  totalVacancies_gt: Int
-
-  """All values greater than or equal the given value."""
-  totalVacancies_gte: Int
-  speaker: SpeakerWhereInput
   enrolled_every: InscriptionWhereInput
   enrolled_some: InscriptionWhereInput
   enrolled_none: InscriptionWhereInput
+  speaker: SpeakerWhereInput
 }
 
 input ActivityWhereUniqueInput {

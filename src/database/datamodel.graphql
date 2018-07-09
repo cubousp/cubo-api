@@ -8,18 +8,28 @@ type Story {
 type Activity {
     id: ID! @unique
     title: String!
-    shortDescription: String
-    longDescription: String
     startsAt: DateTime!
     endsAt: DateTime!
+    kind: ActivityKind!
+    enrolled: [Inscription!]!
+    totalVacancies: Int! @default(value: 0)
+    shortDescription: String
+    longDescription: String
     internalComment: String
     speaker: Speaker
     createdAt: DateTime!
     updatedAt: DateTime!
     inscriptionBeginsAt: DateTime
     inscriptionEndsAt: DateTime
-    enrolled: [Inscription!]!
-    totalVacancies: Int! @default(value: 0)
+}
+
+enum ActivityKind {
+    LECTURE
+    WORKSHOP
+    HANDSON
+    SURGERY
+    STAND
+    EXPO
 }
 
 type Speaker {
