@@ -1,4 +1,4 @@
-import { AuthService } from './auth/auth-service'
+import { AuthService, IAuthUserInfo } from './auth/auth-service'
 import { Activity } from './database/activity'
 import { Inscription } from './database/inscription'
 import { Participant } from './database/participant'
@@ -12,7 +12,8 @@ export class Context {
     public participant = new Participant()
     public authService = new AuthService()
     public mailService = new MailService()
-    public token
+    public currentUser?: IAuthUserInfo
+    public token?: string
 
     constructor(token?: string) {
         this.token = token

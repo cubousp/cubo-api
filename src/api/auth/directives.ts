@@ -3,12 +3,14 @@ import { Context } from '../../context'
 
 export const directives = {
     async isAuthenticated(next, source, {role}: any, context: Context) {
-        await context.authService.getUserInfo(context.token)
+        const currentUser = await context.authService.getUserInfo(context.token)
+        context.currentUser = currentUser
         return next()
     },
     async hasRole(next, source, {role}: any, context: Context) {
-        const userInfo = await context.authService.getUserInfo(context.token)
-        context.authService.validateRole(AuthRole.ADMIN, userInfo)
+        const currentUser = await context.authService.getUserInfo(context.token)
+        context.authService.validateRole(AuthRole.ADMIN, currentUser)
+        context.currentUser = currentUser
         return next()
     },
 }
