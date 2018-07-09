@@ -3,7 +3,7 @@ import { client } from './client'
 
 export class Activity {
     public getAll(info?) {
-        return client.query.activities({}, info)
+        return client.query.activities({ orderBy: 'startsAt_ASC' }, info)
     }
 
     public save(activityInput, info?) {
