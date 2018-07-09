@@ -1,6 +1,6 @@
 /*tslint:disable */
 
-import { createActivities } from './db-utils'
+import { createActivities, createParticipants } from './db-utils'
 
 createActivities([
     {
@@ -29,3 +29,8 @@ createActivities([
         endsAt: '2018-09-18T15:00:00.000Z',
     },
 ])
+
+createParticipants([{
+    name: 'Participante teste',
+    email: 'participant@test.com'
+}])
