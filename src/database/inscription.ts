@@ -20,10 +20,9 @@ export class Inscription {
         )
     }
 
-    public async desinrollParticipant(
+    public async getInscriptionByActivityAndParticipant(
         activityId: string,
         participantId: string) {
-        try {
             const {aggregate: { count }, ...queryResult} =
                 await client.query.inscriptionsConnection({
                         where: {
@@ -46,14 +45,7 @@ export class Inscription {
                     RepositoryError.ItemAlreadyExists,
                 )
             }
-            await client.mutation.deleteInscription({
-                where: { id: queryResult.edges[0].node.id},
-            })
-        } catch (err) {
-            throw new TransparentError(
-                err.message, RepositoryError.ItemNotFound,
-            )
-        }
+            return queryResult.edges[0].node
     }
 
     public async delete(id: string) {

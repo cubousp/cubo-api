@@ -19,10 +19,12 @@ export const Mutation = {
             context.currentUser!.email,
         )
 
-        await context.inscription.desinrollParticipant(
-            'cjjim1cbx001h0768y5u783sv',
-            'cjjim1cc7001r0768jiovtehu',
-        )
+        const inscription = await context.inscription
+                .getInscriptionByActivityAndParticipant(
+                    activityId,
+                    participant!.id,
+                )
+        await context.inscription.delete(inscription.id)
 
         return 'Success'
     },
