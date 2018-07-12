@@ -24,25 +24,34 @@ export class Inscription {
         activityId: string,
         participantId: string) {
         try {
-            const inscription = await client.query.inscriptionsConnection({
-                where: {
-                    activity: { id: activityId },
-                    participant: { id: participantId },
-                },
-            }, gql`
-                edges {
-                    node {
-                        id
+            const {aggregate: { count }, ...queryResult} =
+                await client.query.inscriptionsConnection({
+                        where: {
+                            activity: { id: activityId },
+                            participant: { id: participantId },
+                        },
+                    }, gql`
+                    {
+                        aggregate { count }
+                        edges {
+                            node {
+                                id
+                            }
+                        }
                     }
-                }
-            `)
-
+                `)
+            if (count === 0) {
+                throw new TransparentError(
+                    'Participant has not enrolled to activity yet.',
+                    RepositoryError.ItemAlreadyExists,
+                )
+            }
             await client.mutation.deleteInscription({
-                where: { id: inscription.edges[0].node.id },
+                where: { id: queryResult.edges[0].node.id},
             })
         } catch (err) {
             throw new TransparentError(
-                'Inscription does not exist', RepositoryError.ItemNotFound,
+                err.message, RepositoryError.ItemNotFound,
             )
         }
     }

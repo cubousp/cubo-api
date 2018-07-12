@@ -20,8 +20,8 @@ export const Mutation = {
         )
 
         await context.inscription.desinrollParticipant(
-            activityId,
-            participant!.id,
+            'cjjim1cbx001h0768y5u783sv',
+            'cjjim1cc7001r0768jiovtehu',
         )
 
         return 'Success'
