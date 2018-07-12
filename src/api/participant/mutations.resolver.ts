@@ -19,7 +19,7 @@ export const Mutation = {
             context.currentUser!.email,
         )
 
-        await context.inscription.create(activityId, participant!.id, info)
+        await context.inscription.create(activityId, participant!.id)
         return 'Success'
     },
 }
