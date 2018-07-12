@@ -20,6 +20,33 @@ export class Inscription {
         )
     }
 
+    public async desinrollParticipant(
+        activityId: string,
+        participantId: string) {
+        try {
+            const inscription = await client.query.inscriptionsConnection({
+                where: {
+                    activity: { id: activityId },
+                    participant: { id: participantId },
+                },
+            }, gql`
+                edges {
+                    node {
+                        id
+                    }
+                }
+            `)
+
+            await client.mutation.deleteInscription({
+                where: { id: inscription.edges[0].node.id },
+            })
+        } catch (err) {
+            throw new TransparentError(
+                'Inscription does not exist', RepositoryError.ItemNotFound,
+            )
+        }
+    }
+
     public async delete(id: string) {
         try {
             await client.mutation.deleteInscription({ where: { id }})

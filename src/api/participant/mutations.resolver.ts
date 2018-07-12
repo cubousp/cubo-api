@@ -19,8 +19,20 @@ export const Mutation = {
             context.currentUser!.email,
         )
 
-        await context.inscription.create(activityId, participant!.id)
+        await context.inscription.desinrollParticipant(
+            activityId,
+            participant!.id,
+        )
+
         return 'Success'
+    },
+
+    async disenrollFromActivity({}, { activityId }, context: Context, info) {
+        const participant = await context.participant.getByEmail(
+            context.currentUser!.email,
+        )
+
+        await context.inscription.create(activityId, participant!.id)
     },
 }
 

@@ -27,4 +27,5 @@ type Query {
 type Mutation {
     createParticipant(input: CreateParticipantInput!): Participant! @hasRole(role: admin)
     enrollToActivity(activityId: ID!): String! @isAuthenticated
+    disenrollFromActivity(activityId: String!): String! @isAuthenticate
 }
