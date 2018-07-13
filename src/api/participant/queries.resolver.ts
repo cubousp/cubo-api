@@ -12,6 +12,7 @@ export const Query = {
     async me({}, {}, context: Context, info) {
         const participant = await context.participant.getByEmail(
             context.currentUser!.email,
+            info,
         )
         return participant
     },

@@ -16,7 +16,7 @@ type Participant {
     id: ID!
     name: String!
     email: String!
-    enrolled: [Inscription]
+    enrolled: [Inscription!]!
 }
 
 type Query {
