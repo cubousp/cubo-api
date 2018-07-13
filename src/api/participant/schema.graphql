@@ -28,4 +28,5 @@ type Mutation {
     createParticipant(input: CreateParticipantInput!): Participant! @hasRole(role: admin)
     enrollToActivity(activityId: ID!): String! @isAuthenticated
     disenrollFromActivity(inscriptionId: String!): String! @isAuthenticated
+    signUp(input: CreateParticipantInput): Participant!
 }
