@@ -39,10 +39,11 @@ export class Participant {
         return client.query.participant({ where: { id }}, info)
     }
 
-    public async getByEmail(email: string) {
+    public async getByEmail(email: string, info?) {
         try {
             const participant = await client.query.participant(
                 { where: { email }},
+                info,
             )
             return participant
         } catch (err) {

@@ -22,6 +22,7 @@ type Participant {
 type Query {
     participant(id: ID!): Participant! @hasRole(role: admin)
     participants(limit: Int, last: ID): ParticipantsPayload! @hasRole(role: admin)
+    me: Participant @isAuthenticated
 }
 
 type Mutation {
