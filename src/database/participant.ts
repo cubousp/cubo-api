@@ -2,6 +2,7 @@ import gql from 'graphql-tag'
 import { TransparentError } from '../api/utils/error'
 import { client } from './client'
 import { RepositoryError } from './error-code'
+import { ParticipantUpdateInput } from './generated/prisma'
 
 export class Participant {
     public async participants(limit = 100, last) {
@@ -29,6 +30,14 @@ export class Participant {
             last: queryResult.pageInfo.endCursor,
             participants: queryResult.edges.map((edge) => edge.node),
         }
+    }
+
+    public async update(id, input , info?) {
+        return client.mutation.updateParticipant(
+            {
+                data: { ...input },
+                where: { id },
+            }, info)
     }
 
     public async save(input, info?) {

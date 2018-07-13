@@ -4,6 +4,11 @@ input CreateParticipantInput {
     email: String!
 }
 
+input UpdateParticipantInput {
+    name: String
+    email: String
+}
+
 # Payload
 type ParticipantsPayload {
     hasMore: Boolean!
@@ -30,4 +35,5 @@ type Mutation {
     enrollToActivity(activityId: ID!): String! @isAuthenticated
     disenrollFromActivity(inscriptionId: String!): String! @isAuthenticated
     signUp(input: CreateParticipantInput): Participant!
+    updateProfile(updateParticipant: UpdateParticipantInput!): Participant! @isAuthenticated
 }

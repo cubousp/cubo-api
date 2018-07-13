@@ -31,6 +31,18 @@ export const Mutation = {
     async signUp({}, { input }, context: Context, info) {
         return await context.participant.save(input, info)
     },
+
+    async updateProfile({}, { updateParticipant }, context: Context, info) {
+        const participant = await context.participant.getByEmail(
+            context.currentUser!.email,
+        )
+
+        return context.participant.update(
+            participant!.id,
+            updateParticipant,
+            info,
+        )
+    },
 }
 
 const NoAvailableVacanciesError = 'NoAvailableVacancies'
