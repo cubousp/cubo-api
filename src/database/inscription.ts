@@ -20,34 +20,6 @@ export class Inscription {
         )
     }
 
-    public async getInscriptionByActivityAndParticipant(
-        activityId: string,
-        participantId: string) {
-            const {aggregate: { count }, ...queryResult} =
-                await client.query.inscriptionsConnection({
-                        where: {
-                            activity: { id: activityId },
-                            participant: { id: participantId },
-                        },
-                    }, gql`
-                    {
-                        aggregate { count }
-                        edges {
-                            node {
-                                id
-                            }
-                        }
-                    }
-                `)
-            if (count === 0) {
-                throw new TransparentError(
-                    'Participant has not enrolled to activity yet.',
-                    RepositoryError.ItemAlreadyExists,
-                )
-            }
-            return queryResult.edges[0].node
-    }
-
     public async delete(id: string) {
         try {
             await client.mutation.deleteInscription({ where: { id }})

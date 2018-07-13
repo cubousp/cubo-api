@@ -19,23 +19,15 @@ export const Mutation = {
             context.currentUser!.email,
         )
 
-        const inscription = await context.inscription
-                .getInscriptionByActivityAndParticipant(
-                    activityId,
-                    participant!.id,
-                )
-        await context.inscription.delete(inscription.id)
+        await context.inscription.create(activityId, participant!.id)
+},
+    async disenrollFromActivity({}, { inscriptionId }, context: Context, info) {
+
+        await context.inscription.delete(inscriptionId)
 
         return 'Success'
     },
 
-    async disenrollFromActivity({}, { activityId }, context: Context, info) {
-        const participant = await context.participant.getByEmail(
-            context.currentUser!.email,
-        )
-
-        await context.inscription.create(activityId, participant!.id)
-    },
 }
 
 const NoAvailableVacanciesError = 'NoAvailableVacancies'
