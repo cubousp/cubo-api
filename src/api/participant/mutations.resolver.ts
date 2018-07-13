@@ -28,6 +28,9 @@ export const Mutation = {
         return 'Success'
     },
 
+    async signUp({}, { input }, context: Context, info) {
+        return await context.participant.save(input, info)
+    },
 }
 
 const NoAvailableVacanciesError = 'NoAvailableVacancies'
