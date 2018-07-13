@@ -16,12 +16,13 @@ type Participant {
     id: ID!
     name: String!
     email: String!
-    enrolled: [Inscription!]!
+    enrolled: [Inscription]
 }
 
 type Query {
     participant(id: ID!): Participant! @hasRole(role: admin)
     participants(limit: Int, last: ID): ParticipantsPayload! @hasRole(role: admin)
+    me: Participant @isAuthenticated
 }
 
 type Mutation {
