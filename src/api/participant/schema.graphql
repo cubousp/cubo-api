@@ -6,7 +6,6 @@ input CreateParticipantInput {
 
 input UpdateParticipantInput {
     name: String
-    email: String
 }
 
 # Payload
