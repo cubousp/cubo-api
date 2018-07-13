@@ -20,8 +20,14 @@ export const Mutation = {
         )
 
         await context.inscription.create(activityId, participant!.id)
+},
+    async disenrollFromActivity({}, { inscriptionId }, context: Context, info) {
+
+        await context.inscription.delete(inscriptionId)
+
         return 'Success'
     },
+
 }
 
 const NoAvailableVacanciesError = 'NoAvailableVacancies'
