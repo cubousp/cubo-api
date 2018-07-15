@@ -1,5 +1,5 @@
 # source: http://localhost:4466/cubo/dev
-# timestamp: Mon Jul 09 2018 14:34:27 GMT-0300 (-03)
+# timestamp: Sun Jul 15 2018 18:05:22 GMT-0300 (-03)
 
 type Activity implements Node {
   id: ID!
@@ -8,6 +8,7 @@ type Activity implements Node {
   endsAt: DateTime!
   kind: ActivityKind!
   enrolled(where: InscriptionWhereInput, orderBy: InscriptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Inscription!]
+  visibleForParticipants: Boolean!
   totalVacancies: Int!
   shortDescription: String
   longDescription: String
@@ -17,6 +18,7 @@ type Activity implements Node {
   updatedAt: DateTime!
   inscriptionBeginsAt: DateTime
   inscriptionEndsAt: DateTime
+  location: String
 }
 
 """A connection to a list of items."""
@@ -34,12 +36,14 @@ input ActivityCreateInput {
   startsAt: DateTime!
   endsAt: DateTime!
   kind: ActivityKind!
+  visibleForParticipants: Boolean
   totalVacancies: Int
   shortDescription: String
   longDescription: String
   internalComment: String
   inscriptionBeginsAt: DateTime
   inscriptionEndsAt: DateTime
+  location: String
   enrolled: InscriptionCreateManyWithoutActivityInput
   speaker: SpeakerCreateOneInput
 }
@@ -54,12 +58,14 @@ input ActivityCreateWithoutEnrolledInput {
   startsAt: DateTime!
   endsAt: DateTime!
   kind: ActivityKind!
+  visibleForParticipants: Boolean
   totalVacancies: Int
   shortDescription: String
   longDescription: String
   internalComment: String
   inscriptionBeginsAt: DateTime
   inscriptionEndsAt: DateTime
+  location: String
   speaker: SpeakerCreateOneInput
 }
 
@@ -92,6 +98,8 @@ enum ActivityOrderByInput {
   endsAt_DESC
   kind_ASC
   kind_DESC
+  visibleForParticipants_ASC
+  visibleForParticipants_DESC
   totalVacancies_ASC
   totalVacancies_DESC
   shortDescription_ASC
@@ -108,6 +116,8 @@ enum ActivityOrderByInput {
   inscriptionBeginsAt_DESC
   inscriptionEndsAt_ASC
   inscriptionEndsAt_DESC
+  location_ASC
+  location_DESC
 }
 
 type ActivityPreviousValues {
@@ -116,6 +126,7 @@ type ActivityPreviousValues {
   startsAt: DateTime!
   endsAt: DateTime!
   kind: ActivityKind!
+  visibleForParticipants: Boolean!
   totalVacancies: Int!
   shortDescription: String
   longDescription: String
@@ -124,6 +135,7 @@ type ActivityPreviousValues {
   updatedAt: DateTime!
   inscriptionBeginsAt: DateTime
   inscriptionEndsAt: DateTime
+  location: String
 }
 
 type ActivitySubscriptionPayload {
@@ -170,12 +182,14 @@ input ActivityUpdateInput {
   startsAt: DateTime
   endsAt: DateTime
   kind: ActivityKind
+  visibleForParticipants: Boolean
   totalVacancies: Int
   shortDescription: String
   longDescription: String
   internalComment: String
   inscriptionBeginsAt: DateTime
   inscriptionEndsAt: DateTime
+  location: String
   enrolled: InscriptionUpdateManyWithoutActivityInput
   speaker: SpeakerUpdateOneInput
 }
@@ -193,12 +207,14 @@ input ActivityUpdateWithoutEnrolledDataInput {
   startsAt: DateTime
   endsAt: DateTime
   kind: ActivityKind
+  visibleForParticipants: Boolean
   totalVacancies: Int
   shortDescription: String
   longDescription: String
   internalComment: String
   inscriptionBeginsAt: DateTime
   inscriptionEndsAt: DateTime
+  location: String
   speaker: SpeakerUpdateOneInput
 }
 
@@ -350,6 +366,10 @@ input ActivityWhereInput {
 
   """All values that are not contained in given list."""
   kind_not_in: [ActivityKind!]
+  visibleForParticipants: Boolean
+
+  """All values that are not equal to given value."""
+  visibleForParticipants_not: Boolean
   totalVacancies: Int
 
   """All values that are not equal to given value."""
@@ -580,6 +600,46 @@ input ActivityWhereInput {
 
   """All values greater than or equal the given value."""
   inscriptionEndsAt_gte: DateTime
+  location: String
+
+  """All values that are not equal to given value."""
+  location_not: String
+
+  """All values that are contained in given list."""
+  location_in: [String!]
+
+  """All values that are not contained in given list."""
+  location_not_in: [String!]
+
+  """All values less than the given value."""
+  location_lt: String
+
+  """All values less than or equal the given value."""
+  location_lte: String
+
+  """All values greater than the given value."""
+  location_gt: String
+
+  """All values greater than or equal the given value."""
+  location_gte: String
+
+  """All values containing the given string."""
+  location_contains: String
+
+  """All values not containing the given string."""
+  location_not_contains: String
+
+  """All values starting with the given string."""
+  location_starts_with: String
+
+  """All values not starting with the given string."""
+  location_not_starts_with: String
+
+  """All values ending with the given string."""
+  location_ends_with: String
+
+  """All values not ending with the given string."""
+  location_not_ends_with: String
   enrolled_every: InscriptionWhereInput
   enrolled_some: InscriptionWhereInput
   enrolled_none: InscriptionWhereInput
