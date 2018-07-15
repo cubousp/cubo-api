@@ -8,6 +8,7 @@ createActivities([
         startsAt: '2018-09-17T16:00:00.000Z',
         endsAt: '2018-09-17T17:00:00.000Z',
         kind: 'LECTURE',
+        totalVacancies: 20
     },
     {
         title: 'Odontologia veterinária: uma realidade mais do que uma curiosidade',

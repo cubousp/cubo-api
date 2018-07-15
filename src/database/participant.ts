@@ -2,6 +2,7 @@ import gql from 'graphql-tag'
 import { TransparentError } from '../api/utils/error'
 import { client } from './client'
 import { RepositoryError } from './error-code'
+import { ParticipantUpdateInput } from './generated/prisma'
 
 export class Participant {
     public async participants(limit = 100, last) {
@@ -31,6 +32,14 @@ export class Participant {
         }
     }
 
+    public async update(id, input , info?) {
+        return client.mutation.updateParticipant(
+            {
+                data: { ...input },
+                where: { id },
+            }, info)
+    }
+
     public async save(input, info?) {
         return client.mutation.createParticipant({ data: input }, info)
     }
@@ -39,10 +48,11 @@ export class Participant {
         return client.query.participant({ where: { id }}, info)
     }
 
-    public async getByEmail(email: string) {
+    public async getByEmail(email: string, info?) {
         try {
             const participant = await client.query.participant(
                 { where: { email }},
+                info,
             )
             return participant
         } catch (err) {
