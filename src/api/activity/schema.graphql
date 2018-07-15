@@ -11,6 +11,8 @@ input CreateActivityInput {
     inscriptionBeginsAt: DateTime
     inscriptionEndsAt: DateTime
     totalVacancies: Int
+    location: String
+    visibleForParticipants: Boolean
 }
 
 input UpdateActivityInput {
@@ -25,6 +27,8 @@ input UpdateActivityInput {
     inscriptionEndsAt: DateTime
     totalVacancies: Int
     kind: ActivityKind
+    location: String
+    visibleForParticipants: Boolean
 }
 
 input CreateSpeakerInput {
@@ -54,6 +58,8 @@ type Activity {
     enrolled: [Inscription!]! @hasRole(role: admin)
     vacancies: Vacancies! @hasRole(role: admin)
     kind: ActivityKind!
+    location: String
+    visibleForParticipants: Boolean!
 }
 
 enum ActivityKind {

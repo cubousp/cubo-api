@@ -12,6 +12,7 @@ type Activity {
     endsAt: DateTime!
     kind: ActivityKind!
     enrolled: [Inscription!]!
+    visibleForParticipants: Boolean! @default(value: true)
     totalVacancies: Int! @default(value: 0)
     shortDescription: String
     longDescription: String
@@ -21,6 +22,7 @@ type Activity {
     updatedAt: DateTime!
     inscriptionBeginsAt: DateTime
     inscriptionEndsAt: DateTime
+    location: String
 }
 
 enum ActivityKind {
