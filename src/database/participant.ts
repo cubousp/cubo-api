@@ -41,17 +41,19 @@ export class Participant {
     }
 
     public async save(input, info?) {
-        return client.mutation.createParticipant({ data: input }, info)
+        return client.mutation.createParticipant({
+            data: { ...input, role: 'USER' },
+        }, info)
     }
 
     public async get(id, info?) {
         return client.query.participant({ where: { id }}, info)
     }
 
-    public async getByEmail(email: string, info?) {
+    public async getByAuthId(authId: string, info?) {
         try {
             const participant = await client.query.participant(
-                { where: { email }},
+                { where: { authId }},
                 info,
             )
             return participant

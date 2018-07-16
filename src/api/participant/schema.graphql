@@ -21,16 +21,18 @@ type Participant {
     name: String!
     email: String!
     enrolled: [Inscription!]!
+    authId: String!
+    role: Role!
 }
 
 type Query {
-    participant(id: ID!): Participant! @hasRole(role: admin)
-    participants(limit: Int, last: ID): ParticipantsPayload! @hasRole(role: admin)
+    participant(id: ID!): Participant! @hasRole(role: ADMIN)
+    participants(limit: Int, last: ID): ParticipantsPayload! @hasRole(role: ADMIN)
     me: Participant @isAuthenticated
 }
 
 type Mutation {
-    createParticipant(input: CreateParticipantInput!): Participant! @hasRole(role: admin)
+    createParticipant(input: CreateParticipantInput!): Participant! @hasRole(role: ADMIN)
     enrollToActivity(activityId: ID!): String! @isAuthenticated
     disenrollFromActivity(inscriptionId: String!): String! @isAuthenticated
     signUp(input: CreateParticipantInput): Participant!

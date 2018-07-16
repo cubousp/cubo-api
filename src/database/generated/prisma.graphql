@@ -1,5 +1,5 @@
 # source: http://localhost:4466/cubo/dev
-# timestamp: Sun Jul 15 2018 18:05:22 GMT-0300 (-03)
+# timestamp: Mon Jul 16 2018 00:46:02 GMT-0300 (-03)
 
 type Activity implements Node {
   id: ID!
@@ -670,6 +670,11 @@ type AggregateStory {
   count: Int!
 }
 
+enum AuthRole {
+  ADMIN
+  USER
+}
+
 type BatchPayload {
   """The number of nodes that have been affected by the Batch operation."""
   count: Long!
@@ -1033,6 +1038,8 @@ type Participant implements Node {
   name: String!
   email: String!
   enrolled(where: InscriptionWhereInput, orderBy: InscriptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Inscription!]
+  role: AuthRole!
+  authId: String!
 }
 
 """A connection to a list of items."""
@@ -1048,6 +1055,8 @@ type ParticipantConnection {
 input ParticipantCreateInput {
   name: String!
   email: String!
+  role: AuthRole!
+  authId: String!
   enrolled: InscriptionCreateManyWithoutParticipantInput
 }
 
@@ -1059,6 +1068,8 @@ input ParticipantCreateOneWithoutEnrolledInput {
 input ParticipantCreateWithoutEnrolledInput {
   name: String!
   email: String!
+  role: AuthRole!
+  authId: String!
 }
 
 """An edge in a connection."""
@@ -1077,6 +1088,10 @@ enum ParticipantOrderByInput {
   name_DESC
   email_ASC
   email_DESC
+  role_ASC
+  role_DESC
+  authId_ASC
+  authId_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -1087,6 +1102,8 @@ type ParticipantPreviousValues {
   id: ID!
   name: String!
   email: String!
+  role: AuthRole!
+  authId: String!
 }
 
 type ParticipantSubscriptionPayload {
@@ -1131,6 +1148,8 @@ input ParticipantSubscriptionWhereInput {
 input ParticipantUpdateInput {
   name: String
   email: String
+  role: AuthRole
+  authId: String
   enrolled: InscriptionUpdateManyWithoutParticipantInput
 }
 
@@ -1145,6 +1164,8 @@ input ParticipantUpdateOneWithoutEnrolledInput {
 input ParticipantUpdateWithoutEnrolledDataInput {
   name: String
   email: String
+  role: AuthRole
+  authId: String
 }
 
 input ParticipantUpsertWithoutEnrolledInput {
@@ -1281,6 +1302,56 @@ input ParticipantWhereInput {
 
   """All values not ending with the given string."""
   email_not_ends_with: String
+  role: AuthRole
+
+  """All values that are not equal to given value."""
+  role_not: AuthRole
+
+  """All values that are contained in given list."""
+  role_in: [AuthRole!]
+
+  """All values that are not contained in given list."""
+  role_not_in: [AuthRole!]
+  authId: String
+
+  """All values that are not equal to given value."""
+  authId_not: String
+
+  """All values that are contained in given list."""
+  authId_in: [String!]
+
+  """All values that are not contained in given list."""
+  authId_not_in: [String!]
+
+  """All values less than the given value."""
+  authId_lt: String
+
+  """All values less than or equal the given value."""
+  authId_lte: String
+
+  """All values greater than the given value."""
+  authId_gt: String
+
+  """All values greater than or equal the given value."""
+  authId_gte: String
+
+  """All values containing the given string."""
+  authId_contains: String
+
+  """All values not containing the given string."""
+  authId_not_contains: String
+
+  """All values starting with the given string."""
+  authId_starts_with: String
+
+  """All values not starting with the given string."""
+  authId_not_starts_with: String
+
+  """All values ending with the given string."""
+  authId_ends_with: String
+
+  """All values not ending with the given string."""
+  authId_not_ends_with: String
   enrolled_every: InscriptionWhereInput
   enrolled_some: InscriptionWhereInput
   enrolled_none: InscriptionWhereInput
@@ -1289,6 +1360,7 @@ input ParticipantWhereInput {
 input ParticipantWhereUniqueInput {
   id: ID
   email: String
+  authId: String
 }
 
 type Query {

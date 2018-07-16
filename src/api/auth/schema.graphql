@@ -4,24 +4,11 @@ directive @hasRole(role: Role!) on FIELD | FIELD_DEFINITION
 
 # Enums
 enum Role {
-    user
-    admin
-}
-
-# Payloads
-type AuthPayload {
-    token: String!
-    user: CurrentUserPayload!
-}
-
-type CurrentUserPayload {
-    email: String!
-    name: String!
-    picture: String!
+    USER
+    ADMIN
 }
 
 # Types
 type Query {
-    signIn(email: String!, password: String!): AuthPayload!
-    signInAsAdmin(email: String!, password: String!): AuthPayload!
+    signIn(email: String!, password: String!): String! # token
 }

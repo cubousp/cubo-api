@@ -38,5 +38,12 @@ createActivities([
 
 createParticipants([{
     name: 'Participante teste',
-    email: 'participant@test.com'
+    email: 'participant@test.com',
+    authId: 'auth0|5b437a73a177ac1965fbc996',
+    role: 'USER'
+}, {
+    name: 'Admin CUBO',
+    email: 'admin@cubo.com.br',
+    authId: 'auth0|5b149d7ba76b70216923ed5a',
+    role: 'ADMIN'
 }])

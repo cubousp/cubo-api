@@ -6,25 +6,18 @@ export const Mutation = {
         return context.participant.save(input, info)
     },
 
-    async enrollToActivity({}, { activityId }, context: Context, info) {
-        const activity = await context.activity.get(activityId, undefined)
+    async enrollToActivity({}, { activityId }, context: Context) {
+        const activity = await context.activity.get(activityId)
         if (await context.activity.getAvailableVacanciesFor(activity) === 0) {
             throw new TransparentError(
                 'No available vacancies for this activity',
                 NoAvailableVacanciesError,
             )
         }
-
-        const participant = await context.participant.getByEmail(
-            context.currentUser!.email,
-        )
-
-        await context.inscription.create(activityId, participant!.id)
+        await context.inscription.create(activityId, context.currentUser!.id)
 },
-    async disenrollFromActivity({}, { inscriptionId }, context: Context, info) {
-
+    async disenrollFromActivity({}, { inscriptionId }, context: Context) {
         await context.inscription.delete(inscriptionId)
-
         return 'Success'
     },
 
@@ -33,12 +26,8 @@ export const Mutation = {
     },
 
     async updateProfile({}, { updateParticipant }, context: Context, info) {
-        const participant = await context.participant.getByEmail(
-            context.currentUser!.email,
-        )
-
         return context.participant.update(
-            participant!.id,
+            context.currentUser!.id,
             updateParticipant,
             info,
         )

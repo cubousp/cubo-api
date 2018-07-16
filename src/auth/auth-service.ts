@@ -1,72 +1,34 @@
-import { get, post } from 'got'
+import jwt = require('express-jwt')
+import { post } from 'got'
+import jwksRsa = require('jwks-rsa')
 import { TransparentError } from '../api/utils/error'
+import { Context } from '../context'
 
-export interface IAuthUserInfo {
-    email: string,
-    name: string,
-    picture: string,
-    role: AuthRole,
-}
+export const checkJwt = jwt({
+    algorithms: ['RS256'],
+    audience: process.env.AUTH_AUDIENCE,
+    credentialsRequired: false,
+    issuer: `https://cubousp.auth0.com/`,
+    secret: jwksRsa.expressJwtSecret({
+        cache: true,
+        jwksRequestsPerMinute: 5,
+        jwksUri: `https://cubousp.auth0.com/.well-known/jwks.json`,
+        rateLimit: true,
+    }),
+})
 
-export interface IAuthInfo {
-    user: IAuthUserInfo,
-    token: string,
-}
-
-export enum AuthRole {
-    ADMIN = 'admin',
-    USER = 'user',
+export const getCurrentUser = async (req, res, next, context: Context) => {
+    if (!req.user) { return next() }
+    const currentUser = await context.participant.getByAuthId(req.user.sub)
+    context.currentUser = currentUser!
+    next()
 }
 
 export class AuthService {
     private TOKEN_ENDPOINT = `${process.env.AUTH_API}/oauth/token`
-    private USER_ENDPOINT = `${process.env.AUTH_API}/userinfo`
 
-    public async signIn(email: string, password: string):
-        Promise<IAuthInfo> {
-        const token = await this.getToken(password, email)
-        const user = await this.getUserInfo(token)
-        this.validateRole(AuthRole.USER, user)
-        return { token, user }
-    }
-
-    public async signInAsAdmin(email: string, password: string):
-        Promise<IAuthInfo> {
-        const token = await this.getToken(password, email)
-        const user = await this.getUserInfo(token)
-        this.validateRole(AuthRole.ADMIN, user)
-        return { token, user }
-    }
-
-    public async getUserInfo(token): Promise<IAuthUserInfo> {
-        try {
-            const { body: profilePayload } = await get(this.USER_ENDPOINT, {
-                headers: {
-                    authorization: `Bearer ${token}`,
-                },
-            })
-            const userInfo = JSON.parse(profilePayload)
-            const { email, name, picture } = userInfo
-            const role = userInfo['https://cubousp.com/roles'][0]
-            return { email, name, picture, role }
-        } catch (err) {
-            if (err.response.body === 'Unauthorized') {
-                throw new TransparentError(
-                    'Unauthorized',
-                    'Unauthorized',
-                )
-            }
-            throw err
-        }
-    }
-
-    public validateRole(role: AuthRole, userInfo: IAuthUserInfo) {
-        if (userInfo.role !== role) {
-            throw new TransparentError(
-                'Unauthorized',
-                'Unauthorized',
-            )
-        }
+    public async signIn(email: string, password: string) {
+        return this.getToken(password, email)
     }
 
     private async getToken(password: string, email: string) {

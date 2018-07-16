@@ -48,6 +48,13 @@ type Participant {
     name: String!
     email: String! @unique
     enrolled: [Inscription!]!
+    role: AuthRole!
+    authId: String! @unique
+}
+
+enum AuthRole {
+    ADMIN,
+    USER
 }
 
 type Inscription {

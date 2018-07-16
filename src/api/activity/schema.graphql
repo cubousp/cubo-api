@@ -51,12 +51,12 @@ type Activity {
     longDescription: String
     startsAt: DateTime!
     endsAt: DateTime!
-    internalComment: String @hasRole(role: admin)
+    internalComment: String @hasRole(role: ADMIN)
     speaker: Speaker
     inscriptionBeginsAt: DateTime
     inscriptionEndsAt: DateTime
-    enrolled: [Inscription!]! @hasRole(role: admin)
-    vacancies: Vacancies! @hasRole(role: admin)
+    enrolled: [Inscription!]! @hasRole(role: ADMIN)
+    vacancies: Vacancies! @hasRole(role: ADMIN)
     kind: ActivityKind!
     location: String
     visibleForParticipants: Boolean!
@@ -89,7 +89,7 @@ type Query {
 }
 
 type Mutation {
-    createActivity(input: CreateActivityInput!): Activity! @hasRole(role: admin)
-    updateActivity(id: ID!, input: UpdateActivityInput!): Activity! @hasRole(role: admin)
-    deleteActivity(id: ID!): String! @hasRole(role: admin)
+    createActivity(input: CreateActivityInput!): Activity! @hasRole(role: ADMIN)
+    updateActivity(id: ID!, input: UpdateActivityInput!): Activity! @hasRole(role: ADMIN)
+    deleteActivity(id: ID!): String! @hasRole(role: ADMIN)
 }
