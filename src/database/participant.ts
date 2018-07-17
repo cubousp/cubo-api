@@ -20,6 +20,9 @@ export class Participant {
                     node {
                         id
                         name
+                        email
+                        authId
+                        role
                     }
                 }
             }
