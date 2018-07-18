@@ -15,4 +15,8 @@ export const Query = {
             info,
         )
     },
+
+    async searchParticipant({}, { limit, email }, context: Context, info) {
+        return context.participant.searchByEmail(email, limit, info)
+    },
 }

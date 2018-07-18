@@ -66,4 +66,11 @@ export class Participant {
             )
         }
     }
+
+    public async searchByEmail(email: string, limit = 5, info) {
+        return client.query.participants({
+            first: limit,
+            where: { email_contains: email },
+        }, info)
+    }
 }

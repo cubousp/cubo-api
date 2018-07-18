@@ -29,6 +29,7 @@ type Query {
     participant(id: ID!): Participant! @hasRole(role: ADMIN)
     participants(limit: Int, last: ID): ParticipantsPayload! @hasRole(role: ADMIN)
     me: Participant @isAuthenticated
+    searchParticipant(email: String!, limit: Int): [Participant!]!
 }
 
 type Mutation {
