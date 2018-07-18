@@ -19,7 +19,12 @@ export class Activity {
 
     public update(id, activity, info?) {
         return client.mutation.updateActivity({
-            data: activity,
+            data: {
+                ...activity,
+                speaker: {
+                    create: activity.speaker,
+                },
+            },
             where: {
                 id,
             },
