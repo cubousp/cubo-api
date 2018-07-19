@@ -30,6 +30,13 @@ export class Inscription {
         }
     }
 
+    public updateStatus(inscriptionId, status) {
+        return client.mutation.updateInscription({
+            data: { status },
+            where: { id: inscriptionId },
+        })
+    }
+
     private async inscriptionExists(activityId: string, participantId: string) {
         const { aggregate: { count } } =
         await client.query.inscriptionsConnection({
@@ -44,5 +51,4 @@ export class Inscription {
         `)
         return count !== 0
     }
-
 }

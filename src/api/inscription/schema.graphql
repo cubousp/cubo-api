@@ -22,4 +22,5 @@ input EnrollParticipantInput {
 type Mutation {
     enrollParticipant(activityId: ID!, participantId: ID!): Inscription! @hasRole(role: ADMIN)
     disenrollParticipant(inscriptionId: ID!): String! @hasRole(role: ADMIN)
+    updateInscriptionStatus(inscriptionId: ID!, status: InscriptionStatus!): String! @hasRole(role: ADMIN)
 }

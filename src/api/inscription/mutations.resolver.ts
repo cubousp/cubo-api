@@ -19,6 +19,13 @@ export const Mutation = {
         await context.inscription.delete(inscriptionId)
         return 'Success'
     },
+
+    async updateInscriptionStatus(
+        {}, { inscriptionId, status }, context: Context,
+    ) {
+        await context.inscription.updateStatus(inscriptionId, status)
+        return 'Success'
+    },
 }
 
 const NoAvailableVacanciesError = 'NoAvailableVacancies'
