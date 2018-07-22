@@ -1,7 +1,7 @@
 type Inscription {
     id: ID!
     activity: Activity!
-    participant: Participant!
+    participant: Participant
     status: InscriptionStatus!
     createdAt: DateTime!
 }
