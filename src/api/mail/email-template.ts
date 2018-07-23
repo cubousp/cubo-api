@@ -1,4 +1,4 @@
-const STAFF_EMAIL = 'lucas.mafra95@gmail.com'
+const STAFF_EMAIL = 'cubofo@usp.br'
 
 export const emailTemplate = (
     name: string,
