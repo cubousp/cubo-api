@@ -23,6 +23,7 @@ export class Participant {
                         email
                         authId
                         role
+                        kind
                     }
                 }
             }

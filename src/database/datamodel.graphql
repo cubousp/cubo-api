@@ -50,6 +50,13 @@ type Participant {
     enrolled: [Inscription!]!
     role: AuthRole!
     authId: String! @unique
+    kind: ParticipantKind!
+}
+
+enum ParticipantKind {
+    GRADUATING_FOUSP
+    POS_GRADUATING_FOUSP
+    EXTERNAL_PARTICIPANT
 }
 
 enum AuthRole {

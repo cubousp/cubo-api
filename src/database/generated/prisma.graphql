@@ -1,5 +1,5 @@
 # source: http://localhost:4466/cubo/dev
-# timestamp: Mon Jul 16 2018 00:46:02 GMT-0300 (-03)
+# timestamp: Tue Jul 24 2018 10:03:51 GMT-0300 (-03)
 
 type Activity implements Node {
   id: ID!
@@ -1040,6 +1040,7 @@ type Participant implements Node {
   enrolled(where: InscriptionWhereInput, orderBy: InscriptionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Inscription!]
   role: AuthRole!
   authId: String!
+  kind: ParticipantKind!
 }
 
 """A connection to a list of items."""
@@ -1057,6 +1058,7 @@ input ParticipantCreateInput {
   email: String!
   role: AuthRole!
   authId: String!
+  kind: ParticipantKind!
   enrolled: InscriptionCreateManyWithoutParticipantInput
 }
 
@@ -1070,6 +1072,7 @@ input ParticipantCreateWithoutEnrolledInput {
   email: String!
   role: AuthRole!
   authId: String!
+  kind: ParticipantKind!
 }
 
 """An edge in a connection."""
@@ -1079,6 +1082,12 @@ type ParticipantEdge {
 
   """A cursor for use in pagination."""
   cursor: String!
+}
+
+enum ParticipantKind {
+  GRADUATING_FOUSP
+  POS_GRADUATING_FOUSP
+  EXTERNAL_PARTICIPANT
 }
 
 enum ParticipantOrderByInput {
@@ -1092,6 +1101,8 @@ enum ParticipantOrderByInput {
   role_DESC
   authId_ASC
   authId_DESC
+  kind_ASC
+  kind_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -1104,6 +1115,7 @@ type ParticipantPreviousValues {
   email: String!
   role: AuthRole!
   authId: String!
+  kind: ParticipantKind!
 }
 
 type ParticipantSubscriptionPayload {
@@ -1150,6 +1162,7 @@ input ParticipantUpdateInput {
   email: String
   role: AuthRole
   authId: String
+  kind: ParticipantKind
   enrolled: InscriptionUpdateManyWithoutParticipantInput
 }
 
@@ -1166,6 +1179,7 @@ input ParticipantUpdateWithoutEnrolledDataInput {
   email: String
   role: AuthRole
   authId: String
+  kind: ParticipantKind
 }
 
 input ParticipantUpsertWithoutEnrolledInput {
@@ -1352,6 +1366,16 @@ input ParticipantWhereInput {
 
   """All values not ending with the given string."""
   authId_not_ends_with: String
+  kind: ParticipantKind
+
+  """All values that are not equal to given value."""
+  kind_not: ParticipantKind
+
+  """All values that are contained in given list."""
+  kind_in: [ParticipantKind!]
+
+  """All values that are not contained in given list."""
+  kind_not_in: [ParticipantKind!]
   enrolled_every: InscriptionWhereInput
   enrolled_some: InscriptionWhereInput
   enrolled_none: InscriptionWhereInput

@@ -2,6 +2,7 @@
 input CreateParticipantInput {
     name: String!
     email: String!
+    kind: ParticipantKind!
 }
 
 input UpdateParticipantInput {
@@ -23,6 +24,13 @@ type Participant {
     enrolled: [Inscription!]!
     authId: String!
     role: Role!
+    kind: ParticipantKind!
+}
+
+enum ParticipantKind {
+    GRADUATING_FOUSP
+    POS_GRADUATING_FOUSP
+    EXTERNAL_PARTICIPANT
 }
 
 type Query {
