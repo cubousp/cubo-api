@@ -17,6 +17,12 @@ export class Server {
         )
         if (!this.runningInstance) {
             this.runningInstance = await this.server.start({
+                cors: {
+                    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+                    optionsSuccessStatus: 204,
+                    origin: '*',
+                    preflightContinue: false,
+                },
                 formatError: (error) => formatError(error),
                 port: process.env.PORT,
             })
