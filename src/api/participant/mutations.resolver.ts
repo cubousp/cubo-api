@@ -3,6 +3,10 @@ import { TransparentError } from '../utils/error'
 
 export const Mutation = {
     async createParticipant({}, { input }, context: Context, info) {
+        // TODO: use authService to generate a real authId
+        // TODO: send a welcome/reset password email to new participant
+        const authId = input.email
+        input.authId = authId
         return context.participant.save(input, info)
     },
 
