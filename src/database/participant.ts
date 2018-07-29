@@ -6,10 +6,14 @@ import { ParticipantUpdateInput } from './generated/prisma'
 
 export class Participant {
     public async participants(limit = 100, last) {
+        const ADMIN_AUTH_ID = 'auth0|5b149d7ba76b70216923ed5a'
         const queryResult = await client.query.participantsConnection({
             after: last,
             first: limit,
             orderBy: 'name_ASC',
+            where: {
+                authId_not: ADMIN_AUTH_ID,
+            },
         }, gql`
             {
                 pageInfo {
